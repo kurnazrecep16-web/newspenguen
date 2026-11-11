@@ -175,6 +175,8 @@ button{cursor:pointer}
 .bd.lang{--c:var(--muted)}
 .bd.region{--c:var(--seg-region)}
 .bd.new{--c:var(--success)}
+.bd.kind{--c:var(--navy-3)}
+[data-theme="dark"] .bd.kind{--c:var(--blue)}
 .ib{width:34px;height:34px;border-radius:9px;border:none;background:none;color:var(--muted);display:grid;place-items:center}
 .ib:hover{background:var(--surface-2);color:var(--text)}
 .ib[aria-pressed="true"]{color:var(--blue)}
@@ -373,6 +375,26 @@ button{cursor:pointer}
 /*DATA_START*/
 const UPDATED = "11.11.2026 22:30";
 const ITEMS = [
+ {id:"ebrd-sanmar-tugs",seg:"marine",reg:"tr",lang:"EN",kind:"finance",star:false,isNew:true,
+  title:"EBRD support to boost growth for Türkiye's Sanmar",
+  summary:"EBRD is lending EUR 22.5 million (via a risk-sharing facility with Akbank) to finance construction of electric tugboats and solar generation at the Turkish shipbuilder — new-build hull and deck coating demand at a domestic yard.",
+  source:"EBRD",date:"2026-10-16",
+  url:"https://www.ebrd.com/home/news-and-events/news/2026/ebrd-support-to-boost-growth-for-tuerkiye-s-sanmar.html"},
+ {id:"yeka-ges-2026-785mw",seg:"prot",reg:"tr",lang:"EN",kind:"tender",star:false,isNew:true,
+  title:"Turkey awards 785MW solar PV in latest YEKA tender",
+  summary:"The Ministry of Energy allocated 785 MW across 11 projects in the YEKA GES-2026 round, below the 900 MW initially planned; winners move to plant construction — steel structure and substation coating opportunities.",
+  source:"PV Tech",date:"2026-11-04",
+  url:"https://www.pv-tech.org/turkey-awards-785mw-solar-pv-in-latest-yeka-tender/"},
+ {id:"tr-energy-vision-2040",seg:"prot",reg:"tr",lang:"EN",kind:"policy",star:false,isNew:true,
+  title:"Türkiye targets 175 GW of solar, wind capacity by 2040",
+  summary:"Energy Minister Bayraktar presented the 2040 national energy vision ahead of COP31 in Antalya, targeting 175 GW of installed solar and wind — a long pipeline of wind towers, foundations and grid steel.",
+  source:"pv magazine",date:"2026-11-06",
+  url:"https://www.pv-magazine.com/2026/11/06/turkiye-targets-175-gw-of-solar-wind-capacity-by-2040/"},
+ {id:"natoco-tohpe",seg:"corp",reg:"global",lang:"EN",kind:"deal",star:false,isNew:true,
+  title:"Natoco Completes Acquisition of Japanese Coatings Manufacturer",
+  summary:"Natoco completed its acquisition of Japanese coatings maker Tohpe on 2 November, making it a wholly owned subsidiary.",
+  source:"PCI Magazine",date:"2026-11-04",
+  url:"https://www.pcimag.com/articles/115476-natoco-completes-acquisition-of-japanese-coatings-manufacturer"},
  {id:"jotun-q3-2026",seg:"corp",reg:"global",lang:"EN",star:false,isNew:true,
   title:"Jotun quarterly report Q3 2026 (via Orkla)",
   summary:"Jotun does not issue a stand-alone Q3 update; according to the Orkla Q3 report published 6 November, Jotun's operating revenue rose 5.5% year on year in the third quarter and the long-term growth strategy is unchanged.",
@@ -528,6 +550,51 @@ const ITEMS = [
 
 /* Kaynaklar: li = LinkedIn adresi. "q:" ile başlayanlar LinkedIn şirket araması açar (resmi sayfa ilk sırada çıkar). */
 const SOURCES = [
+ {g:"🏛️ Türkiye resmî – yatırım & ihale",items:[
+  {n:"KAP – Kamuyu Aydınlatma Platformu",d:"Öncelikli · borsa şirketlerinin fabrika, kapasite, sözleşme bildirimleri",w:"https://www.kap.org.tr/",li:""},
+  {n:"Resmî Gazete – İlanlar",d:"Öncelikli · kamu ihale ilanları, kararlar, teşvik düzenlemeleri",w:"https://www.resmigazete.gov.tr/",li:""},
+  {n:"EKAP",d:"Öncelikli · kamu ihaleleri (doğrudan otomatik erişim yok; ilan kopyaları üzerinden izlenir)",w:"https://ekap.kik.gov.tr/",li:""},
+  {n:"ÇED kararları (Çevre, Şehircilik ve İklim Değişikliği Bakanlığı)",d:"Öncelikli · fabrika/santral projelerinin en erken resmî sinyali",w:"https://ced.csb.gov.tr/",li:""},
+  {n:"Enerji ve Tabii Kaynaklar Bakanlığı",d:"Öncelikli · YEKA ihaleleri, santral projeleri",w:"https://enerji.gov.tr/",li:""},
+  {n:"Altyapı Yatırımları GM (UAB/AYGM)",d:"Öncelikli · büyük demiryolu, köprü, liman projeleri",w:"https://aygm.uab.gov.tr/",li:""},
+  {n:"Karayolları Genel Müdürlüğü",d:"Öncelikli · köprü/korkuluk boya ve bakım ihaleleri",w:"https://www.kgm.gov.tr/",li:""},
+  {n:"Sanayi ve Teknoloji Bakanlığı",d:"İkincil · OSB ve yatırım teşvik haberleri",w:"https://www.sanayi.gov.tr/",li:""},
+  {n:"Yatırım Destek (teşvik)",d:"İkincil · teşvik belgesi istatistikleri",w:"https://www.yatirimadestek.gov.tr/",li:""},
+  {n:"Yatırım Ofisi (invest.gov.tr)",d:"İkincil · yabancı yatırım haberleri ve bültenler",w:"https://www.invest.gov.tr/",li:""},
+  {n:"EPDK",d:"İkincil · lisans kararları",w:"https://www.epdk.gov.tr/",li:""},
+  {n:"TEİAŞ",d:"İkincil · trafo merkezi ve iletim hattı yatırımları",w:"https://www.teias.gov.tr/",li:""},
+  {n:"EÜAŞ",d:"İkincil · HES/termik santral bakım-yatırım",w:"https://www.euas.gov.tr/",li:""},
+  {n:"DSİ",d:"İkincil · baraj, cebri boru, kapak (koruyucu boya)",w:"https://www.dsi.gov.tr/",li:""},
+  {n:"İller Bankası",d:"İkincil · belediye altyapı, su depoları",w:"https://www.ilbank.gov.tr/",li:""},
+  {n:"TCDD",d:"İkincil · demiryolu ihaleleri",w:"https://www.tcdd.gov.tr/",li:""},
+  {n:"DHMİ",d:"İkincil · havalimanı yatırımları",w:"https://www.dhmi.gov.tr/",li:""},
+  {n:"TOKİ",d:"İkincil · konut projeleri (dekoratif)",w:"https://www.toki.gov.tr/",li:""},
+  {n:"MAPEG",d:"İkincil · maden ruhsat ihaleleri",w:"https://www.mapeg.gov.tr/",li:""},
+  {n:"SSB – Savunma Sanayii Başkanlığı",d:"İkincil · savunma tesis yatırımları",w:"https://www.ssb.gov.tr/",li:""},
+  {n:"TÜİK",d:"İkincil · inşaat ruhsatı, sanayi üretimi verileri",w:"https://www.tuik.gov.tr/",li:""}]},
+ {g:"🌐 Uluslararası ihale & kalkınma finansmanı",items:[
+  {n:"TED – Tenders Electronic Daily (AB)",d:"Öncelikli · boya/antikorozif ihaleleri (CPV 45442100, 45442200, 44810000)",w:"https://ted.europa.eu/",li:""},
+  {n:"EBRD",d:"Öncelikli · Türkiye proje finansmanları",w:"https://www.ebrd.com/",li:""},
+  {n:"Dünya Bankası – Projeler",d:"Öncelikli · Türkiye altyapı projeleri ve ihaleleri",w:"https://projects.worldbank.org/",li:""},
+  {n:"Avrupa Yatırım Bankası (EIB)",d:"İkincil · Türkiye kredileri (düşük sıklık)",w:"https://www.eib.org/",li:""},
+  {n:"UNGM",d:"İkincil · BM boya/kaplama ihaleleri",w:"https://www.ungm.org/",li:""},
+  {n:"İslam Kalkınma Bankası",d:"İkincil · Türkiye ve bölge projeleri",w:"https://www.isdb.org/",li:""},
+  {n:"Asya Kalkınma Bankası",d:"İkincil · Asya altyapı projeleri",w:"https://www.adb.org/",li:""},
+  {n:"Afrika Kalkınma Bankası",d:"İkincil · Türk müteahhitlerin Afrika projeleri",w:"https://www.afdb.org/",li:""}]},
+ {g:"⚡ Enerji · çelik · çimento · madencilik · liman",items:[
+  {n:"SteelOrbis",d:"Öncelikli · Türkiye çelik tesis yatırımları (ücretsiz haberler)",w:"https://www.steelorbis.com/",li:""},
+  {n:"pv magazine",d:"İkincil · GES projeleri ve YEKA",w:"https://www.pv-magazine.com/",li:""},
+  {n:"World Nuclear News",d:"İkincil · Akkuyu ve nükleer projeler",w:"https://www.world-nuclear-news.org/",li:""},
+  {n:"Offshore Technology",d:"İkincil · offshore petrol-gaz ve rüzgar",w:"https://www.offshore-technology.com/",li:""},
+  {n:"World Oil",d:"İkincil · rafineri ve petrol-gaz",w:"https://www.worldoil.com/",li:""},
+  {n:"Energy Voice",d:"İkincil · Kuzey Denizi, enerji geçişi",w:"https://www.energyvoice.com/",li:""},
+  {n:"Global Cement",d:"İkincil · çimento fabrikası yatırımları",w:"https://www.globalcement.com/",li:""},
+  {n:"MINING.COM",d:"İkincil · Türkiye maden satın almaları ve projeleri",w:"https://www.mining.com/",li:""},
+  {n:"Port Technology",d:"İkincil · liman ve terminal yatırımları",w:"https://www.porttechnology.org/",li:""}]},
+ {g:"🏢 Şirket açıklamaları",items:[
+  {n:"SEC EDGAR",d:"İkincil · PPG, Sherwin-Williams, Axalta resmî bildirimleri",w:"https://www.sec.gov/edgar/",li:""},
+  {n:"GlobeNewswire",d:"İkincil · şirket basın bültenleri (pazar raporu spam'i filtrelenir)",w:"https://www.globenewswire.com/",li:""},
+  {n:"Business Wire",d:"İkincil · şirket basın bültenleri",w:"https://www.businesswire.com/",li:""}]},
  {g:"🏢 Jotun",items:[
   {n:"Jotun Corporate News",d:"Kurumsal haberler, finansal raporlar",w:"https://www.jotun.com/ww-en/news-and-insights/corporate",li:"q:Jotun"},
   {n:"Jotun Performance Coatings",d:"Marine, Protective, Powder",w:"https://www.jotun.com/ww-en",li:"q:Jotun Performance Coatings"},
@@ -600,7 +667,7 @@ const I18N={
   pubs:"Followed publishers",history:"Reading history",clearHist:"Clear history",
   sourcesP:"Publishers and company newsrooms monitored for NEWSPENGUEN. LinkedIn buttons open the company page or a LinkedIn company search.",site:"Website",
   showMore:"Show more",count:"{n} stories",today:"today",yesterday:"yesterday",daysAgo:"{n} days ago",undated:"date not specified",
-  updated:"Updated",about:"Global stories stay in their original language; Türkiye stories are in Turkish. Updated automatically every 6 hours.",themeT:"Dark mode"},
+  updated:"Updated",about:"Global stories stay in their original language; Türkiye stories are in Turkish. Updated automatically every 6 hours.",themeT:"Dark mode",k_tender:"Tender",k_investment:"Investment",k_finance:"Financing",k_policy:"Policy",k_deal:"M&A",edate:"Event date",deadline:"Bid deadline",alsoL:"Also reported by"},
  tr:{_name:"Türkçe",locale:"tr-TR",skip:"İçeriğe geç",search:"Haber, şirket, konu veya etiket ara…",searchLbl:"Ara",
   morning:"Günaydın",afternoon:"İyi günler",evening:"İyi akşamlar",sub:"Sektörünüzden ve dünyadan en güncel gelişmeler",
   home:"Ana Sayfa",featured:"Öne Çıkanlar",categories:"Kategoriler",global:"Global",tr:"Türkiye",saved:"Kaydedilenler",readlist:"Okuma Listesi",settings:"Ayarlar",sources:"Kaynaklar",profile:"Profil",
@@ -625,7 +692,7 @@ const I18N={
   pubs:"Takip edilen yayıncılar",history:"Okuma geçmişi",clearHist:"Geçmişi temizle",
   sourcesP:"NEWSPENGUEN için izlenen yayıncılar ve şirket haber odaları. LinkedIn butonları şirket sayfasını ya da LinkedIn şirket aramasını açar.",site:"Site",
   showMore:"Daha fazla göster",count:"{n} haber",today:"bugün",yesterday:"dün",daysAgo:"{n} gün önce",undated:"tarih belirtilmemiş",
-  updated:"Güncellendi",about:"Global haberler orijinal dilinde, Türkiye haberleri Türkçe verilir. 6 saatte bir otomatik güncellenir.",themeT:"Koyu mod"}
+  updated:"Güncellendi",about:"Global haberler orijinal dilinde, Türkiye haberleri Türkçe verilir. 6 saatte bir otomatik güncellenir.",themeT:"Koyu mod",k_tender:"İhale",k_investment:"Yatırım",k_finance:"Finansman",k_policy:"Mevzuat",k_deal:"Satın alma",edate:"Olay tarihi",deadline:"Son teklif",alsoL:"Diğer kaynaklar"}
 };
 const SEGS=["deco","marine","prot","powder","corp"];
 const SEGVAR={deco:"var(--seg-deco)",marine:"var(--seg-marine)",prot:"var(--seg-prot)",powder:"var(--seg-powder)",corp:"var(--seg-corp)",region:"var(--seg-region)"};
@@ -658,7 +725,7 @@ const txt=i=>(i.title+" "+i.summary+" "+i.source).toLocaleLowerCase("tr");
 const TREND=TOPICS.map(t=>[t,ITEMS.filter(i=>txt(i).includes(t.toLocaleLowerCase("tr"))).length]).filter(x=>x[1]).sort((a,b)=>b[1]-a[1]);
 const vis=()=>ITEMS.filter(i=>!S.hidden.includes(i.seg));
 const get=id=>ITEMS.find(i=>i.id===id);
-const langOf=i=>i.lang==="TR"?"tr":"en";
+const langOf=i=>/TR$/.test(i.lang||"")?"tr":"en";
 
 /* ================= GENERATED ILLUSTRATIONS (no stock photos, no remote images) ================= */
 function hash(s){let h=0;for(const c of s)h=(h*31+c.charCodeAt(0))>>>0;return h}
@@ -692,7 +759,7 @@ function applyTheme(){document.documentElement.dataset.theme=isDark()?"dark":"li
 
 /* ================= COMPONENTS ================= */
 function srcLine(i,withDate=true){return '<div class="src"><span class="av" style="background:hsl('+hue(i.source)+' 55% 42%)">'+esc(initials(i.source))+'</span><b>'+esc(i.source)+'</b>'+(withDate?'<span aria-hidden="true">·</span><time datetime="'+esc(i.date)+'">'+esc(pD(i.date)?rel(i.date):i.date)+'</time>':"")+'</div>'}
-function badges(i){return '<span class="bd" style="--c:'+SEGVAR[i.seg]+'">'+L(i.seg)+'</span><span class="bd lang">'+esc(i.reg==="tr"?"TR":(i.lang||"EN"))+'</span>'+(i.star?'<span class="bd region">★ '+L("regionB")+'</span>':"")+(i.isNew?'<span class="bd new">'+L("newB")+'</span>':"")}
+function badges(i){return '<span class="bd" style="--c:'+SEGVAR[i.seg]+'">'+L(i.seg)+'</span>'+(i.kind?'<span class="bd kind">'+L("k_"+i.kind)+'</span>':"")+'<span class="bd lang">'+esc(i.reg==="tr"?"TR":(i.lang||"EN"))+'</span>'+(i.star?'<span class="bd region">★ '+L("regionB")+'</span>':"")+(i.isNew?'<span class="bd new">'+L("newB")+'</span>':"")}
 function saveBtn(i){const s=S.saved.includes(i.id);return '<button class="ib" data-save="'+i.id+'" aria-pressed="'+s+'" aria-label="'+(s?L("unsave"):L("save"))+'" title="'+(s?L("unsave"):L("save"))+'">'+ic("bookmark",s)+'</button>'}
 function card(i){const read=S.history.includes(i.id);return '<article class="card'+(read?" read":"")+'">'+scene(i.seg,i.id)+'<div class="cb">'+srcLine(i)+'<h3 lang="'+langOf(i)+'"><button data-open="'+i.id+'">'+esc(i.title)+'</button></h3><div class="cf"><div class="badges">'+badges(i)+'</div>'+saveBtn(i)+'</div></div></article>'}
 function rowCard(i){const read=S.history.includes(i.id);return '<article class="row-card'+(read?" read":"")+'">'+scene(i.seg,i.id)+'<div class="cb">'+srcLine(i)+'<h3 lang="'+langOf(i)+'"><button data-open="'+i.id+'">'+esc(i.title)+'</button></h3><p lang="'+langOf(i)+'">'+esc(i.summary)+'</p><div class="cf"><div class="badges">'+badges(i)+'</div><div style="display:flex">'+saveBtn(i)+'<button class="ib" data-copy="'+esc(i.url)+'" aria-label="'+L("share")+'" title="'+L("share")+'">'+ic("share")+'</button></div></div></div></article>'}
@@ -773,7 +840,7 @@ function viewArticle(){
    '<div class="a-meta"><div class="badges">'+badges(i)+'</div>'+srcLine(i,false)+'<span>'+esc(longD(i.date))+'</span><span class="tools"><button class="btn sm" data-rs="-1" aria-label="'+L("fontDown")+'">A−</button><button class="btn sm" data-rs="1" aria-label="'+L("fontUp")+'">A+</button></span></div>'+
    '<h1 lang="'+langOf(i)+'">'+esc(i.title)+'</h1>'+
    '<div class="ai-box"><div class="hd"><span class="ai">AI</span>'+L("aiLabel")+'</div><p lang="'+langOf(i)+'">'+esc(i.summary)+'</p><small>'+L("aiNote")+'</small></div>'+
-   '<div class="a-info"><div><small>'+L("source")+'</small><b>'+esc(i.source)+'</b></div><div><small>'+L("published")+'</small><b>'+esc(pD(i.date)?shortD(i.date):i.date)+'</b></div><div><small>'+L("regionL")+'</small><b>'+(i.reg==="tr"?L("tr"):L("global"))+'</b></div><div><small>'+L("language")+'</small><b>'+esc(i.lang||"")+'</b></div></div>'+
+   '<div class="a-info"><div><small>'+L("source")+'</small><b>'+esc(i.source)+'</b></div><div><small>'+L("published")+'</small><b>'+esc(pD(i.date)?shortD(i.date):i.date)+'</b></div><div><small>'+L("regionL")+'</small><b>'+(i.reg==="tr"?L("tr"):L("global"))+'</b></div><div><small>'+L("language")+'</small><b>'+esc(i.lang||"")+'</b></div>'+(i.edate?'<div><small>'+L("edate")+'</small><b>'+esc(pD(i.edate)?shortD(i.edate):i.edate)+'</b></div>':"")+(i.deadline?'<div><small>'+L("deadline")+'</small><b>'+esc(pD(i.deadline)?shortD(i.deadline):i.deadline)+'</b></div>':"")+'</div>'+(i.also&&i.also.length?'<p style="margin:0 0 16px;font-size:13.5px;color:var(--text-2)"><b>'+L("alsoL")+':</b> '+i.also.map(a=>'<a href="'+esc(a.url)+'" target="_blank" rel="noopener" style="color:var(--blue)">'+esc(a.source)+'</a>').join(" · ")+'</p>':"")+
    '<div class="orig"><p>'+L("origNote")+'</p><a class="btn primary" href="'+esc(i.url)+'" target="_blank" rel="noopener">'+L("readOrig")+' '+ic("ext")+'</a></div>'+
    (related.length?secH(L("related"))+'<div class="cards3">'+related.map(card).join("")+'</div>':"")+
    (cov.length?secH(L("coverage"))+'<div class="stack">'+cov.map(rowCard).join("")+'</div>':"")+'</article>';
