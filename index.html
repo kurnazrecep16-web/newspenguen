@@ -708,7 +708,7 @@ const I18N={
   prev:"Previous story",next:"Next story",slide:"Story",newB:"NEW",regionB:"My region",
   save:"Save",unsave:"Remove from saved",share:"Copy link",copied:"Link copied",addedS:"Saved",removedS:"Removed from saved",open:"Open source",
   readOrig:"Read the original article",origNote:"The full article, author and images are on the publisher's website.",
-  aiLabel:"Summary · written by NEWSPENGUEN",aiNote:"Independent summary of the original article — not publisher text. See the source for full details.",
+  aiLabel:"Summary · written by NEWSPENGUEN",feedLabel:"Excerpt · from the source feed",feedNote:"Short excerpt from the publisher's feed, collected automatically. See the source for the full story.",feedEmpty:"No excerpt in the feed. Open the source for the full story.",aiNote:"Independent summary of the original article — not publisher text. See the source for full details.",
   related:"Related stories",coverage:"More on this topic",back:"Back",detail:"Story",fontDown:"Smaller text",fontUp:"Larger text",
   source:"Source",published:"Published",regionL:"Region",language:"Language",category:"Category",
   any:"Any time",d7:"Last 7 days",d30:"Last 30 days",allPubs:"All publishers",
@@ -733,7 +733,7 @@ const I18N={
   prev:"Önceki haber",next:"Sonraki haber",slide:"Haber",newB:"YENİ",regionB:"Bölgem",
   save:"Kaydet",unsave:"Kayıttan çıkar",share:"Linki kopyala",copied:"Link kopyalandı",addedS:"Kaydedildi",removedS:"Kayıttan çıkarıldı",open:"Kaynağı aç",
   readOrig:"Orijinal haberi oku",origNote:"Haberin tamamı, yazarı ve görselleri yayıncının sitesinde.",
-  aiLabel:"Özet · NEWSPENGUEN tarafından yazıldı",aiNote:"Orijinal haberin bağımsız özetidir, yayıncı metni değildir. Ayrıntılar için kaynağa bakın.",
+  aiLabel:"Özet · NEWSPENGUEN tarafından yazıldı",feedLabel:"Alıntı · kaynak akışından",feedNote:"Yayıncının akışından otomatik alınan kısa alıntıdır. Haberin tamamı için kaynağa gidin.",feedEmpty:"Akışta alıntı yok. Haberin tamamı için kaynağa gidin.",aiNote:"Orijinal haberin bağımsız özetidir, yayıncı metni değildir. Ayrıntılar için kaynağa bakın.",
   related:"İlgili haberler",coverage:"Aynı konuda",back:"Geri",detail:"Haber Detayı",fontDown:"Yazıyı küçült",fontUp:"Yazıyı büyüt",
   source:"Kaynak",published:"Yayın",regionL:"Bölge",language:"Dil",category:"Kategori",
   any:"Her zaman",d7:"Son 7 gün",d30:"Son 30 gün",allPubs:"Tüm yayıncılar",
@@ -770,7 +770,8 @@ function pD(d){return /^\d{4}-\d{2}-\d{2}$/.test(d)?new Date(d+"T12:00:00Z"):nul
 function rel(d){const x=pD(d);if(!x)return /^\d{4}$/.test(d)?d:d;const n=Math.floor((Date.now()-x)/864e5);if(n<=0)return L("today");if(n===1)return L("yesterday");if(n<14)return F("daysAgo",{n});return new Intl.DateTimeFormat(L("locale"),{day:"numeric",month:"short",year:"numeric",timeZone:TZ}).format(x)}
 function shortD(d){const x=pD(d);return x?new Intl.DateTimeFormat(L("locale"),{day:"numeric",month:"short",year:"numeric",timeZone:TZ}).format(x):d}
 function longD(d){const x=pD(d);return x?new Intl.DateTimeFormat(L("locale"),{dateStyle:"long",timeZone:TZ}).format(x):d+" ("+L("undated")+")"}
-function updStr(){const m=/(\d{2})\.(\d{2})\.(\d{4}) (\d{2}):(\d{2})/.exec(UPDATED);if(!m)return UPDATED;const x=new Date(Date.UTC(+m[3],+m[2]-1,+m[1],+m[4]-3,+m[5]));return new Intl.DateTimeFormat(L("locale"),{dateStyle:"medium",timeStyle:"short",timeZone:TZ}).format(x)}
+let LIVE_TS=null;
+function updStr(){if(LIVE_TS)return new Intl.DateTimeFormat(L("locale"),{dateStyle:"medium",timeStyle:"short",timeZone:TZ}).format(LIVE_TS);const m=/(\d{2})\.(\d{2})\.(\d{4}) (\d{2}):(\d{2})/.exec(UPDATED);if(!m)return UPDATED;const x=new Date(Date.UTC(+m[3],+m[2]-1,+m[1],+m[4]-3,+m[5]));return new Intl.DateTimeFormat(L("locale"),{dateStyle:"medium",timeStyle:"short",timeZone:TZ}).format(x)}
 const ts=i=>{const x=pD(i.date);return x?x.getTime():0};
 const byDate=(a,b)=>ts(b)-ts(a)||(b.star-a.star);
 
@@ -894,7 +895,7 @@ function viewArticle(){
   h+='<article class="article"><div class="a-hero">'+scene(i.seg,i.id+"hero")+'<div class="a-acts"><button data-copy="'+esc(i.url)+'" aria-label="'+L("share")+'" title="'+L("share")+'">'+ic("share")+'</button><button data-save="'+i.id+'" aria-pressed="'+s+'" aria-label="'+(s?L("unsave"):L("save"))+'" title="'+(s?L("unsave"):L("save"))+'">'+ic("bookmark",s)+'</button><a href="'+esc(i.url)+'" target="_blank" rel="noopener" aria-label="'+L("open")+'" title="'+L("open")+'">'+ic("ext")+'</a></div></div>'+
    '<div class="a-meta"><div class="badges">'+badges(i)+'</div>'+srcLine(i,false)+'<span>'+esc(longD(i.date))+'</span><span class="tools"><button class="btn sm" data-rs="-1" aria-label="'+L("fontDown")+'">A−</button><button class="btn sm" data-rs="1" aria-label="'+L("fontUp")+'">A+</button></span></div>'+
    '<h1 lang="'+langOf(i)+'">'+esc(i.title)+'</h1>'+
-   '<div class="ai-box"><div class="hd"><span class="ai">AI</span>'+L("aiLabel")+'</div><p lang="'+langOf(i)+'">'+esc(i.summary)+'</p><small>'+L("aiNote")+'</small></div>'+
+   (i.feed?'<div class="ai-box"><div class="hd"><span class="ai">RSS</span>'+L("feedLabel")+'</div><p lang="'+langOf(i)+'">'+esc(i.summary||L("feedEmpty"))+'</p><small>'+L("feedNote")+'</small></div>':'<div class="ai-box"><div class="hd"><span class="ai">AI</span>'+L("aiLabel")+'</div><p lang="'+langOf(i)+'">'+esc(i.summary)+'</p><small>'+L("aiNote")+'</small></div>')+
    '<div class="a-info"><div><small>'+L("source")+'</small><b>'+esc(i.source)+'</b></div><div><small>'+L("published")+'</small><b>'+esc(pD(i.date)?shortD(i.date):i.date)+'</b></div><div><small>'+L("regionL")+'</small><b>'+(i.reg==="tr"?L("tr"):L("global"))+'</b></div><div><small>'+L("language")+'</small><b>'+esc(i.lang||"")+'</b></div>'+(i.edate?'<div><small>'+L("edate")+'</small><b>'+esc(pD(i.edate)?shortD(i.edate):i.edate)+'</b></div>':"")+(i.deadline?'<div><small>'+L("deadline")+'</small><b>'+esc(pD(i.deadline)?shortD(i.deadline):i.deadline)+'</b></div>':"")+'</div>'+(i.also&&i.also.length?'<p style="margin:0 0 16px;font-size:13.5px;color:var(--text-2)"><b>'+L("alsoL")+':</b> '+i.also.map(a=>'<a href="'+esc(a.url)+'" target="_blank" rel="noopener" style="color:var(--blue)">'+esc(a.source)+'</a>').join(" · ")+'</p>':"")+
    '<div class="orig"><p>'+L("origNote")+'</p><a class="btn primary" href="'+esc(i.url)+'" target="_blank" rel="noopener">'+L("readOrig")+' '+ic("ext")+'</a></div>'+
    (related.length?secH(L("related"))+'<div class="cards3">'+related.map(card).join("")+'</div>':"")+
@@ -1099,6 +1100,28 @@ if(window.matchMedia){try{matchMedia("(prefers-color-scheme: dark)").addEventLis
 const mq=window.matchMedia?matchMedia("(max-width:900px)"):null;function mqF(){$("mSearch").style.display=mq&&mq.matches?"":"none"}if(mq){try{mq.addEventListener("change",mqF)}catch(e){}}mqF();
 document.documentElement.style.setProperty("--rs",S.rs);
 render();startAuto();
+/* Canlı RSS/API akışı (Supabase) — sadece okuma */
+(function(){
+  const SUPA="https://qpwkiauhazpyaywjderc.supabase.co/rest/v1/",KEY="sb_publishable_eDv33WBVXDj1bmVkNS3Pxw_-4Cn_iPj";
+  const H={apikey:KEY};
+  const since=new Date(Date.now()-30*864e5).toISOString().slice(0,10);
+  Promise.all([
+    fetch(SUPA+"news_items?select=id,seg,reg,lang,kind,star,title,summary,source,date,url,deadline&date=gte."+since+"&order=date.desc&limit=400",{headers:H}).then(r=>r.ok?r.json():[]),
+    fetch(SUPA+"feed_runs?select=ran_at&order=id.desc&limit=1",{headers:H}).then(r=>r.ok?r.json():[])
+  ]).then(([rows,runs])=>{
+    const urls=new Set(ITEMS.map(i=>i.url)),keys=new Set(ITEMS.map(i=>i.title.toLocaleLowerCase("tr").replace(/[^a-z0-9ğüşıöç]+/g," ").trim().slice(0,60)));
+    let n=0;
+    for(const r of rows||[]){
+      const k=(r.title||"").toLocaleLowerCase("tr").replace(/[^a-z0-9ğüşıöç]+/g," ").trim().slice(0,60);
+      if(!r.url||urls.has(r.url)||keys.has(k))continue;urls.add(r.url);keys.add(k);
+      const it={id:r.id,seg:r.seg,reg:r.reg,lang:r.lang,star:!!r.star,isNew:(Date.now()-Date.parse(r.date))<2*864e5,title:r.title,summary:r.summary||"",source:r.source,date:r.date,url:r.url,feed:true};
+      if(r.kind)it.kind=r.kind;if(r.deadline)it.deadline=r.deadline;
+      ITEMS.push(it);n++;
+    }
+    if(runs&&runs[0]&&runs[0].ran_at)LIVE_TS=new Date(runs[0].ran_at);
+    if(n||LIVE_TS)render();
+  }).catch(()=>{});
+})();
 </script>
 </body>
 </html>
