@@ -180,6 +180,8 @@ button{cursor:pointer}
 .bd{display:inline-flex;align-items:center;gap:4px;height:22px;padding:0 8px;border-radius:999px;font-size:11.5px;font-weight:700;background:color-mix(in srgb,var(--c) 14%,transparent);color:color-mix(in srgb,var(--c) 80%,var(--text))}
 [data-theme="dark"] .bd{color:color-mix(in srgb,var(--c) 75%,#fff)}
 .bd.lang{--c:var(--muted)}
+.bd.proj{--c:#0F766E;background:color-mix(in srgb,#0F766E 14%,transparent);color:#0F766E}
+[data-theme="dark"] .bd.proj{color:#5EEAD4}
 .bd.region{--c:var(--seg-region)}
 .bd.new{--c:var(--success)}
 .bd.kind{--c:var(--navy-3)}
@@ -705,7 +707,7 @@ const I18N={
   region_d:"Investment and project news from Thrace and Istanbul's European Side.",deco_d:"Architectural and decorative paints, housing and construction.",marine_d:"Hull coatings, antifouling, newbuilding and dry-docking.",prot_d:"Corrosion protection, passive fire protection, energy and infrastructure.",powder_d:"Powder coatings for aluminium, appliances and industry.",corp_d:"Jotun corporate news, results and competitor moves.",global_d:"Stories from international sources, in their original language.",tr_d:"Stories from Türkiye, in Turkish.",featured_d:"The newest and most relevant stories.",
   trending:"Trending",latestAdded:"Latest added",industry:"Industry updates",seeAll:"See all",briefing:"Daily Briefing",latest:"Latest news",forYou:"Recommended for you",
   recEmpty:"Follow segments and save stories — recommendations adapt to what you read.",recBtn:"Choose interests",recWhy:"Based on",recFollow:"segments you follow",recRead:"your reading",
-  prev:"Previous story",next:"Next story",slide:"Story",newB:"NEW",regionB:"My region",
+  prev:"Previous story",next:"Next story",slide:"Story",newB:"NEW",projB:"Potential project",regionB:"My region",
   save:"Save",unsave:"Remove from saved",share:"Copy link",copied:"Link copied",addedS:"Saved",removedS:"Removed from saved",open:"Open source",
   readOrig:"Read the original article",origNote:"The full article, author and images are on the publisher's website.",
   aiLabel:"Summary · written by NEWSPENGUEN",feedLabel:"Excerpt · from the source feed",feedNote:"Short excerpt from the publisher's feed, collected automatically. See the source for the full story.",feedEmpty:"No excerpt in the feed. Open the source for the full story.",aiNote:"Independent summary of the original article — not publisher text. See the source for full details.",
@@ -730,7 +732,7 @@ const I18N={
   region_d:"Trakya ve İstanbul Avrupa Yakası'ndan yatırım ve proje haberleri.",deco_d:"Dekoratif ve mimari boyalar, konut ve inşaat.",marine_d:"Karina boyaları, antifouling, yeni inşa ve havuzlama.",prot_d:"Korozyon koruma, pasif yangın koruma, enerji ve altyapı.",powder_d:"Alüminyum, beyaz eşya ve sanayi için toz boyalar.",corp_d:"Jotun kurumsal haberleri, sonuçlar ve rakip hamleleri.",global_d:"Uluslararası kaynaklardan, orijinal dilinde haberler.",tr_d:"Türkiye'den Türkçe haberler.",featured_d:"En yeni ve en ilgili haberler.",
   trending:"Gündem",latestAdded:"Son Eklenenler",industry:"Sektör Güncellemeleri",seeAll:"Tümünü Gör",briefing:"Günlük Özet",latest:"Son Haberler",forYou:"Sana Önerilenler",
   recEmpty:"Segment takip et, haber kaydet — öneriler okuduklarına göre şekillenir.",recBtn:"İlgi alanlarını seç",recWhy:"Kaynağı:",recFollow:"takip ettiğin segmentler",recRead:"okuma geçmişin",
-  prev:"Önceki haber",next:"Sonraki haber",slide:"Haber",newB:"YENİ",regionB:"Bölgem",
+  prev:"Önceki haber",next:"Sonraki haber",slide:"Haber",newB:"YENİ",projB:"Potansiyel proje",regionB:"Bölgem",
   save:"Kaydet",unsave:"Kayıttan çıkar",share:"Linki kopyala",copied:"Link kopyalandı",addedS:"Kaydedildi",removedS:"Kayıttan çıkarıldı",open:"Kaynağı aç",
   readOrig:"Orijinal haberi oku",origNote:"Haberin tamamı, yazarı ve görselleri yayıncının sitesinde.",
   aiLabel:"Özet · NEWSPENGUEN tarafından yazıldı",feedLabel:"Alıntı · kaynak akışından",feedNote:"Yayıncının akışından otomatik alınan kısa alıntıdır. Haberin tamamı için kaynağa gidin.",feedEmpty:"Akışta alıntı yok. Haberin tamamı için kaynağa gidin.",aiNote:"Orijinal haberin bağımsız özetidir, yayıncı metni değildir. Ayrıntılar için kaynağa bakın.",
@@ -782,8 +784,17 @@ const TREND=TOPICS.map(t=>[t,ITEMS.filter(i=>txt(i).includes(t.toLocaleLowerCase
 const PAINT=/(^|[^a-zçğıöşü])(boya(?!bat)|boyama|boyan|kaplama|vernik|astar boya|epoksi|epoxy|poli[üu]retan|polyurethane|toz boya|elektrostatik|korozyon|antikoroz|galvaniz|intumescent|int[üu]mesan|yang[ıi]n yal[ıi]t|kumlama|antifoul|paint|coating|coatings|primer|varnish|lacquer|corrosion|anti-corrosi|fireproof|fire protection coat|powder coat|hull coat|marine coat|protective coat|hempa|hempaguard|jotachar|jotamastic|penguard|hardtop|seaforce|chartek|interchar|interseal|steelguard|firetex|jotun|hempel|akzo ?nobel|international paint|\bppg\b|sherwin|nippon paint|kansai|axalta|chugoku|tikkurila|teknos|carboline|rpm international|benjamin moore|asian paints|berger paints|dulux|filli|betek|\bdyo\b|polisan|marshall|dekoratif|decorative paint|permolit|bianca boya)/i;
 const PAINTSRC=/european coatings|pci magazine|coatings world|ted \(eu tenders\)|coatings t[üu]rkiye|paint ?square|ampp/i;
 /* Uygulama yalnız boya/kaplama haberi gösterir: başlık + kaynak (akış haberlerinde akış alıntısı da) */
+const PSIG=/yat[ıi]r[ıi]m|fabrika|tesis|in[şs]a|temel at|ihale|proje|kapasite|sipari[şs]|kurulu|kuracak|kurulacak|a[çc][ıi]ld[ıi]|a[çc][ıi]l[ıi][şs]|[çc]ed (olumlu|s[üu]re)|invest|new plant|construction|to build|groundbreak|order(s|ed)? for|contract|tender|expan|commission|newbuild|launch(es|ed) construction/i;
+const PTYPE=[
+ ["marine",/tersane|gemi|yat in[şs]a|yacht|shipyard|vessel|ship ?order|newbuild|tugboat|r[öo]mork[öo]r|feribot|ferry|tanker|bulk carrier|dry ?dock|havuz/i],
+ ["powder",/al[üu]minyum|aluminium|aluminum|profil|extrusion|beyaz e[şs]ya|white goods|appliance|metal mobilya|radyat[öo]r|raf sistem|otomotiv yan sanayi|auto parts|jant/i],
+ ["deco",/konut|toki|kentsel d[öo]n[üu][şs][üu]m|\bavm\b|al[ıi][şs]veri[şs] merkezi|otel|hastane|rezidans|housing|residential|apartment|hotel|hospital|shopping mall|okul binas/i],
+ ["prot",/[çc]elik|k[öo]pr[üu]|viyad[üu]k|santral|\bres\b|\bges\b|r[üu]zgar|g[üu]ne[şs] enerj|rafineri|\btank|liman|terminal|boru hatt|demiryolu|metro|havaliman|fabrika|\bosb\b|[çc]imento|maden|\blng\b|trafo|veri merkezi|depo|steel|bridge|power plant|wind (farm|turbine|project)|offshore wind|solar (plant|farm|project|pv)|\bpv\b|yeka|refiner|pipeline|\bport\b|railway|cement|substation|data cent|mining|smelter|petrochem|petrokimya/i],
+];
+const projSeg=t=>{if(!PSIG.test(t))return null;for(const [s,rx] of PTYPE)if(rx.test(t))return s;return null};
 const isPaint=i=>PAINTSRC.test(i.source||"")||PAINT.test(i.title+" "+(i.feed?i.summary:"")+" "+(i.source||""));
-for(let k=ITEMS.length-1;k>=0;k--)if(!isPaint(ITEMS[k]))ITEMS.splice(k,1);
+/* Boya haberi değilse: boya kullanacak potansiyel proje mi? (çelik yapı, gemi, inşaat, toz boya kullanıcısı) */
+for(let k=ITEMS.length-1;k>=0;k--){const it=ITEMS[k];if(isPaint(it))continue;if(projSeg(it.title+" "+it.summary)){it.project=true;continue}ITEMS.splice(k,1)}
 const vis=()=>ITEMS.filter(i=>!S.hidden.includes(i.seg));
 const get=id=>ITEMS.find(i=>i.id===id);
 const langOf=i=>/TR$/.test(i.lang||"")?"tr":"en";
@@ -820,7 +831,7 @@ function applyTheme(){document.documentElement.dataset.theme=isDark()?"dark":"li
 
 /* ================= COMPONENTS ================= */
 function srcLine(i,withDate=true){return '<div class="src"><span class="av" style="background:hsl('+hue(i.source)+' 55% 42%)">'+esc(initials(i.source))+'</span><b>'+esc(i.source)+'</b>'+(withDate?'<span aria-hidden="true">·</span><time datetime="'+esc(i.date)+'">'+esc(pD(i.date)?rel(i.date):i.date)+'</time>':"")+'</div>'}
-function badges(i){return '<span class="bd" style="--c:'+SEGVAR[i.seg]+'">'+L(i.seg)+'</span>'+(i.kind?'<span class="bd kind">'+L("k_"+i.kind)+'</span>':"")+'<span class="bd lang">'+esc(i.reg==="tr"?"TR":(i.lang||"EN"))+'</span>'+(i.star?'<span class="bd region">★ '+L("regionB")+'</span>':"")+(i.isNew?'<span class="bd new">'+L("newB")+'</span>':"")}
+function badges(i){return '<span class="bd" style="--c:'+SEGVAR[i.seg]+'">'+L(i.seg)+'</span>'+(i.project?'<span class="bd proj">'+L("projB")+'</span>':"")+(i.kind?'<span class="bd kind">'+L("k_"+i.kind)+'</span>':"")+'<span class="bd lang">'+esc(i.reg==="tr"?"TR":(i.lang||"EN"))+'</span>'+(i.star?'<span class="bd region">★ '+L("regionB")+'</span>':"")+(i.isNew?'<span class="bd new">'+L("newB")+'</span>':"")}
 function saveBtn(i){const s=S.saved.includes(i.id);return '<button class="ib" data-save="'+i.id+'" aria-pressed="'+s+'" aria-label="'+(s?L("unsave"):L("save"))+'" title="'+(s?L("unsave"):L("save"))+'">'+ic("bookmark",s)+'</button>'}
 function card(i){const read=S.history.includes(i.id);return '<article class="card'+(read?" read":"")+'">'+scene(i.seg,i.id)+'<div class="cb">'+srcLine(i)+'<h3 lang="'+langOf(i)+'"><button data-open="'+i.id+'">'+esc(i.title)+'</button></h3><div class="cf"><div class="badges">'+badges(i)+'</div>'+saveBtn(i)+'</div></div></article>'}
 function rowCard(i){const read=S.history.includes(i.id);return '<article class="row-card'+(read?" read":"")+'">'+scene(i.seg,i.id)+'<div class="cb">'+srcLine(i)+'<h3 lang="'+langOf(i)+'"><button data-open="'+i.id+'">'+esc(i.title)+'</button></h3><p lang="'+langOf(i)+'">'+esc(i.summary)+'</p><div class="cf"><div class="badges">'+badges(i)+'</div><div style="display:flex">'+saveBtn(i)+'<button class="ib" data-copy="'+esc(i.url)+'" aria-label="'+L("share")+'" title="'+L("share")+'">'+ic("share")+'</button></div></div></div></article>'}
@@ -1111,7 +1122,7 @@ render();startAuto();
   const H={apikey:KEY};
   const since=new Date(Date.now()-30*864e5).toISOString().slice(0,10);
   Promise.all([
-    fetch(SUPA+"news_items?select=id,seg,reg,lang,kind,star,title,summary,source,date,url,deadline&date=gte."+since+"&order=date.desc&limit=400",{headers:H}).then(r=>r.ok?r.json():[]),
+    fetch(SUPA+"news_items?select=id,seg,reg,lang,kind,star,title,summary,source,date,url,deadline,project&date=gte."+since+"&order=date.desc&limit=400",{headers:H}).then(r=>r.ok?r.json():[]),
     fetch(SUPA+"feed_runs?select=ran_at&order=id.desc&limit=1",{headers:H}).then(r=>r.ok?r.json():[])
   ]).then(([rows,runs])=>{
     const urls=new Set(ITEMS.map(i=>i.url)),keys=new Set(ITEMS.map(i=>i.title.toLocaleLowerCase("tr").replace(/[^a-z0-9ğüşıöç]+/g," ").trim().slice(0,60)));
@@ -1121,7 +1132,7 @@ render();startAuto();
       if(!r.url||urls.has(r.url)||keys.has(k))continue;urls.add(r.url);keys.add(k);
       const it={id:r.id,seg:r.seg,reg:r.reg,lang:r.lang,star:!!r.star,isNew:(Date.now()-Date.parse(r.date))<2*864e5,title:r.title,summary:r.summary||"",source:r.source,date:r.date,url:r.url,feed:true};
       if(r.kind)it.kind=r.kind;if(r.deadline)it.deadline=r.deadline;
-      if(!isPaint(it))continue;
+      if(r.project)it.project=true;else if(!isPaint(it))continue;
       ITEMS.push(it);n++;
     }
     if(runs&&runs[0]&&runs[0].ran_at)LIVE_TS=new Date(runs[0].ran_at);
