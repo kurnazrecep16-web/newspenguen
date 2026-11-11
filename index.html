@@ -794,14 +794,15 @@ const TREND=TOPICS.map(t=>[t,ITEMS.filter(i=>txt(i).includes(t.toLocaleLowerCase
 const PAINT=/(^|[^a-zçğıöşü])(boya(?!bat)|boyama|boyan|kaplama|vernik|astar boya|epoksi|epoxy|poli[üu]retan|polyurethane|toz boya|elektrostatik|korozyon|antikoroz|galvaniz|intumescent|int[üu]mesan|yang[ıi]n yal[ıi]t|kumlama|antifoul|paint|coating|coatings|primer|varnish|lacquer|corrosion|anti-corrosi|fireproof|fire protection coat|powder coat|hull coat|marine coat|protective coat|hempa|hempaguard|jotachar|jotamastic|penguard|hardtop|seaforce|chartek|interchar|interseal|steelguard|firetex|jotun|hempel|akzo ?nobel|international paint|\bppg\b|sherwin|nippon paint|kansai|axalta|chugoku|tikkurila|teknos|carboline|rpm international|benjamin moore|asian paints|berger paints|dulux|filli|betek|\bdyo\b|polisan|marshall|dekoratif|decorative paint|permolit|bianca boya)/i;
 const PAINTSRC=/european coatings|pci magazine|coatings world|ted \(eu tenders\)|coatings t[üu]rkiye|paint ?square|ampp/i;
 /* Uygulama yalnız boya/kaplama haberi gösterir: başlık + kaynak (akış haberlerinde akış alıntısı da) */
-const PSIG=/yat[ıi]r[ıi]m|fabrika|tesis|in[şs]a|temel at|ihale|proje|kapasite|sipari[şs]|kurulu|kuracak|kurulacak|a[çc][ıi]ld[ıi]|a[çc][ıi]l[ıi][şs]|[çc]ed (olumlu|s[üu]re)|invest|new plant|construction|to build|groundbreak|order(s|ed)? for|contract|tender|expan|commission|newbuild|launch(es|ed) construction/i;
+const PSIG=/yat[ıi]r[ıi]m|fabrika|tesis|in[şs]a|temel at|ihale|proje|kapasite art|sipari[şs]|kuracak|kurulacak|a[çc][ıi]ld[ıi]|a[çc][ıi]l[ıi][şs]|[çc]ed (olumlu|s[üu]re)|invest|new plant|construction|to build|groundbreak|order(s|ed)? for|contract|tender|expan|commission|newbuild|launch(es|ed) construction/i;
 const PTYPE=[
  ["marine",/tersane|gemi|yat in[şs]a|yacht|shipyard|vessel|ship ?order|newbuild|tugboat|r[öo]mork[öo]r|feribot|ferry|tanker|bulk carrier|dry ?dock|havuz/i],
  ["powder",/al[üu]minyum|aluminium|aluminum|profil|extrusion|beyaz e[şs]ya|white goods|appliance|metal mobilya|radyat[öo]r|raf sistem|otomotiv yan sanayi|auto parts|jant/i],
  ["deco",/konut|toki|kentsel d[öo]n[üu][şs][üu]m|\bavm\b|al[ıi][şs]veri[şs] merkezi|otel|hastane|rezidans|housing|residential|apartment|hotel|hospital|shopping mall|okul binas/i],
- ["prot",/[çc]elik|k[öo]pr[üu]|viyad[üu]k|santral|\bres\b|\bges\b|r[üu]zgar|g[üu]ne[şs] enerj|rafineri|\btank|liman|terminal|boru hatt|demiryolu|metro|havaliman|fabrika|\bosb\b|[çc]imento|maden|\blng\b|trafo|veri merkezi|depo|steel|bridge|power plant|wind (farm|turbine|project)|offshore wind|solar (plant|farm|project|pv)|\bpv\b|yeka|refiner|pipeline|\bport\b|railway|cement|substation|data cent|mining|smelter|petrochem|petrokimya/i],
+ ["prot",/[çc]elik|k[öo]pr[üu]|viyad[üu]k|santral|\bres\b|\bges\b|r[üu]zgar|g[üu]ne[şs] enerj|rafineri|\btank|liman|terminal|boru hatt|demiryolu|metro|havaliman|fabrika|[üu]retim tesis|sanayi tesis|\bosb\b|[çc]imento|maden (ocağ|sahas|tesis|yat)|madencilik (yat|tesis)|\blng\b|trafo|veri merkezi (yat|in[şs]a|kur|projesi)|depolama tesis|steel|bridge|power plant|wind (farm|turbine|project)|offshore wind|solar (plant|farm|project|pv)|\bpv\b|yeka|refiner|pipeline|\bport\b|railway|cement|substation|data cent(er|re) (construction|campus|project)|mine (construction|development)|smelter|petrochem|petrokimya/i],
 ];
 const projSeg=t=>{if(!PSIG.test(t))return null;for(const [s,rx] of PTYPE)if(rx.test(t))return s;return null};
+const NOISE=/bitcoin|kripto|crypto|blockchain/i,NOISESRC=/tradingview|investing\.com|cointelegraph|foreks/i;
 const isPaint=i=>PAINTSRC.test(i.source||"")||PAINT.test(i.title+" "+(i.feed?i.summary:"")+" "+(i.source||""));
 /* Boya haberi değilse: boya kullanacak potansiyel proje mi? (çelik yapı, gemi, inşaat, toz boya kullanıcısı) */
 for(let k=ITEMS.length-1;k>=0;k--){const it=ITEMS[k];if(isPaint(it))continue;if(it.project||projSeg(it.title+" "+it.summary)){it.project=true;continue}ITEMS.splice(k,1)}
@@ -1137,6 +1138,7 @@ render();startAuto();
       if(!r.url||urls.has(r.url)||keys.has(k))continue;urls.add(r.url);keys.add(k);
       const it={id:r.id,seg:r.seg,reg:r.reg,lang:r.lang,star:!!r.star,isNew:(Date.now()-Date.parse(r.date))<2*864e5,title:r.title,summary:r.summary||"",source:r.source,date:r.date,url:r.url,feed:true};
       if(r.kind)it.kind=r.kind;if(r.deadline)it.deadline=r.deadline;
+      if(NOISE.test(it.title+" "+it.summary)||NOISESRC.test(it.source||""))continue;
       if(r.project)it.project=true;else if(!isPaint(it))continue;
       ITEMS.push(it);n++;
     }
