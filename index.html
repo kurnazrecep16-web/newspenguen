@@ -104,6 +104,14 @@ button{cursor:pointer}
 [data-theme="dark"] .chip[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#06101f}
 
 .segrow{padding-top:0;margin-top:-4px;gap:6px}
+.chip.tab{display:inline-flex;align-items:center;gap:8px;height:40px;font-size:14px}
+.chip.tab .dot{width:9px;height:9px;border-radius:50%;background:var(--c)}
+.chip.tab svg{width:16px;height:16px}
+.chip.tab[aria-pressed="true"]{background:var(--c);border-color:var(--c);color:#fff}
+.chip.tab[aria-pressed="true"] .dot{background:#fff}
+.chip.tab[aria-pressed="true"] .cn{color:rgba(255,255,255,.85)}
+.sb-h{font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:rgba(220,230,242,.6);padding:6px 12px 4px}
+.sub .tabsv{font-size:14.5px;height:40px}
 .schip{flex:0 0 auto;display:inline-flex;align-items:center;gap:7px;height:32px;padding:0 12px;border-radius:999px;border:1px solid transparent;background:transparent;font-size:13px;font-weight:600;color:var(--text-2)}
 .schip:hover{background:var(--surface);border-color:var(--border)}
 .schip[aria-pressed="true"]{background:var(--surface);border-color:var(--c,var(--navy));color:var(--text);box-shadow:var(--sh-1)}
@@ -703,8 +711,8 @@ const I18N={
  en:{_name:"English",locale:"en-GB",skip:"Skip to content",search:"Search news, companies, topics or tags…",searchLbl:"Search",
   morning:"Good morning",afternoon:"Good afternoon",evening:"Good evening",sub:"The latest from your sector and around the world",
   home:"Home",featured:"Featured",categories:"Categories",global:"Global",tr:"Türkiye",saved:"Saved",readlist:"Reading list",settings:"Settings",sources:"Sources",profile:"Profile",
-  all:"All",region:"My region",deco:"Decorative",marine:"Marine",prot:"Protective",powder:"Powder",corp:"Jotun & Peers",
-  region_d:"Investment and project news from Thrace and Istanbul's European Side.",deco_d:"Architectural and decorative paints, housing and construction.",marine_d:"Hull coatings, antifouling, newbuilding and dry-docking.",prot_d:"Corrosion protection, passive fire protection, energy and infrastructure.",powder_d:"Powder coatings for aluminium, appliances and industry.",corp_d:"Jotun corporate news, results and competitor moves.",global_d:"Stories from international sources, in their original language.",tr_d:"Stories from Türkiye, in Turkish.",featured_d:"The newest and most relevant stories.",
+  all:"All",region:"My region",deco:"Decorative",marine:"Marine",prot:"Protective",powder:"Powder",corp:"Other",tabsLbl:"Segments",scAll:"All",scTr:"Türkiye",scRegion:"My region",scProj:"Projects",scPaint:"Paint news",globalTab:"Global",
+  region_d:"Investment and project news from Thrace and Istanbul's European Side.",deco_d:"Architectural and decorative paints, housing and construction.",marine_d:"Hull coatings, antifouling, newbuilding and dry-docking.",prot_d:"Corrosion protection, passive fire protection, energy and infrastructure.",powder_d:"Powder coatings for aluminium, appliances and industry.",corp_d:"Company results, deals and other paint-industry news.",global_d:"News from outside Türkiye, in the original language.",tr_d:"Stories from Türkiye, in Turkish.",featured_d:"The newest and most relevant stories.",
   trending:"Trending",latestAdded:"Latest added",industry:"Industry updates",seeAll:"See all",briefing:"Daily Briefing",latest:"Latest news",forYou:"Recommended for you",
   recEmpty:"Follow segments and save stories — recommendations adapt to what you read.",recBtn:"Choose interests",recWhy:"Based on",recFollow:"segments you follow",recRead:"your reading",
   prev:"Previous story",next:"Next story",slide:"Story",newB:"NEW",projB:"Potential project",regionB:"My region",
@@ -728,8 +736,8 @@ const I18N={
  tr:{_name:"Türkçe",locale:"tr-TR",skip:"İçeriğe geç",search:"Haber, şirket, konu veya etiket ara…",searchLbl:"Ara",
   morning:"Günaydın",afternoon:"İyi günler",evening:"İyi akşamlar",sub:"Sektörünüzden ve dünyadan en güncel gelişmeler",
   home:"Ana Sayfa",featured:"Öne Çıkanlar",categories:"Kategoriler",global:"Global",tr:"Türkiye",saved:"Kaydedilenler",readlist:"Okuma Listesi",settings:"Ayarlar",sources:"Kaynaklar",profile:"Profil",
-  all:"Tümü",region:"Bölgem",deco:"Dekoratif",marine:"Marine",prot:"Protective",powder:"Powder",corp:"Jotun & Rakipler",
-  region_d:"Trakya ve İstanbul Avrupa Yakası'ndan yatırım ve proje haberleri.",deco_d:"Dekoratif ve mimari boyalar, konut ve inşaat.",marine_d:"Karina boyaları, antifouling, yeni inşa ve havuzlama.",prot_d:"Korozyon koruma, pasif yangın koruma, enerji ve altyapı.",powder_d:"Alüminyum, beyaz eşya ve sanayi için toz boyalar.",corp_d:"Jotun kurumsal haberleri, sonuçlar ve rakip hamleleri.",global_d:"Uluslararası kaynaklardan, orijinal dilinde haberler.",tr_d:"Türkiye'den Türkçe haberler.",featured_d:"En yeni ve en ilgili haberler.",
+  all:"Tümü",region:"Bölgem",deco:"Dekoratif",marine:"Marine",prot:"Protective",powder:"Toz Boya",corp:"Diğer",tabsLbl:"Segmentler",scAll:"Tümü",scTr:"Türkiye",scRegion:"Bölgem",scProj:"Projeler",scPaint:"Boya haberleri",globalTab:"Global",
+  region_d:"Trakya ve İstanbul Avrupa Yakası'ndan yatırım ve proje haberleri.",deco_d:"Dekoratif ve mimari boyalar, konut ve inşaat.",marine_d:"Karina boyaları, antifouling, yeni inşa ve havuzlama.",prot_d:"Korozyon koruma, pasif yangın koruma, enerji ve altyapı.",powder_d:"Alüminyum, beyaz eşya ve sanayi için toz boyalar.",corp_d:"Şirket sonuçları, satın almalar ve diğer boya sektörü haberleri.",global_d:"Türkiye dışından, orijinal dilinde haberler.",tr_d:"Türkiye'den Türkçe haberler.",featured_d:"En yeni ve en ilgili haberler.",
   trending:"Gündem",latestAdded:"Son Eklenenler",industry:"Sektör Güncellemeleri",seeAll:"Tümünü Gör",briefing:"Günlük Özet",latest:"Son Haberler",forYou:"Sana Önerilenler",
   recEmpty:"Segment takip et, haber kaydet — öneriler okuduklarına göre şekillenir.",recBtn:"İlgi alanlarını seç",recWhy:"Kaynağı:",recFollow:"takip ettiğin segmentler",recRead:"okuma geçmişin",
   prev:"Önceki haber",next:"Sonraki haber",slide:"Haber",newB:"YENİ",projB:"Potansiyel proje",regionB:"Bölgem",
@@ -757,7 +765,8 @@ const TOPICS=["Jotun","Hempel","AkzoNobel","Axalta","PPG","Sherwin","Nippon","fi
 
 /* ================= STATE ================= */
 const store={get(k,d){try{const v=localStorage.getItem("np3_"+k);return v===null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem("np3_"+k,JSON.stringify(v))}catch(e){}}};
-const S={view:"home",lang:store.get("lang","en"),themePref:store.get("theme","system"),name:store.get("name","Recep"),
+const TABS=["marine","prot","deco","powder","global","corp"];
+const S={view:(function(){try{const t=localStorage.getItem("np3_tab");const v=t&&JSON.parse(t);return TABS.includes(v)?v:"prot"}catch(e){return "prot"}})(),fScope:"all",lang:store.get("lang","en"),themePref:store.get("theme","system"),name:store.get("name","Recep"),
   saved:store.get("saved",[]),history:store.get("history",[]),follow:store.get("follow",[]),followPubs:store.get("followPubs",[]),hidden:store.get("hidden",[]),
   seen:store.get("seen",null),searchHist:store.get("searchHist",[]),q:"",fPub:"",fDate:"any",fSeg:"all",fReg:"all",limit:12,article:null,prevView:"home",open:store.get("open",{cat:store.get("catOpen",true)}),rs:store.get("rs",1),slide:0};
 const L=k=>(I18N[S.lang]&&I18N[S.lang][k])||I18N.en[k]||k;
@@ -906,8 +915,8 @@ function viewArticle(){
   const i=get(S.article);if(!i)return empty("doc",L("noResults"),"",L("home"),'data-view="home"');
   const s=S.saved.includes(i.id);const related=ITEMS.filter(x=>x.id!==i.id&&x.seg===i.seg).sort(byDate).slice(0,3);
   const kws=TOPICS.filter(t=>txt(i).includes(t.toLocaleLowerCase("tr")));const cov=ITEMS.filter(x=>x.id!==i.id&&!related.includes(x)&&kws.some(t=>txt(x).includes(t.toLocaleLowerCase("tr")))).sort(byDate).slice(0,3);
-  const crumbParent=i.star?"region":i.seg;
-  let h='<nav class="crumbs" aria-label="Breadcrumb"><button data-back="1">'+ic("left")+'</button><button data-view="home">'+L("home")+'</button>›<button data-view="'+crumbParent+'">'+L(crumbParent)+'</button>›<span aria-current="page">'+L("detail")+'</span></nav>';
+  const crumbParent=i.seg;
+  let h='<nav class="crumbs" aria-label="Breadcrumb"><button data-back="1">'+ic("left")+'</button><button data-view="'+crumbParent+'">'+L(crumbParent)+'</button>›<span aria-current="page">'+L("detail")+'</span></nav>';
   h+='<article class="article"><div class="a-hero">'+scene(i.seg,i.id+"hero")+'<div class="a-acts"><button data-copy="'+esc(i.url)+'" aria-label="'+L("share")+'" title="'+L("share")+'">'+ic("share")+'</button><button data-save="'+i.id+'" aria-pressed="'+s+'" aria-label="'+(s?L("unsave"):L("save"))+'" title="'+(s?L("unsave"):L("save"))+'">'+ic("bookmark",s)+'</button><a href="'+esc(i.url)+'" target="_blank" rel="noopener" aria-label="'+L("open")+'" title="'+L("open")+'">'+ic("ext")+'</a></div></div>'+
    '<div class="a-meta"><div class="badges">'+badges(i)+'</div>'+srcLine(i,false)+'<span>'+esc(longD(i.date))+'</span><span class="tools"><button class="btn sm" data-rs="-1" aria-label="'+L("fontDown")+'">A−</button><button class="btn sm" data-rs="1" aria-label="'+L("fontUp")+'">A+</button></span></div>'+
    '<h1 lang="'+langOf(i)+'">'+esc(i.title)+'</h1>'+
@@ -933,9 +942,20 @@ function liUrl(li){return li.startsWith("q:")?"https://www.linkedin.com/search/r
 function viewSources(){
   return '<div class="ph"><div><h1>'+L("sources")+'</h1><p>'+L("sourcesP")+'</p></div></div>'+SOURCES.map(g=>secH(g.g.replace(/^\S+\s/,""))+'<div class="srcs">'+g.items.map(s=>'<div class="srow"><div><b>'+esc(s.n)+'</b><small>'+esc(s.d)+'</small></div><div class="r"><a class="btn sm" href="'+esc(s.w)+'" target="_blank" rel="noopener">'+ic("globe")+L("site")+'</a>'+(s.li?'<a class="btn sm" href="'+esc(liUrl(s.li))+'" target="_blank" rel="noopener" aria-label="LinkedIn: '+esc(s.n)+'">in</a>':"")+'</div></div>').join("")+'</div>').join("");
 }
+/* Ana sekmeler: segmentler + Global + Diğer. Segment sekmelerinde kapsam filtresi: Tümü · Türkiye · Bölgem · Projeler */
+function tabPool(t){const base=vis();return t==="global"?base.filter(i=>i.reg==="global"):base.filter(i=>i.seg===t)}
+function scopeFilter(l){const f=S.fScope;return f==="tr"?l.filter(i=>i.reg==="tr"):f==="region"?l.filter(i=>i.star):f==="proj"?l.filter(i=>i.project):f==="paint"?l.filter(i=>!i.project):l}
+function tabView(t){
+  let list=tabPool(t);
+  if(t==="global"&&S.fSeg!=="all")list=list.filter(i=>i.seg===S.fSeg);
+  list=scopeFilter(list);
+  return listView(t==="global"?L("globalTab"):L(t),L(t+"_d"),list,{sort:(a,b)=>(b.star-a.star)*0||byDate(a,b)});
+}
 function renderView(){
   const v=S.view;let h="";
-  if(v==="home")h=viewHome();
+  if(v==="home"||v==="all"){S.view=S.tab||"prot";return renderView()}
+  if(TABS.includes(v))h=tabView(v);
+  else if(v==="home__")h=viewHome();
   else if(v==="featured")h=listView(L("featured"),L("featured_d"),vis().filter(i=>i.isNew),{segF:true,sort:(a,b)=>(b.star-a.star)||byDate(a,b)});
   else if(v==="all")h=listView(L("latest"),"",vis(),{segF:true});
   else if(v==="region")h=listView(L("region"),L("region_d"),ITEMS.filter(i=>i.star));
@@ -955,34 +975,11 @@ function renderView(){
 /* ================= CHROME ================= */
 function nv(view,label,icon,extra=""){return '<button class="nv" data-view="'+view+'"'+(S.view===view?' aria-current="page"':"")+extra+'>'+ic(icon)+'<span>'+esc(label)+'</span></button>'}
 function renderSidebar(){
-  /* Expandable groups: each parent opens a page; its sub-items show segment counts for that scope. */
-  const GROUPS=[
-    {key:"featured",view:"featured",label:L("featured"),icon:"star",pool:()=>vis().filter(i=>i.isNew)},
-    {key:"cat",view:"categories",label:L("categories"),icon:"layers",pool:()=>ITEMS,cat:true},
-    {key:"global",view:"global",label:L("global"),icon:"globe",pool:()=>vis().filter(i=>i.reg==="global")},
-    {key:"tr",view:"tr",label:L("tr"),icon:"flag",pool:()=>vis().filter(i=>i.reg==="tr"),region:true},
-    {key:"saved",view:"saved",label:L("saved"),icon:"bookmark",pool:()=>S.saved.map(get).filter(Boolean),hideEmpty:true}
-  ];
-  const isOpen=g=>(S.view===g.view&&S.fSeg!=="all")||(g.cat&&(SEGS.includes(S.view)||S.view==="region"))?true:(S.open[g.key]!==undefined?S.open[g.key]:(g.key==="cat"));
-  const groupHTML=g=>{
-    const pool=g.pool();const total=pool.length;const open=isOpen(g);
-    const parentActive=S.view===g.view&&S.fSeg==="all";
-    let subs=[];
-    if(g.cat){subs=["region"].concat(SEGS).map(c=>({view:c,seg:null,c,label:L(c),n:c==="region"?ITEMS.filter(i=>i.star).length:ITEMS.filter(i=>i.seg===c).length,active:S.view===c}))}
-    else{
-      if(g.region)subs.push({view:"region",seg:null,c:"region",label:L("region"),n:ITEMS.filter(i=>i.star).length,active:S.view==="region"});
-      SEGS.forEach(c=>{const n=pool.filter(i=>i.seg===c).length;subs.push({view:g.view,seg:c,c,label:L(c),n,active:S.view===g.view&&S.fSeg===c})});
-    }
-    if(g.hideEmpty)subs=subs.filter(x=>x.n>0);
-    const id="sub-"+g.key;
-    return '<div class="grp"><div class="nv-row'+(parentActive||(g.cat&&S.view==="categories")?" on":"")+'"><button class="nv nv-main" data-view="'+g.view+'" data-opengrp="'+g.key+'"'+((parentActive||(g.cat&&S.view==="categories"))?' aria-current="page"':"")+'>'+ic(g.icon)+'<span>'+esc(g.label)+'</span>'+(total&&!g.cat?'<span class="tot">'+total+'</span>':"")+'</button>'+
-      (subs.length?'<button class="nv-chev" data-togglegrp="'+g.key+'" aria-expanded="'+open+'" aria-controls="'+id+'" aria-label="'+esc(g.label)+'">'+ic("chev",false,"icon chev")+'</button>':"")+'</div>'+
-      (subs.length?'<div class="sub'+(open?"":" closed")+'" id="'+id+'">'+subs.map(x=>'<button class="sv'+(x.n?"":" zero")+'" data-view="'+x.view+'"'+(x.seg?' data-seg="'+x.seg+'"':"")+(x.active?' aria-current="page"':"")+' style="--c:'+SEGVAR[x.c]+'"><span class="dot"></span>'+esc(x.label)+'<span class="n">'+x.n+'</span></button>').join("")+'</div>':"")+'</div>';
-  };
-  const G=k=>groupHTML(GROUPS.find(g=>g.key===k));
+  const tabBtn=k=>{const n=tabPool(k).length;const on=S.view===k;return '<button class="sv tabsv" data-view="'+k+'"'+(on?' aria-current="page"':"")+' style="--c:'+(k==="global"?"var(--blue)":SEGVAR[k])+'"><span class="dot"></span>'+esc(k==="global"?L("globalTab"):L(k))+'<span class="n">'+n+'</span></button>'};
+  const ns=S.saved.length;
   $("sidebar").innerHTML='<div class="sb-top"><button class="brand nv" data-view="home" style="height:auto;padding:2px 8px 22px;background:none" aria-label="NEWSPENGUEN"><div class="logo-mark" aria-hidden="true">🐧</div><span class="brand-name">NEWSPENGUEN</span></button><button class="sb-close" id="drawerClose" aria-label="'+L("close")+'">'+ic("close")+'</button></div>'+
-   '<nav class="nav">'+nv("home",L("home"),"home")+G("featured")+G("cat")+G("global")+G("tr")+'<div class="sb-sep"></div>'+
-   G("saved")+nv("readlist",L("readlist"),"list")+nv("sources",L("sources"),"doc")+nv("settings",L("settings"),"gear")+'</nav>';
+   '<nav class="nav"><div class="sb-h">'+esc(L("tabsLbl"))+'</div><div class="sub">'+TABS.map(tabBtn).join("")+'</div><div class="sb-sep"></div>'+
+   nv("saved",L("saved")+(ns?" ("+ns+")":""),"bookmark")+nv("readlist",L("readlist"),"list")+nv("sources",L("sources"),"doc")+nv("settings",L("settings"),"gear")+'</nav>';
 }
 const SCOPES=["home","featured","global","tr","region","saved"];
 const INPLACE=["featured","global","tr","region","saved"];
@@ -990,19 +987,24 @@ function scopeOf(){if(SCOPES.includes(S.view))return S.view;if(S.view==="all"||S
 function scopePool(sc){if(sc==="featured")return vis().filter(i=>i.isNew);if(sc==="global")return vis().filter(i=>i.reg==="global");if(sc==="tr")return vis().filter(i=>i.reg==="tr");if(sc==="region")return ITEMS.filter(i=>i.star);if(sc==="saved")return S.saved.map(get).filter(Boolean);return vis()}
 function activeSeg(){if(SEGS.includes(S.view))return S.view;return S.fSeg||"all"}
 function renderChips(){
-  const sc=scopeOf();
-  const showScope=sc||["search","readlist","categories"].includes(S.view);
-  if(!showScope){$("chips").style.display="none";$("segchips").style.display="none";return}
+  const cur=TABS.includes(S.view)?S.view:(S.view==="article"?null:null);
+  const t=S.tab||"prot";
   $("chips").style.display="";
-  const lbl={home:L("all"),featured:L("featured"),global:L("global"),tr:L("tr"),region:L("region"),saved:L("saved")};
-  $("chips").innerHTML=SCOPES.map(k=>'<button class="chip" data-view="'+k+'" aria-pressed="'+(sc===k)+'">'+esc(lbl[k])+(k==="saved"&&S.saved.length?' <span class="cn">'+S.saved.length+'</span>':"")+'</button>').join("");
-  if(!sc){$("segchips").style.display="none";$("segchips").innerHTML="";return}
-  const pool=scopePool(sc);const as=activeSeg();
-  const segs=SEGS.map(k=>[k,pool.filter(i=>i.seg===k).length]).filter(x=>x[1]>0);
-  if(!segs.length){$("segchips").style.display="none";$("segchips").innerHTML="";return}
+  $("chips").setAttribute("aria-label",L("tabsLbl"));
+  $("chips").innerHTML=TABS.map(k=>{const n=tabPool(k).length;return '<button class="chip tab" data-view="'+k+'" aria-pressed="'+(S.view===k||(!cur&&k===t&&S.view==="article"))+'" style="--c:'+(k==="global"?"var(--blue)":SEGVAR[k])+'">'+(k==="global"?ic("globe"):'<span class="dot"></span>')+esc(k==="global"?L("globalTab"):L(k))+' <span class="cn">'+n+'</span></button>'}).join("");
+  if(!TABS.includes(S.view)){$("segchips").style.display="none";$("segchips").innerHTML="";return}
   $("segchips").style.display="";
-  $("segchips").innerHTML='<button class="schip" data-segchip="all" aria-pressed="'+(as==="all")+'">'+L("all")+' <span class="cn">'+pool.length+'</span></button>'+
-    segs.map(([k,n])=>'<button class="schip" data-segchip="'+k+'" aria-pressed="'+(as===k)+'" style="--c:'+SEGVAR[k]+'"><span class="dot"></span>'+L(k)+' <span class="cn">'+n+'</span></button>').join("");
+  const pool=tabPool(S.view);
+  let h="";
+  if(S.view==="global"){
+    const segs=SEGS.map(k=>[k,pool.filter(i=>i.seg===k).length]).filter(x=>x[1]>0);
+    h='<button class="schip" data-segchip="all" aria-pressed="'+(S.fSeg==="all")+'">'+L("scAll")+' <span class="cn">'+pool.length+'</span></button>'+segs.map(([k,n])=>'<button class="schip" data-segchip="'+k+'" aria-pressed="'+(S.fSeg===k)+'" style="--c:'+SEGVAR[k]+'"><span class="dot"></span>'+L(k)+' <span class="cn">'+n+'</span></button>').join("");
+  } else {
+    const sc=[["all","scAll",pool.length],["tr","scTr",pool.filter(i=>i.reg==="tr").length],["region","scRegion",pool.filter(i=>i.star).length],["proj","scProj",pool.filter(i=>i.project).length]];
+    h=sc.map(([k,l,n])=>'<button class="schip" data-scope="'+k+'" aria-pressed="'+(S.fScope===k)+'"'+(k==="region"?' style="--c:var(--seg-region)"':k==="proj"?' style="--c:#0F766E"':"")+'>'+(k==="region"||k==="proj"?'<span class="dot"></span>':"")+L(l)+' <span class="cn">'+n+'</span></button>').join("");
+  }
+  $("segchips").innerHTML=h;
+  const on=$("chips").querySelector('[aria-pressed="true"]');if(on&&on.scrollIntoView)try{on.scrollIntoView({block:"nearest",inline:"center"})}catch(e){}
 }
 function renderTop(){
   applyTheme();document.documentElement.lang=S.lang;
@@ -1018,8 +1020,8 @@ function renderTop(){
   $("langSel2").innerHTML=Object.keys(I18N).map(k=>'<option value="'+k+'"'+(S.lang===k?" selected":"")+'>'+k.toUpperCase()+'</option>').join("");
   const ini=(S.name||"").trim()?initials(S.name):"";$("avatar").innerHTML=ini?esc(ini):ic("user");$("userBtn").setAttribute("aria-label",L("profile"));
   renderChips();
-  const bn=[["home","home","home"],["categories","categories","layers"],["saved","saved","bookmark"],["settings","profile","user"]];
-  $("bnav").innerHTML=bn.map(([v,l,i])=>'<button data-view="'+v+'"'+((S.view===v||(v==="categories"&&S.view==="categories")||(v==="settings"&&S.view==="readlist"))?' aria-current="page"':"")+'>'+ic(i)+L(l)+'</button>').join("");
+  const bn=[["home","tabsLbl","layers"],["saved","saved","bookmark"],["readlist","readlist","list"],["settings","profile","user"]];
+  $("bnav").innerHTML=bn.map(([v,l,i])=>'<button data-view="'+v+'"'+((S.view===v||(v==="home"&&TABS.includes(S.view)))?' aria-current="page"':"")+'>'+ic(i)+L(l)+'</button>').join("");
 }
 function renderBell(){
   const unseen=ITEMS.filter(i=>i.isNew&&!S.seen.includes(i.id)).sort(byDate);
@@ -1051,19 +1053,21 @@ function doSearch(q){q=q.trim();if(!q)return;S.searchHist=[q,...S.searchHist.fil
 
 /* ================= NAVIGATION ================= */
 function resetF(){S.fPub="";S.fDate="any";S.fSeg="all";S.fReg="all";S.limit=12}
-function go(v,keep,seg){closeDrawer();if(v!=="article")S.article=null;if(!keep)resetF();if(seg)S.fSeg=seg;if(v!=="search"){S.q="";$("q").value=""}S.view=v;render();window.scrollTo({top:0});$("main").focus({preventScroll:true})}
+function go(v,keep,seg){if(v==="home"||v==="all")v=S.tab||"prot";if(TABS.includes(v)){if(S.view!==v)S.fScope="all";S.tab=v;store.set("tab",v)}closeDrawer();if(v!=="article")S.article=null;if(!keep)resetF();if(seg)S.fSeg=seg;if(v!=="search"){S.q="";$("q").value=""}S.view=v;render();window.scrollTo({top:0});$("main").focus({preventScroll:true})}
 function openArticle(id){closeDrawer();if(S.view!=="article")S.prevView=S.view;S.article=id;if(!S.history.includes(id)){S.history=[...S.history,id].slice(-200)}else{S.history=[...S.history.filter(x=>x!==id),id]}store.set("history",S.history);if(!S.seen.includes(id)){S.seen=[...S.seen,id];store.set("seen",S.seen)}closeSuggest();S.view="article";render();window.scrollTo({top:0});$("main").focus({preventScroll:true})}
 function toast(m){const t=$("toast");t.textContent=m;t.classList.add("show");clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove("show"),1800)}
 function setSlide(k){const n=$("hero")?$("hero").querySelectorAll(".slide").length:0;if(!n)return;S.slide=(k+n)%n;$("hero").querySelectorAll(".slide").forEach((s,j)=>{const on=j===S.slide;s.classList.toggle("on",on);on?s.removeAttribute("aria-hidden"):s.setAttribute("aria-hidden","true");const b=s.querySelector("h2 button");if(b)on?b.removeAttribute("tabindex"):b.setAttribute("tabindex","-1")});$("hero").querySelectorAll(".dots button").forEach((d,j)=>d.setAttribute("aria-current",j===S.slide))}
 let auto=null;function startAuto(){stopAuto();if(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches)return;auto=setInterval(()=>{if(S.view==="home"&&$("hero")&&!$("hero").matches(":hover")&&!$("hero").contains(document.activeElement))setSlide(S.slide+1)},7000)}function stopAuto(){if(auto)clearInterval(auto)}
 
 document.addEventListener("click",e=>{
-  const el=e.target.closest("[data-open],[data-view],[data-save],[data-copy],[data-topic],[data-sq],[data-spub],[data-follow],[data-hide],[data-fpub],[data-settheme],[data-more],[data-clearf],[data-clearhist],[data-clearsh],[data-rs],[data-slide],[data-back],[data-markseen],[data-toggletheme],[data-segchip]");
+  const el=e.target.closest("[data-open],[data-view],[data-save],[data-copy],[data-topic],[data-sq],[data-spub],[data-follow],[data-hide],[data-fpub],[data-settheme],[data-more],[data-clearf],[data-clearhist],[data-clearsh],[data-rs],[data-slide],[data-back],[data-markseen],[data-toggletheme],[data-segchip],[data-scope]");
   if(!e.target.closest(".rel"))closePops();
   if(!e.target.closest(".searchbox"))closeSuggest();
   if(!el)return;const d=el.dataset;
   if(d.open){e.preventDefault();openArticle(d.open);return}
   if(d.view){e.preventDefault();go(d.view,false,d.seg);return}
+  if(d.scope){S.fScope=d.scope;S.limit=12;renderView();renderChips();renderSidebar();window.scrollTo({top:0});return}
+  if(d.segchip&&S.view==="global"){S.fSeg=d.segchip;S.limit=12;renderView();renderChips();renderSidebar();window.scrollTo({top:0});return}
   if(d.segchip){const sc=scopeOf();const k=d.segchip;
     if(INPLACE.includes(sc)){S.fSeg=k;S.limit=12;renderView();renderChips();renderSidebar();window.scrollTo({top:0});return}
     go(k==="all"?"home":k);return}
