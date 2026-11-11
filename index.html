@@ -3,74 +3,198 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b1f4d">
 <title>NEWSPENGUEN Haber Akışı</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#f4f6f9;--card:#fff;--ink:#14213d;--muted:#5c6b80;--line:#e3e8ef;
-  --brand:#0b3d91;--star:#f2a900;--new:#16a34a;--li:#0a66c2;
-  --deco:#c2410c;--marine:#0369a1;--prot:#4d7c0f;--powder:#7c3aed;--corp:#334155;
+  --bg:#f5f6f8;--surface:#ffffff;--surface-2:#eef1f5;--ink:#0f172a;--ink-2:#334155;--muted:#64748b;--line:#e2e8f0;
+  --brand:#0b3d91;--brand-ink:#ffffff;--accent:#e30613;--star:#d99a00;--new:#15803d;--li:#0a66c2;
+  --deco:#c2410c;--marine:#0369a1;--prot:#4d7c0f;--powder:#7c3aed;--corp:#475569;
+  --radius:16px;--shadow:0 1px 2px rgba(15,23,42,.04),0 4px 16px rgba(15,23,42,.06);
 }
-@media (prefers-color-scheme:dark){
-  :root{--bg:#0e1420;--card:#172131;--ink:#e7ecf3;--muted:#9aa8bb;--line:#26334a;--brand:#6ea0ff;--li:#5aa2ef}
+[data-theme="dark"]{
+  --bg:#0b1120;--surface:#131c2e;--surface-2:#1b2740;--ink:#e8edf5;--ink-2:#c3cddb;--muted:#8a99ae;--line:#24324a;
+  --brand:#6ea0ff;--brand-ink:#0b1120;--star:#f2b705;--new:#22c55e;--li:#5aa2ef;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.25);
 }
 *{box-sizing:border-box}
-body{margin:0;font-family:Inter,system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
-header{background:linear-gradient(135deg,#0b3d91,#071f4d);color:#fff;padding:20px 16px 16px}
-.wrap{max-width:860px;margin:0 auto}
-.brand{display:flex;align-items:center;gap:10px}
-.logo{width:38px;height:38px;border-radius:10px;background:#fff;display:grid;place-items:center;font-size:22px}
-h1{font-size:20px;margin:0;letter-spacing:.3px}
-.sub{font-size:13px;opacity:.85;margin-top:2px}
-.meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;font-size:12px}
-.pill{background:rgba(255,255,255,.14);padding:5px 10px;border-radius:999px}
-.bar{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding:10px 16px}
-.search{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit;font-size:14px}
-.chips{display:flex;gap:6px;overflow-x:auto;margin-top:8px;padding-bottom:2px;scrollbar-width:none}
-.chips::-webkit-scrollbar{display:none}
-.chip{flex:0 0 auto;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:7px 12px;border-radius:999px;font:inherit;font-size:13px;cursor:pointer;white-space:nowrap}
-.chip.on{background:var(--brand);border-color:var(--brand);color:#fff}
-main{padding:12px 16px 40px}
-.sec{margin:18px 0 8px;font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:10px}
-.card.star{border-left:4px solid var(--star)}
-.tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;align-items:center}
-.tag{font-size:11px;font-weight:600;padding:3px 8px;border-radius:6px;color:#fff}
-.t-deco{background:var(--deco)}.t-marine{background:var(--marine)}.t-prot{background:var(--prot)}.t-powder{background:var(--powder)}.t-corp{background:var(--corp)}
-.reg{font-size:11px;color:var(--muted);font-weight:600}
-.lang{font-size:10px;font-weight:700;border:1px solid var(--line);color:var(--muted);padding:1px 5px;border-radius:4px}
-.newb{font-size:10px;font-weight:700;background:var(--new);color:#fff;padding:2px 6px;border-radius:5px}
-.starb{font-size:11px;font-weight:700;color:var(--star)}
-.card h3{font-size:15px;margin:0 0 6px;line-height:1.35}
-.card p{font-size:14px;line-height:1.5;margin:0 0 10px;color:var(--muted)}
-.foot{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12px;color:var(--muted);flex-wrap:wrap}
-.foot a,.src a{color:var(--brand);font-weight:600;text-decoration:none}
-.save{border:none;background:none;font-size:18px;cursor:pointer;color:var(--muted);padding:0 2px}
-.save.on{color:var(--star)}
-.empty{text-align:center;color:var(--muted);padding:40px 0;font-size:14px}
-.note{font-size:12px;color:var(--muted);text-align:center;margin-top:24px;line-height:1.5}
-.src{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 14px;margin-bottom:8px}
-.src b{font-size:14px}
-.src small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
-.src .links{display:flex;gap:8px;flex:0 0 auto}
-.btn{font-size:12px;padding:6px 10px;border-radius:8px;border:1px solid var(--line);white-space:nowrap}
-.btn.li{background:var(--li);color:#fff !important;border-color:var(--li)}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;padding-bottom:76px}
+a{color:inherit}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--brand);outline-offset:2px;border-radius:8px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+
+/* Top app bar */
+.appbar{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:saturate(1.4) blur(12px);-webkit-backdrop-filter:saturate(1.4) blur(12px);border-bottom:1px solid var(--line)}
+.appbar .row{display:flex;align-items:center;gap:12px;height:60px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex:0 0 auto}
+.logo-mark{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#0b3d91,#071f4d);display:grid;place-items:center;font-size:19px;box-shadow:var(--shadow)}
+.logo-text{font-weight:800;letter-spacing:.4px;font-size:17px}
+.logo-text small{display:block;font-weight:500;font-size:11px;color:var(--muted);letter-spacing:0}
+.search{flex:1;max-width:520px;margin-left:auto;position:relative}
+.search input{width:100%;height:40px;padding:0 14px 0 38px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-size:14px}
+.search svg{position:absolute;left:13px;top:12px;width:16px;height:16px;color:var(--muted)}
+.iconbtn{height:40px;min-width:40px;padding:0 10px;border-radius:999px;border:1px solid var(--line);background:var(--surface);cursor:pointer;font-size:13px;font-weight:600;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.iconbtn:hover{background:var(--surface-2)}
+
+/* Tabs */
+.tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding:0 0 0}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:0 0 auto;border:none;background:none;padding:12px 12px 11px;font-size:14px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;display:flex;align-items:center;gap:6px}
+.tab:hover{color:var(--ink)}
+.tab.on{color:var(--ink);border-bottom-color:var(--brand)}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.count{font-size:11px;font-weight:700;background:var(--surface-2);color:var(--muted);padding:1px 6px;border-radius:999px}
+
+/* Toolbar */
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:18px 0 6px;flex-wrap:wrap}
+.seg{display:inline-flex;background:var(--surface-2);border-radius:999px;padding:3px}
+.seg button{border:none;background:none;padding:7px 14px;border-radius:999px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer}
+.seg button.on{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
+.meta{font-size:12px;color:var(--muted);display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.live{display:inline-flex;align-items:center;gap:6px}
+.live i{width:7px;height:7px;border-radius:50%;background:var(--new);box-shadow:0 0 0 3px color-mix(in srgb,var(--new) 25%,transparent)}
+
+/* Briefing */
+.brief{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:14px 0 6px}
+.bcard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px;cursor:pointer;text-align:left;position:relative;overflow:hidden}
+.bcard:hover{border-color:var(--brand)}
+.bcard::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--c)}
+.bcard b{display:block;font-size:22px;font-weight:800}
+.bcard span{font-size:12px;color:var(--muted);font-weight:600}
+.bcard em{font-style:normal;font-size:11px;color:var(--new);font-weight:700;margin-left:4px}
+
+/* Layout */
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:24px;margin-top:10px}
+.h2{font-size:13px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);margin:22px 0 10px;display:flex;align-items:center;gap:8px}
+.h2::after{content:"";flex:1;height:1px;background:var(--line)}
+
+/* Hero */
+.hero{display:block;text-decoration:none;background:linear-gradient(135deg,#0b3d91 0%,#071f4d 70%);color:#fff;border-radius:20px;padding:22px;box-shadow:var(--shadow);position:relative;overflow:hidden;margin-top:6px}
+.hero::after{content:"🐧";position:absolute;right:-6px;bottom:-22px;font-size:120px;opacity:.08}
+.hero .kick{font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;opacity:.85;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.hero h3{font-size:22px;line-height:1.3;margin:10px 0 8px;font-weight:800}
+.hero p{font-size:14.5px;line-height:1.55;opacity:.9;margin:0 0 14px;max-width:680px}
+.hero .src{font-size:12.5px;opacity:.85}
+
+/* Cards */
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px 15px 12px;display:flex;flex-direction:column;gap:8px;transition:border-color .15s,transform .15s}
+.card:hover{border-color:color-mix(in srgb,var(--brand) 45%,var(--line))}
+.card.read{opacity:.62}
+.card.star{box-shadow:inset 3px 0 0 var(--star)}
+.chead{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);min-width:0}
+.avatar{width:22px;height:22px;border-radius:6px;display:grid;place-items:center;font-size:10px;font-weight:800;color:#fff;flex:0 0 auto}
+.sname{font-weight:700;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:55%}
+.sep{opacity:.5}
+.card h3{font-size:15.5px;line-height:1.38;margin:0;font-weight:700}
+.card h3 a{text-decoration:none}
+.card h3 a:hover{text-decoration:underline}
+.card p{font-size:13.5px;line-height:1.55;margin:0;color:var(--ink-2)}
+.cfoot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:2px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.chip{font-size:11px;font-weight:700;padding:3px 8px;border-radius:999px;background:color-mix(in srgb,var(--c) 14%,transparent);color:var(--c)}
+.chip.lang{--c:var(--muted)}
+.chip.new{--c:var(--new)}
+.chip.star{--c:var(--star)}
+.actions{display:flex;gap:2px}
+.act{border:none;background:none;width:32px;height:32px;border-radius:8px;cursor:pointer;color:var(--muted);display:grid;place-items:center}
+.act:hover{background:var(--surface-2);color:var(--ink)}
+.act.on{color:var(--star)}
+.act svg{width:17px;height:17px}
+
+/* compact view */
+.compact .grid{grid-template-columns:1fr;gap:0}
+.compact .card{border-radius:0;border-width:0 0 1px;padding:12px 4px;background:transparent}
+.compact .card p{display:none}
+.compact .card:first-child{border-top:1px solid var(--line)}
+
+/* Sidebar */
+.side .panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px;margin-bottom:14px}
+.side h4{margin:0 0 10px;font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--muted)}
+.trend{display:flex;flex-wrap:wrap;gap:6px}
+.trend button{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 10px;font-size:12.5px;font-weight:600;cursor:pointer}
+.trend button:hover{border-color:var(--brand);color:var(--brand)}
+.mini{display:flex;gap:10px;padding:8px 0;border-top:1px solid var(--line);text-decoration:none}
+.mini:first-of-type{border-top:none}
+.mini b{font-size:13px;line-height:1.35;font-weight:600}
+.mini small{display:block;color:var(--muted);font-size:11.5px;margin-top:3px}
+.mini .n{font-weight:800;color:var(--brand);font-size:15px;min-width:16px}
+.about{font-size:12.5px;color:var(--muted);line-height:1.55}
+
+/* Sources */
+.srcgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.srow{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.srow b{font-size:14px}
+.srow small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
+.srow .links{display:flex;gap:6px;flex:0 0 auto}
+.btn{font-size:12px;font-weight:600;padding:7px 10px;border-radius:9px;border:1px solid var(--line);white-space:nowrap;text-decoration:none;background:var(--surface)}
+.btn:hover{background:var(--surface-2)}
+.btn.li{background:var(--li);color:#fff;border-color:var(--li)}
+
+.empty{text-align:center;color:var(--muted);padding:56px 0;font-size:14px}
+.empty b{display:block;font-size:34px;margin-bottom:8px}
+.foot{font-size:12px;color:var(--muted);text-align:center;margin:30px 0 10px;line-height:1.6}
+
+/* Bottom nav (mobile) */
+.bottom{position:fixed;left:0;right:0;bottom:0;z-index:30;background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid var(--line);display:none;padding-bottom:env(safe-area-inset-bottom)}
+.bottom .in{display:grid;grid-template-columns:repeat(4,1fr)}
+.bottom button{border:none;background:none;padding:9px 0 8px;font-size:11px;font-weight:600;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer}
+.bottom button.on{color:var(--brand)}
+.bottom svg{width:22px;height:22px}
+
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:9px 16px;border-radius:999px;font-size:13px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .2s;z-index:40}
+.toast.show{opacity:1}
+
+@media (max-width:1000px){.layout{grid-template-columns:1fr}.side{display:none}.brief{grid-template-columns:repeat(5,minmax(120px,1fr));overflow-x:auto}}
+@media (max-width:720px){
+  body{padding-bottom:84px}
+  .bottom{display:block}
+  .grid,.srcgrid{grid-template-columns:1fr}
+  .logo-text small{display:none}
+  .appbar .row{height:auto;gap:8px;flex-wrap:wrap;padding-top:8px}
+  .search{max-width:none;order:5;flex-basis:100%;margin:0 0 4px}
+  .logo{margin-right:auto}
+  .hide-sm{display:none}
+  .hero h3{font-size:19px}
+  .brief{display:flex;overflow-x:auto;scrollbar-width:none}
+  .brief::-webkit-scrollbar{display:none}
+  .bcard{flex:0 0 130px}
+}
 </style>
 </head>
 <body>
-<header><div class="wrap">
-  <div class="brand"><div class="logo">🐧</div><div><h1>NEWSPENGUEN</h1><div class="sub">Jotun 4 segment haber akışı · Global &amp; Türkiye</div></div></div>
-  <div class="meta"><span class="pill" id="upd"></span><span class="pill" id="cnt"></span><span class="pill">⏱ 6 saatte bir güncellenir</span></div>
-</div></header>
+<header class="appbar">
+  <div class="wrap">
+    <div class="row">
+      <a class="logo" href="#" id="home"><div class="logo-mark">🐧</div><div class="logo-text">NEWSPENGUEN<small id="tagline"></small></div></a>
+      <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="q" type="search" autocomplete="off"></div>
+      <button class="iconbtn hide-sm" id="viewBtn" title=""></button>
+      <button class="iconbtn" id="langBtn" title="Language">TR</button>
+      <button class="iconbtn" id="themeBtn" aria-label="Theme">🌙</button>
+    </div>
+    <nav class="tabs" id="tabs" aria-label="Segments"></nav>
+  </div>
+</header>
 
-<div class="bar"><div class="wrap">
-  <input class="search" id="q" type="search" placeholder="Ara: Hempel, antifouling, Tekirdağ…">
-  <div class="chips" id="segChips"></div>
-  <div class="chips" id="regChips"></div>
-</div></div>
+<main class="wrap">
+  <div class="toolbar">
+    <div class="seg" id="regSeg"></div>
+    <div class="meta"><span class="live"><i></i><span id="upd"></span></span><span id="cnt"></span></div>
+  </div>
+  <div class="brief" id="brief"></div>
+  <div class="layout">
+    <section id="feed" aria-live="polite"></section>
+    <aside class="side" id="side"></aside>
+  </div>
+  <div class="foot" id="foot"></div>
+</main>
 
-<main class="wrap" id="list"></main>
+<nav class="bottom" aria-label="Navigation"><div class="in" id="bottom"></div></nav>
+<div class="toast" id="toast"></div>
 
 <script>
 /*DATA_START*/
@@ -275,54 +399,162 @@ const SOURCES = [
   {n:"Ticaret Bakanlığı – Boya Sektörü Raporu 2026",d:"Resmi sektör raporu",w:"https://ticaret.gov.tr",li:""}]}
 ];
 
-const SEGS=[["all","Tümü"],["star","⭐ Bölgem"],["deco","🏠 Dekoratif"],["marine","⚓ Marine"],["prot","🛡 Protective"],["powder","🎨 Powder"],["corp","🏢 Jotun & Rakipler"],["saved","🔖 Kaydedilenler"],["src","🔗 Kaynaklar"]];
-const REGS=[["all","🌐 Hepsi"],["global","🌍 Global"],["tr","🇹🇷 Türkiye"]];
-const SEGNAME={deco:"Dekoratif",marine:"Marine",prot:"Protective",powder:"Powder",corp:"Jotun & Rakipler"};
-let seg="all",reg="all",q="";
-let saved=[];try{saved=JSON.parse(localStorage.getItem("np_saved")||"[]")}catch(e){}
-function persist(){try{localStorage.setItem("np_saved",JSON.stringify(saved))}catch(e){}}
-function fmt(d){if(/^\d{4}$/.test(d))return d+" (gün belirtilmemiş)";const [y,m,g]=d.split("-");return g+"."+m+"."+y}
-function chips(el,arr,cur,fn){el.innerHTML="";arr.forEach(([k,l])=>{const b=document.createElement("button");b.className="chip"+(k===cur?" on":"");b.textContent=l;b.onclick=()=>fn(k);el.appendChild(b)})}
-function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+
+
+/* ---------- i18n (arayüz dili) ---------- */
+const T={
+ tr:{tagline:"Jotun 4 segment haber akışı",search:"Haber, şirket veya konu ara…",all:"Öne çıkanlar",star:"Bölgem",deco:"Dekoratif",marine:"Marine",prot:"Protective",powder:"Powder",corp:"Jotun & Rakipler",saved:"Kaydedilenler",src:"Kaynaklar",
+  rAll:"Tümü",rGlobal:"🌍 Global",rTr:"🇹🇷 Türkiye",updated:"Güncellendi",items:"haber",newc:"yeni",top:"Manşet",today:"Bu hafta",earlier:"Daha önce",undated:"Tarihi belirsiz",
+  new:"YENİ",region:"Bölgem",readMore:"Habere git",save:"Kaydet",share:"Linki kopyala",copied:"Link kopyalandı",saveOn:"Kaydedildi",saveOff:"Kaldırıldı",
+  empty:"Bu filtrede haber yok.",emptySaved:"Henüz kaydettiğin haber yok. ☆ ile kaydedebilirsin.",trending:"Gündemdeki konular",latest:"Son eklenenler",about:"Hakkında",
+  aboutTxt:"Global haberler orijinal dilinde, Türkiye haberleri Türkçe verilir. Özetler kaynak metinden kopyalanmadan yazılır. 6 saatte bir otomatik güncellenir.",
+  list:"Kart",compact:"Liste",srcNote:"LinkedIn butonları şirketin sayfasını ya da LinkedIn şirket aramasını açar (resmi sayfa genelde ilk sırada). İçeriği görmek için LinkedIn'e giriş gerekir.",
+  site:"Site",feed:"Akış",daysAgo:"gün önce",today0:"Bugün",yesterday:"Dün",footer:"Kaydettiklerin ve okuduğun haberler sadece bu cihazda saklanır."},
+ en:{tagline:"Jotun 4-segment news feed",search:"Search news, companies or topics…",all:"Top stories",star:"My region",deco:"Decorative",marine:"Marine",prot:"Protective",powder:"Powder",corp:"Jotun & Peers",saved:"Saved",src:"Sources",
+  rAll:"All",rGlobal:"🌍 Global",rTr:"🇹🇷 Türkiye",updated:"Updated",items:"stories",newc:"new",top:"Top story",today:"This week",earlier:"Earlier",undated:"Undated",
+  new:"NEW",region:"My region",readMore:"Read",save:"Save",share:"Copy link",copied:"Link copied",saveOn:"Saved",saveOff:"Removed",
+  empty:"No stories for this filter.",emptySaved:"Nothing saved yet. Tap ☆ to save a story.",trending:"Trending topics",latest:"Latest added",about:"About",
+  aboutTxt:"Global stories are kept in their original language, Türkiye stories in Turkish. Summaries are written independently of the source text. Auto-updated every 6 hours.",
+  list:"Cards",compact:"List",srcNote:"LinkedIn buttons open the company page or a LinkedIn company search (official page usually first). LinkedIn sign-in required.",
+  site:"Site",feed:"Feed",daysAgo:"days ago",today0:"Today",yesterday:"Yesterday",footer:"Saved and read stories are stored on this device only."}
+};
+const SEGC={deco:"var(--deco)",marine:"var(--marine)",prot:"var(--prot)",powder:"var(--powder)",corp:"var(--corp)"};
+const ICON={
+ bookmark:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h12v18l-6-4-6 4z"/></svg>',
+ bookmarkF:'<svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M6 3h12v18l-6-4-6 4z"/></svg>',
+ link:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg>',
+ ext:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 4h6v6M20 4l-9 9M19 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"/></svg>',
+ home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 11l8-7 8 7v9h-5v-6H9v6H4z"/></svg>',
+ pin:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>',
+ src:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h16M4 12h16M4 19h10"/></svg>'
+};
+
+/* ---------- state ---------- */
+const ls={get(k,d){try{const v=localStorage.getItem(k);return v===null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const S={seg:"all",reg:"all",q:"",lang:ls.get("np_lang","tr"),theme:ls.get("np_theme",null),view:ls.get("np_view","cards"),saved:ls.get("np_saved",[]),read:ls.get("np_read",[])};
+if(!S.theme){S.theme=(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches)?"dark":"light"}
+const t=k=>T[S.lang][k]||k;
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+/* ---------- helpers ---------- */
+const NOW=new Date();
+function parseD(d){if(/^\d{4}-\d{2}-\d{2}$/.test(d)){const [y,m,g]=d.split("-").map(Number);return new Date(y,m-1,g)}return null}
+function ago(d){const x=parseD(d);if(!x)return d;const days=Math.floor((NOW-x)/864e5);if(days<=0)return t("today0");if(days===1)return t("yesterday");if(days<30)return days+" "+t("daysAgo");return x.toLocaleDateString(S.lang==="tr"?"tr-TR":"en-GB",{day:"numeric",month:"short",year:"numeric"})}
+function sortKey(i){const x=parseD(i.date);return x?x.getTime():0}
+function initials(s){const w=s.replace(/[^\p{L}\p{N} ]/gu," ").trim().split(/\s+/);return ((w[0]||"?")[0]+((w[1]||"")[0]||"")).toUpperCase()}
+function hue(s){let h=0;for(const c of s)h=(h*31+c.charCodeAt(0))%360;return h}
 function liUrl(li){return li.startsWith("q:")?"https://www.linkedin.com/search/results/companies/?keywords="+encodeURIComponent(li.slice(2)):li}
+function toast(msg){const el=$("toast");el.textContent=msg;el.classList.add("show");clearTimeout(toast._t);toast._t=setTimeout(()=>el.classList.remove("show"),1600)}
+function matchesQ(i){if(!S.q)return true;return (i.title+" "+i.summary+" "+i.source).toLocaleLowerCase("tr").includes(S.q)}
+function filtered(){
+  return ITEMS.filter(i=>{
+    if(S.seg==="star"&&!i.star)return false;
+    if(S.seg==="saved"&&!S.saved.includes(i.id))return false;
+    if(["deco","marine","prot","powder","corp"].includes(S.seg)&&i.seg!==S.seg)return false;
+    if(S.reg!=="all"&&i.reg!==S.reg)return false;
+    return matchesQ(i);
+  }).sort((a,b)=>sortKey(b)-sortKey(a));
+}
+
+/* ---------- render pieces ---------- */
+function renderChrome(){
+  document.documentElement.lang=S.lang;
+  document.documentElement.dataset.theme=S.theme;
+  $("tagline").textContent=t("tagline");
+  $("q").placeholder=t("search");
+  $("langBtn").textContent=S.lang==="tr"?"EN":"TR";
+  $("themeBtn").textContent=S.theme==="dark"?"☀️":"🌙";
+  $("viewBtn").textContent=S.view==="cards"?"☰ "+t("compact"):"▦ "+t("list");
+  const tabs=[["all",""],["star","var(--star)"],["deco",SEGC.deco],["marine",SEGC.marine],["prot",SEGC.prot],["powder",SEGC.powder],["corp",SEGC.corp],["saved",""],["src",""]];
+  $("tabs").innerHTML=tabs.map(([k,c])=>{
+    let n="";
+    if(["deco","marine","prot","powder","corp"].includes(k))n=ITEMS.filter(i=>i.seg===k).length;
+    if(k==="star")n=ITEMS.filter(i=>i.star).length;
+    if(k==="saved")n=S.saved.length||"";
+    return '<button class="tab'+(S.seg===k?" on":"")+'" data-seg="'+k+'">'+(c?'<span class="dot" style="background:'+c+'"></span>':"")+(k==="star"?"⭐ ":k==="saved"?"🔖 ":k==="src"?"🔗 ":"")+t(k)+(n!==""?' <span class="count">'+n+'</span>':"")+'</button>'}).join("");
+  $("regSeg").innerHTML=[["all","rAll"],["global","rGlobal"],["tr","rTr"]].map(([k,l])=>'<button data-reg="'+k+'" class="'+(S.reg===k?"on":"")+'">'+t(l)+'</button>').join("");
+  $("regSeg").style.visibility=S.seg==="src"?"hidden":"visible";
+  $("upd").textContent=t("updated")+": "+UPDATED;
+  const nNew=ITEMS.filter(i=>i.isNew).length;
+  $("cnt").textContent=ITEMS.length+" "+t("items")+(nNew?" · "+nNew+" "+t("newc"):"");
+  const bt=[["all","feed",ICON.home],["star","star",ICON.pin],["saved","saved",ICON.bookmark],["src","src",ICON.src]];
+  $("bottom").innerHTML=bt.map(([k,l,ic])=>'<button data-seg="'+k+'" class="'+(S.seg===k||(k==="all"&&["deco","marine","prot","powder","corp"].includes(S.seg))?"on":"")+'">'+ic+t(l)+'</button>').join("");
+  $("foot").innerHTML=esc(t("aboutTxt"))+"<br>"+esc(t("footer"));
+  document.body.classList.toggle("compact",S.view==="compact");
+}
+function renderBrief(){
+  if(S.seg!=="all"||S.q){$("brief").innerHTML="";$("brief").style.display="none";return}
+  $("brief").style.display="";
+  $("brief").innerHTML=["deco","marine","prot","powder","corp"].map(k=>{
+    const its=ITEMS.filter(i=>i.seg===k&&(S.reg==="all"||i.reg===S.reg));const nn=its.filter(i=>i.isNew).length;
+    return '<button class="bcard" data-seg="'+k+'" style="--c:'+SEGC[k]+'"><b>'+its.length+(nn?'<em>+'+nn+'</em>':"")+'</b><span>'+t(k)+'</span></button>'}).join("");
+}
+function cardHTML(i){
+  const read=S.read.includes(i.id),sv=S.saved.includes(i.id),h=hue(i.source);
+  return '<article class="card'+(i.star?" star":"")+(read?" read":"")+'" style="--c:'+SEGC[i.seg]+'">'+
+   '<div class="chead"><span class="avatar" style="background:hsl('+h+' 55% 42%)">'+esc(initials(i.source))+'</span><span class="sname">'+esc(i.source)+'</span><span class="sep">·</span><span>'+esc(ago(i.date))+'</span></div>'+
+   '<h3 lang="'+(i.lang==="TR"?"tr":"en")+'"><a href="'+esc(i.url)+'" target="_blank" rel="noopener" data-read="'+i.id+'">'+esc(i.title)+'</a></h3>'+
+   '<p lang="'+(i.lang==="TR"?"tr":"en")+'">'+esc(i.summary)+'</p>'+
+   '<div class="cfoot"><div class="chips"><span class="chip">'+t(i.seg)+'</span><span class="chip lang">'+(i.reg==="tr"?"🇹🇷":"🌍")+" "+esc(i.lang||"")+'</span>'+(i.star?'<span class="chip star">⭐ '+t("region")+'</span>':"")+(i.isNew?'<span class="chip new">'+t("new")+'</span>':"")+'</div>'+
+   '<div class="actions"><button class="act'+(sv?" on":"")+'" data-save="'+i.id+'" title="'+t("save")+'" aria-label="'+t("save")+'">'+(sv?ICON.bookmarkF:ICON.bookmark)+'</button><button class="act" data-copy="'+esc(i.url)+'" title="'+t("share")+'" aria-label="'+t("share")+'">'+ICON.link+'</button><a class="act" href="'+esc(i.url)+'" target="_blank" rel="noopener" data-read="'+i.id+'" title="'+t("readMore")+'" aria-label="'+t("readMore")+'">'+ICON.ext+'</a></div></div></article>';
+}
+function heroHTML(i){
+  return '<a class="hero" href="'+esc(i.url)+'" target="_blank" rel="noopener" data-read="'+i.id+'"><div class="kick">'+t("top")+' · '+t(i.seg)+(i.star?' · ⭐ '+t("region"):"")+(i.isNew?' · '+t("new"):"")+'</div><h3 lang="'+(i.lang==="TR"?"tr":"en")+'">'+esc(i.title)+'</h3><p lang="'+(i.lang==="TR"?"tr":"en")+'">'+esc(i.summary)+'</p><div class="src">'+esc(i.source)+' · '+esc(ago(i.date))+' →</div></a>';
+}
+function renderFeed(){
+  const el=$("feed");
+  if(S.seg==="src"){renderSources(el);return}
+  const list=filtered();
+  if(!list.length){el.innerHTML='<div class="empty"><b>'+(S.seg==="saved"?"🔖":"🐧")+'</b>'+esc(S.seg==="saved"?t("emptySaved"):t("empty"))+'</div>';return}
+  let html="",rest=list;
+  if(S.seg==="all"&&!S.q&&S.view==="cards"){
+    const regional=list.filter(i=>i.star);
+    const hero=list.find(i=>i.isNew&&parseD(i.date))||list[0];
+    html+=heroHTML(hero);rest=list.filter(i=>i!==hero);
+    if(regional.length){html+='<div class="h2">⭐ '+t("region")+'</div><div class="grid">'+regional.map(cardHTML).join("")+'</div>';rest=rest.filter(i=>!i.star)}
+  }
+  const wk=rest.filter(i=>{const x=parseD(i.date);return x&&(NOW-x)<8*864e5});
+  const older=rest.filter(i=>{const x=parseD(i.date);return x&&(NOW-x)>=8*864e5});
+  const und=rest.filter(i=>!parseD(i.date));
+  [[t("today"),wk],[t("earlier"),older],[t("undated"),und]].forEach(([h,arr])=>{if(arr.length)html+='<div class="h2">'+h+'</div><div class="grid">'+arr.map(cardHTML).join("")+'</div>'});
+  el.innerHTML=html;
+}
+function renderSide(){
+  const words=["Jotun","Hempel","AkzoNobel","Axalta","PPG","Sherwin","Nippon","antifouling","fire","powder","Tekirdağ","OSB"];
+  const present=words.filter(w=>ITEMS.some(i=>(i.title+" "+i.summary).toLowerCase().includes(w.toLowerCase())));
+  const latest=ITEMS.filter(i=>parseD(i.date)).sort((a,b)=>sortKey(b)-sortKey(a)).slice(0,5);
+  $("side").innerHTML='<div class="panel"><h4>'+t("trending")+'</h4><div class="trend">'+present.map(w=>'<button data-q="'+esc(w)+'">#'+esc(w)+'</button>').join("")+'</div></div>'+
+   '<div class="panel"><h4>'+t("latest")+'</h4>'+latest.map((i,n)=>'<a class="mini" href="'+esc(i.url)+'" target="_blank" rel="noopener" data-read="'+i.id+'"><span class="n">'+(n+1)+'</span><span><b>'+esc(i.title)+'</b><small>'+esc(i.source)+' · '+esc(ago(i.date))+'</small></span></a>').join("")+'</div>'+
+   '<div class="panel"><h4>'+t("about")+'</h4><div class="about">'+esc(t("aboutTxt"))+'</div></div>';
+}
 function renderSources(el){
-  let html='<div class="note" style="margin:6px 0 4px;text-align:left">LinkedIn butonları şirketin LinkedIn sayfasını ya da LinkedIn şirket aramasını açar (resmi sayfa ilk sırada çıkar). LinkedIn içeriğini görmek için LinkedIn hesabınla giriş yapman gerekir.</div>';
-  SOURCES.forEach(gr=>{
-    const its=gr.items.filter(s=>!q||(s.n+" "+s.d).toLocaleLowerCase("tr").includes(q));
+  let html='<div class="about" style="margin:8px 0 4px">'+esc(t("srcNote"))+'</div>';
+  SOURCES.forEach(g=>{
+    const its=g.items.filter(s=>!S.q||(s.n+" "+s.d).toLocaleLowerCase("tr").includes(S.q));
     if(!its.length)return;
-    html+='<div class="sec">'+gr.g+'</div>';
-    its.forEach(s=>{html+='<div class="src"><div><b>'+esc(s.n)+'</b><small>'+esc(s.d)+'</small></div><div class="links"><a class="btn" href="'+s.w+'" target="_blank" rel="noopener">🌐 Site</a>'+(s.li?'<a class="btn li" href="'+liUrl(s.li)+'" target="_blank" rel="noopener">in LinkedIn</a>':'')+'</div></div>'})});
+    html+='<div class="h2">'+esc(g.g)+'</div><div class="srcgrid">'+its.map(s=>'<div class="srow"><div><b>'+esc(s.n)+'</b><small>'+esc(s.d)+'</small></div><div class="links"><a class="btn" href="'+esc(s.w)+'" target="_blank" rel="noopener">🌐 '+t("site")+'</a>'+(s.li?'<a class="btn li" href="'+esc(liUrl(s.li))+'" target="_blank" rel="noopener">in</a>':"")+'</div></div>').join("")+'</div>';
+  });
   el.innerHTML=html;
 }
-function render(){
-  chips(document.getElementById("segChips"),SEGS,seg,k=>{seg=k;render()});
-  const regEl=document.getElementById("regChips");
-  const el=document.getElementById("list");
-  if(seg==="src"){regEl.style.display="none";renderSources(el);return}
-  regEl.style.display="flex";
-  chips(regEl,REGS,reg,k=>{reg=k;render()});
-  let list=ITEMS.filter(i=>{
-    if(seg==="star"&&!i.star)return false;
-    if(seg==="saved"&&!saved.includes(i.id))return false;
-    if(!["all","star","saved"].includes(seg)&&i.seg!==seg)return false;
-    if(reg!=="all"&&i.reg!==reg)return false;
-    if(q){const t=(i.title+" "+i.summary+" "+i.source).toLocaleLowerCase("tr");if(!t.includes(q))return false}
-    return true});
-  const key=d=>/^\d{4}$/.test(d)?d+"-00-00":d;
-  list.sort((a,b)=>(b.star-a.star)||(reg==="all"?(a.reg===b.reg?0:(a.reg==="global"?-1:1)):0)||key(b.date).localeCompare(key(a.date)));
-  if(!list.length){el.innerHTML='<div class="empty">Bu filtrede haber yok.</div>';return}
-  let html="",lastGroup=null;
-  list.forEach(i=>{
-    const grp=i.star?"star":i.reg;
-    if(grp!==lastGroup){html+='<div class="sec">'+(grp==="star"?"⭐ Bölgem · Trakya & Avrupa Yakası":grp==="global"?"🌍 Global":"🇹🇷 Türkiye")+'</div>';lastGroup=grp}
-    html+='<div class="card'+(i.star?" star":"")+'"><div class="tags"><span class="tag t-'+i.seg+'">'+SEGNAME[i.seg]+'</span><span class="reg">'+(i.reg==="tr"?"🇹🇷 Türkiye":"🌍 Global")+'</span><span class="lang">'+(i.lang||"")+'</span>'+(i.star?'<span class="starb">⭐ Bölgem</span>':'')+(i.isNew?'<span class="newb">YENİ</span>':'')+'</div><h3 lang="'+(i.lang==="TR"?"tr":"en")+'">'+esc(i.title)+'</h3><p lang="'+(i.lang==="TR"?"tr":"en")+'">'+esc(i.summary)+'</p><div class="foot"><span>'+esc(i.source)+' · '+fmt(i.date)+'</span><span><button class="save'+(saved.includes(i.id)?" on":"")+'" data-id="'+i.id+'" aria-label="Kaydet">'+(saved.includes(i.id)?"★":"☆")+'</button> <a href="'+i.url+'" target="_blank" rel="noopener">Habere git →</a></span></div></div>'});
-  html+='<div class="note">Global haberler orijinal dilinde, Türkiye haberleri Türkçe verilir. Özetler kaynak metinden kopyalanmadan yazılmıştır; ayrıntı için kaynağa gidin.<br>Kaydettiklerin sadece bu cihazda saklanır.</div>';
-  el.innerHTML=html;
-  el.querySelectorAll(".save").forEach(b=>b.onclick=()=>{const id=b.dataset.id;saved=saved.includes(id)?saved.filter(x=>x!==id):[...saved,id];persist();render()});
-}
-document.getElementById("upd").textContent="🕒 Son güncelleme: "+UPDATED;
-document.getElementById("cnt").textContent="🆕 "+ITEMS.filter(i=>i.isNew).length+" yeni · toplam "+ITEMS.length+" · 🌍 "+ITEMS.filter(i=>i.reg==="global").length+" / 🇹🇷 "+ITEMS.filter(i=>i.reg==="tr").length;
-document.getElementById("q").addEventListener("input",e=>{q=e.target.value.trim().toLocaleLowerCase("tr");render()});
+function render(){renderChrome();renderBrief();renderFeed();renderSide()}
+
+/* ---------- events ---------- */
+function setSeg(k){S.seg=k;render();window.scrollTo({top:0,behavior:"smooth"})}
+document.addEventListener("click",e=>{
+  const s=e.target.closest("[data-seg]");if(s){e.preventDefault();setSeg(s.dataset.seg);return}
+  const r=e.target.closest("[data-reg]");if(r){S.reg=r.dataset.reg;render();return}
+  const sv=e.target.closest("[data-save]");if(sv){const id=sv.dataset.save;const on=S.saved.includes(id);S.saved=on?S.saved.filter(x=>x!==id):[...S.saved,id];ls.set("np_saved",S.saved);toast(on?t("saveOff"):t("saveOn"));render();return}
+  const cp=e.target.closest("[data-copy]");if(cp){const u=cp.dataset.copy;try{navigator.clipboard.writeText(u).then(()=>toast(t("copied")),()=>toast(u))}catch(err){toast(u)}return}
+  const q=e.target.closest("[data-q]");if(q){$("q").value=q.dataset.q;S.q=q.dataset.q.toLocaleLowerCase("tr");S.seg="all";render();return}
+  const rd=e.target.closest("[data-read]");if(rd){const id=rd.dataset.read;if(!S.read.includes(id)){S.read=[...S.read,id].slice(-300);ls.set("np_read",S.read);setTimeout(render,300)}}
+});
+$("home").addEventListener("click",e=>{e.preventDefault();$("q").value="";S.q="";S.reg="all";setSeg("all")});
+$("q").addEventListener("input",e=>{S.q=e.target.value.trim().toLocaleLowerCase("tr");renderBrief();renderFeed()});
+$("langBtn").addEventListener("click",()=>{S.lang=S.lang==="tr"?"en":"tr";ls.set("np_lang",S.lang);render()});
+$("themeBtn").addEventListener("click",()=>{S.theme=S.theme==="dark"?"light":"dark";ls.set("np_theme",S.theme);render()});
+$("viewBtn").addEventListener("click",()=>{S.view=S.view==="cards"?"compact":"cards";ls.set("np_view",S.view);render()});
+document.addEventListener("keydown",e=>{if(e.key==="/"&&document.activeElement!==$("q")){e.preventDefault();$("q").focus()}});
 render();
 </script>
 </body>
