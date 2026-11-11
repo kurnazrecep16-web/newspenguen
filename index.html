@@ -711,8 +711,8 @@ const I18N={
  en:{_name:"English",locale:"en-GB",skip:"Skip to content",search:"Search news, companies, topics or tags…",searchLbl:"Search",
   morning:"Good morning",afternoon:"Good afternoon",evening:"Good evening",sub:"The latest from your sector and around the world",
   home:"Home",featured:"Featured",categories:"Categories",global:"Global",tr:"Türkiye",saved:"Saved",readlist:"Reading list",settings:"Settings",sources:"Sources",profile:"Profile",
-  all:"All",region:"My region",deco:"Decorative",marine:"Marine",prot:"Protective",powder:"Powder",corp:"Other",tabsLbl:"Segments",scAll:"All",scTr:"Türkiye",scRegion:"My region",scProj:"Projects",scPaint:"Paint news",globalTab:"Global",
-  region_d:"Investment and project news from Thrace and Istanbul's European Side.",deco_d:"Architectural and decorative paints, housing and construction.",marine_d:"Hull coatings, antifouling, newbuilding and dry-docking.",prot_d:"Corrosion protection, passive fire protection, energy and infrastructure.",powder_d:"Powder coatings for aluminium, appliances and industry.",corp_d:"Company results, deals and other paint-industry news.",global_d:"News from outside Türkiye, in the original language.",tr_d:"Stories from Türkiye, in Turkish.",featured_d:"The newest and most relevant stories.",
+  all:"All",region:"My region",deco:"Decorative",marine:"Marine",prot:"Protective",powder:"Powder",corp:"Other",guncel:"Latest",guncel_d:"The newest news from Türkiye across all segments.",tabsLbl:"Segments",scAll:"All",scTr:"Türkiye",scRegion:"My region",scProj:"Projects",scPaint:"Paint news",globalTab:"Global",
+  region_d:"Investment and project news from Thrace and Istanbul's European Side.",deco_d:"Architectural and decorative paints, housing and construction.",marine_d:"Hull coatings, antifouling, newbuilding and dry-docking.",prot_d:"Corrosion protection, passive fire protection, energy and infrastructure.",powder_d:"Powder coatings for aluminium, appliances and industry.",corp_d:"Company results, deals and other paint-industry news.",global_d:"All English and other-language sources, in the original language.",tr_d:"Stories from Türkiye, in Turkish.",featured_d:"The newest and most relevant stories.",
   trending:"Trending",latestAdded:"Latest added",industry:"Industry updates",seeAll:"See all",briefing:"Daily Briefing",latest:"Latest news",forYou:"Recommended for you",
   recEmpty:"Follow segments and save stories — recommendations adapt to what you read.",recBtn:"Choose interests",recWhy:"Based on",recFollow:"segments you follow",recRead:"your reading",
   prev:"Previous story",next:"Next story",slide:"Story",newB:"NEW",projB:"Potential project",regionB:"My region",
@@ -736,8 +736,8 @@ const I18N={
  tr:{_name:"Türkçe",locale:"tr-TR",skip:"İçeriğe geç",search:"Haber, şirket, konu veya etiket ara…",searchLbl:"Ara",
   morning:"Günaydın",afternoon:"İyi günler",evening:"İyi akşamlar",sub:"Sektörünüzden ve dünyadan en güncel gelişmeler",
   home:"Ana Sayfa",featured:"Öne Çıkanlar",categories:"Kategoriler",global:"Global",tr:"Türkiye",saved:"Kaydedilenler",readlist:"Okuma Listesi",settings:"Ayarlar",sources:"Kaynaklar",profile:"Profil",
-  all:"Tümü",region:"Bölgem",deco:"Dekoratif",marine:"Marine",prot:"Protective",powder:"Toz Boya",corp:"Diğer",tabsLbl:"Segmentler",scAll:"Tümü",scTr:"Türkiye",scRegion:"Bölgem",scProj:"Projeler",scPaint:"Boya haberleri",globalTab:"Global",
-  region_d:"Trakya ve İstanbul Avrupa Yakası'ndan yatırım ve proje haberleri.",deco_d:"Dekoratif ve mimari boyalar, konut ve inşaat.",marine_d:"Karina boyaları, antifouling, yeni inşa ve havuzlama.",prot_d:"Korozyon koruma, pasif yangın koruma, enerji ve altyapı.",powder_d:"Alüminyum, beyaz eşya ve sanayi için toz boyalar.",corp_d:"Şirket sonuçları, satın almalar ve diğer boya sektörü haberleri.",global_d:"Türkiye dışından, orijinal dilinde haberler.",tr_d:"Türkiye'den Türkçe haberler.",featured_d:"En yeni ve en ilgili haberler.",
+  all:"Tümü",region:"Bölgem",deco:"Dekoratif",marine:"Marine",prot:"Protective",powder:"Toz Boya",corp:"Diğer",guncel:"Güncel",guncel_d:"Tüm segmentlerden Türkiye'deki en güncel haberler.",tabsLbl:"Segmentler",scAll:"Tümü",scTr:"Türkiye",scRegion:"Bölgem",scProj:"Projeler",scPaint:"Boya haberleri",globalTab:"Global",
+  region_d:"Trakya ve İstanbul Avrupa Yakası'ndan yatırım ve proje haberleri.",deco_d:"Dekoratif ve mimari boyalar, konut ve inşaat.",marine_d:"Karina boyaları, antifouling, yeni inşa ve havuzlama.",prot_d:"Korozyon koruma, pasif yangın koruma, enerji ve altyapı.",powder_d:"Alüminyum, beyaz eşya ve sanayi için toz boyalar.",corp_d:"Şirket sonuçları, satın almalar ve diğer boya sektörü haberleri.",global_d:"İngilizce ve diğer dillerdeki tüm kaynaklar, orijinal dilinde.",tr_d:"Türkiye'den Türkçe haberler.",featured_d:"En yeni ve en ilgili haberler.",
   trending:"Gündem",latestAdded:"Son Eklenenler",industry:"Sektör Güncellemeleri",seeAll:"Tümünü Gör",briefing:"Günlük Özet",latest:"Son Haberler",forYou:"Sana Önerilenler",
   recEmpty:"Segment takip et, haber kaydet — öneriler okuduklarına göre şekillenir.",recBtn:"İlgi alanlarını seç",recWhy:"Kaynağı:",recFollow:"takip ettiğin segmentler",recRead:"okuma geçmişin",
   prev:"Önceki haber",next:"Sonraki haber",slide:"Haber",newB:"YENİ",projB:"Potansiyel proje",regionB:"Bölgem",
@@ -765,8 +765,9 @@ const TOPICS=["Jotun","Hempel","AkzoNobel","Axalta","PPG","Sherwin","Nippon","fi
 
 /* ================= STATE ================= */
 const store={get(k,d){try{const v=localStorage.getItem("np3_"+k);return v===null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem("np3_"+k,JSON.stringify(v))}catch(e){}}};
-const TABS=["marine","prot","deco","powder","global","corp"];
-const S={view:(function(){try{const t=localStorage.getItem("np3_tab");const v=t&&JSON.parse(t);return TABS.includes(v)?v:"prot"}catch(e){return "prot"}})(),fScope:"all",lang:store.get("lang","en"),themePref:store.get("theme","system"),name:store.get("name","Recep"),
+const TABS=["latest","marine","prot","deco","powder","global","corp"];
+const isTR=i=>(i.lang||"")==="TR";
+const S={view:"latest",fScope:"all",lang:store.get("lang","en"),themePref:store.get("theme","system"),name:store.get("name","Recep"),
   saved:store.get("saved",[]),history:store.get("history",[]),follow:store.get("follow",[]),followPubs:store.get("followPubs",[]),hidden:store.get("hidden",[]),
   seen:store.get("seen",null),searchHist:store.get("searchHist",[]),q:"",fPub:"",fDate:"any",fSeg:"all",fReg:"all",limit:12,article:null,prevView:"home",open:store.get("open",{cat:store.get("catOpen",true)}),rs:store.get("rs",1),slide:0};
 const L=k=>(I18N[S.lang]&&I18N[S.lang][k])||I18N.en[k]||k;
@@ -943,17 +944,17 @@ function viewSources(){
   return '<div class="ph"><div><h1>'+L("sources")+'</h1><p>'+L("sourcesP")+'</p></div></div>'+SOURCES.map(g=>secH(g.g.replace(/^\S+\s/,""))+'<div class="srcs">'+g.items.map(s=>'<div class="srow"><div><b>'+esc(s.n)+'</b><small>'+esc(s.d)+'</small></div><div class="r"><a class="btn sm" href="'+esc(s.w)+'" target="_blank" rel="noopener">'+ic("globe")+L("site")+'</a>'+(s.li?'<a class="btn sm" href="'+esc(liUrl(s.li))+'" target="_blank" rel="noopener" aria-label="LinkedIn: '+esc(s.n)+'">in</a>':"")+'</div></div>').join("")+'</div>').join("");
 }
 /* Ana sekmeler: segmentler + Global + Diğer. Segment sekmelerinde kapsam filtresi: Tümü · Türkiye · Bölgem · Projeler */
-function tabPool(t){const base=vis();return t==="global"?base.filter(i=>i.reg==="global"):base.filter(i=>i.seg===t)}
+function tabPool(t){const base=vis();if(t==="global")return base.filter(i=>!isTR(i));const tr=base.filter(isTR);return t==="latest"?tr:tr.filter(i=>i.seg===t)}
 function scopeFilter(l){const f=S.fScope;return f==="tr"?l.filter(i=>i.reg==="tr"):f==="region"?l.filter(i=>i.star):f==="proj"?l.filter(i=>i.project):f==="paint"?l.filter(i=>!i.project):l}
 function tabView(t){
   let list=tabPool(t);
   if(t==="global"&&S.fSeg!=="all")list=list.filter(i=>i.seg===S.fSeg);
   list=scopeFilter(list);
-  return listView(t==="global"?L("globalTab"):L(t),L(t+"_d"),list,{sort:(a,b)=>(b.star-a.star)*0||byDate(a,b)});
+  return listView(t==="global"?L("globalTab"):t==="latest"?L("guncel"):L(t),t==="latest"?L("guncel_d"):L(t+"_d"),list,{sort:byDate});
 }
 function renderView(){
   const v=S.view;let h="";
-  if(v==="home"||v==="all"){S.view=S.tab||"prot";return renderView()}
+  if(v==="home"||v==="all"){S.view=S.tab||"latest";return renderView()}
   if(TABS.includes(v))h=tabView(v);
   else if(v==="home__")h=viewHome();
   else if(v==="featured")h=listView(L("featured"),L("featured_d"),vis().filter(i=>i.isNew),{segF:true,sort:(a,b)=>(b.star-a.star)||byDate(a,b)});
@@ -975,7 +976,7 @@ function renderView(){
 /* ================= CHROME ================= */
 function nv(view,label,icon,extra=""){return '<button class="nv" data-view="'+view+'"'+(S.view===view?' aria-current="page"':"")+extra+'>'+ic(icon)+'<span>'+esc(label)+'</span></button>'}
 function renderSidebar(){
-  const tabBtn=k=>{const n=tabPool(k).length;const on=S.view===k;return '<button class="sv tabsv" data-view="'+k+'"'+(on?' aria-current="page"':"")+' style="--c:'+(k==="global"?"var(--blue)":SEGVAR[k])+'"><span class="dot"></span>'+esc(k==="global"?L("globalTab"):L(k))+'<span class="n">'+n+'</span></button>'};
+  const tabBtn=k=>{const n=tabPool(k).length;const on=S.view===k;return '<button class="sv tabsv" data-view="'+k+'"'+(on?' aria-current="page"':"")+' style="--c:'+(k==="global"?"var(--blue)":k==="latest"?"#9FB3CC":SEGVAR[k])+'"><span class="dot"></span>'+esc(k==="global"?L("globalTab"):k==="latest"?L("guncel"):L(k))+'<span class="n">'+n+'</span></button>'};
   const ns=S.saved.length;
   $("sidebar").innerHTML='<div class="sb-top"><button class="brand nv" data-view="home" style="height:auto;padding:2px 8px 22px;background:none" aria-label="NEWSPENGUEN"><div class="logo-mark" aria-hidden="true">🐧</div><span class="brand-name">NEWSPENGUEN</span></button><button class="sb-close" id="drawerClose" aria-label="'+L("close")+'">'+ic("close")+'</button></div>'+
    '<nav class="nav"><div class="sb-h">'+esc(L("tabsLbl"))+'</div><div class="sub">'+TABS.map(tabBtn).join("")+'</div><div class="sb-sep"></div>'+
@@ -988,10 +989,10 @@ function scopePool(sc){if(sc==="featured")return vis().filter(i=>i.isNew);if(sc=
 function activeSeg(){if(SEGS.includes(S.view))return S.view;return S.fSeg||"all"}
 function renderChips(){
   const cur=TABS.includes(S.view)?S.view:(S.view==="article"?null:null);
-  const t=S.tab||"prot";
+  const t=S.tab||"latest";
   $("chips").style.display="";
   $("chips").setAttribute("aria-label",L("tabsLbl"));
-  $("chips").innerHTML=TABS.map(k=>{const n=tabPool(k).length;return '<button class="chip tab" data-view="'+k+'" aria-pressed="'+(S.view===k||(!cur&&k===t&&S.view==="article"))+'" style="--c:'+(k==="global"?"var(--blue)":SEGVAR[k])+'">'+(k==="global"?ic("globe"):'<span class="dot"></span>')+esc(k==="global"?L("globalTab"):L(k))+' <span class="cn">'+n+'</span></button>'}).join("");
+  $("chips").innerHTML=TABS.map(k=>{const n=tabPool(k).length;return '<button class="chip tab" data-view="'+k+'" aria-pressed="'+(S.view===k||(!cur&&k===t&&S.view==="article"))+'" style="--c:'+(k==="global"?"var(--blue)":k==="latest"?"var(--navy)":SEGVAR[k])+'">'+(k==="global"?ic("globe"):k==="latest"?ic("clock"):'<span class="dot"></span>')+esc(k==="global"?L("globalTab"):k==="latest"?L("guncel"):L(k))+' <span class="cn">'+n+'</span></button>'}).join("");
   if(!TABS.includes(S.view)){$("segchips").style.display="none";$("segchips").innerHTML="";return}
   $("segchips").style.display="";
   const pool=tabPool(S.view);
@@ -1000,7 +1001,7 @@ function renderChips(){
     const segs=SEGS.map(k=>[k,pool.filter(i=>i.seg===k).length]).filter(x=>x[1]>0);
     h='<button class="schip" data-segchip="all" aria-pressed="'+(S.fSeg==="all")+'">'+L("scAll")+' <span class="cn">'+pool.length+'</span></button>'+segs.map(([k,n])=>'<button class="schip" data-segchip="'+k+'" aria-pressed="'+(S.fSeg===k)+'" style="--c:'+SEGVAR[k]+'"><span class="dot"></span>'+L(k)+' <span class="cn">'+n+'</span></button>').join("");
   } else {
-    const sc=[["all","scAll",pool.length],["tr","scTr",pool.filter(i=>i.reg==="tr").length],["region","scRegion",pool.filter(i=>i.star).length],["proj","scProj",pool.filter(i=>i.project).length]];
+    const sc=[["all","scAll",pool.length],["region","scRegion",pool.filter(i=>i.star).length],["proj","scProj",pool.filter(i=>i.project).length]];
     h=sc.map(([k,l,n])=>'<button class="schip" data-scope="'+k+'" aria-pressed="'+(S.fScope===k)+'"'+(k==="region"?' style="--c:var(--seg-region)"':k==="proj"?' style="--c:#0F766E"':"")+'>'+(k==="region"||k==="proj"?'<span class="dot"></span>':"")+L(l)+' <span class="cn">'+n+'</span></button>').join("");
   }
   $("segchips").innerHTML=h;
@@ -1053,7 +1054,7 @@ function doSearch(q){q=q.trim();if(!q)return;S.searchHist=[q,...S.searchHist.fil
 
 /* ================= NAVIGATION ================= */
 function resetF(){S.fPub="";S.fDate="any";S.fSeg="all";S.fReg="all";S.limit=12}
-function go(v,keep,seg){if(v==="home"||v==="all")v=S.tab||"prot";if(TABS.includes(v)){if(S.view!==v)S.fScope="all";S.tab=v;store.set("tab",v)}closeDrawer();if(v!=="article")S.article=null;if(!keep)resetF();if(seg)S.fSeg=seg;if(v!=="search"){S.q="";$("q").value=""}S.view=v;render();window.scrollTo({top:0});$("main").focus({preventScroll:true})}
+function go(v,keep,seg){if(v==="home"||v==="all")v=S.tab||"latest";if(TABS.includes(v)){if(S.view!==v)S.fScope="all";S.tab=v;store.set("tab",v)}closeDrawer();if(v!=="article")S.article=null;if(!keep)resetF();if(seg)S.fSeg=seg;if(v!=="search"){S.q="";$("q").value=""}S.view=v;render();window.scrollTo({top:0});$("main").focus({preventScroll:true})}
 function openArticle(id){closeDrawer();if(S.view!=="article")S.prevView=S.view;S.article=id;if(!S.history.includes(id)){S.history=[...S.history,id].slice(-200)}else{S.history=[...S.history.filter(x=>x!==id),id]}store.set("history",S.history);if(!S.seen.includes(id)){S.seen=[...S.seen,id];store.set("seen",S.seen)}closeSuggest();S.view="article";render();window.scrollTo({top:0});$("main").focus({preventScroll:true})}
 function toast(m){const t=$("toast");t.textContent=m;t.classList.add("show");clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove("show"),1800)}
 function setSlide(k){const n=$("hero")?$("hero").querySelectorAll(".slide").length:0;if(!n)return;S.slide=(k+n)%n;$("hero").querySelectorAll(".slide").forEach((s,j)=>{const on=j===S.slide;s.classList.toggle("on",on);on?s.removeAttribute("aria-hidden"):s.setAttribute("aria-hidden","true");const b=s.querySelector("h2 button");if(b)on?b.removeAttribute("tabindex"):b.setAttribute("tabindex","-1")});$("hero").querySelectorAll(".dots button").forEach((d,j)=>d.setAttribute("aria-current",j===S.slide))}
