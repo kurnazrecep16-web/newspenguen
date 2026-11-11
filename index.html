@@ -779,6 +779,11 @@ const byDate=(a,b)=>ts(b)-ts(a)||(b.star-a.star);
 const PUBS=[...new Set(ITEMS.map(i=>i.source))].sort((a,b)=>a.localeCompare(b));
 const txt=i=>(i.title+" "+i.summary+" "+i.source).toLocaleLowerCase("tr");
 const TREND=TOPICS.map(t=>[t,ITEMS.filter(i=>txt(i).includes(t.toLocaleLowerCase("tr"))).length]).filter(x=>x[1]).sort((a,b)=>b[1]-a[1]);
+const PAINT=/(^|[^a-zçğıöşü])(boya(?!bat)|boyama|boyan|kaplama|vernik|astar boya|epoksi|epoxy|poli[üu]retan|polyurethane|toz boya|elektrostatik|korozyon|antikoroz|galvaniz|intumescent|int[üu]mesan|yang[ıi]n yal[ıi]t|kumlama|antifoul|paint|coating|coatings|primer|varnish|lacquer|corrosion|anti-corrosi|fireproof|fire protection coat|powder coat|hull coat|marine coat|protective coat|hempa|hempaguard|jotachar|jotamastic|penguard|hardtop|seaforce|chartek|interchar|interseal|steelguard|firetex|jotun|hempel|akzo ?nobel|international paint|\bppg\b|sherwin|nippon paint|kansai|axalta|chugoku|tikkurila|teknos|carboline|rpm international|benjamin moore|asian paints|berger paints|dulux|filli|betek|\bdyo\b|polisan|marshall|dekoratif|decorative paint|permolit|bianca boya)/i;
+const PAINTSRC=/european coatings|pci magazine|coatings world|ted \(eu tenders\)|coatings t[üu]rkiye|paint ?square|ampp/i;
+/* Uygulama yalnız boya/kaplama haberi gösterir: başlık + kaynak (akış haberlerinde akış alıntısı da) */
+const isPaint=i=>PAINTSRC.test(i.source||"")||PAINT.test(i.title+" "+(i.feed?i.summary:"")+" "+(i.source||""));
+for(let k=ITEMS.length-1;k>=0;k--)if(!isPaint(ITEMS[k]))ITEMS.splice(k,1);
 const vis=()=>ITEMS.filter(i=>!S.hidden.includes(i.seg));
 const get=id=>ITEMS.find(i=>i.id===id);
 const langOf=i=>/TR$/.test(i.lang||"")?"tr":"en";
@@ -1116,6 +1121,7 @@ render();startAuto();
       if(!r.url||urls.has(r.url)||keys.has(k))continue;urls.add(r.url);keys.add(k);
       const it={id:r.id,seg:r.seg,reg:r.reg,lang:r.lang,star:!!r.star,isNew:(Date.now()-Date.parse(r.date))<2*864e5,title:r.title,summary:r.summary||"",source:r.source,date:r.date,url:r.url,feed:true};
       if(r.kind)it.kind=r.kind;if(r.deadline)it.deadline=r.deadline;
+      if(!isPaint(it))continue;
       ITEMS.push(it);n++;
     }
     if(runs&&runs[0]&&runs[0].ran_at)LIVE_TS=new Date(runs[0].ran_at);
