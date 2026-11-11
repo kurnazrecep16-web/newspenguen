@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NEWSPENGUEN Haber Akışı</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f4f6f9;--card:#fff;--ink:#14213d;--muted:#5c6b80;--line:#e3e8ef;
+  --brand:#0b3d91;--star:#f2a900;--new:#16a34a;--li:#0a66c2;
+  --deco:#c2410c;--marine:#0369a1;--prot:#4d7c0f;--powder:#7c3aed;--corp:#334155;
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#0e1420;--card:#172131;--ink:#e7ecf3;--muted:#9aa8bb;--line:#26334a;--brand:#6ea0ff;--li:#5aa2ef}
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+header{background:linear-gradient(135deg,#0b3d91,#071f4d);color:#fff;padding:20px 16px 16px}
+.wrap{max-width:860px;margin:0 auto}
+.brand{display:flex;align-items:center;gap:10px}
+.logo{width:38px;height:38px;border-radius:10px;background:#fff;display:grid;place-items:center;font-size:22px}
+h1{font-size:20px;margin:0;letter-spacing:.3px}
+.sub{font-size:13px;opacity:.85;margin-top:2px}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;font-size:12px}
+.pill{background:rgba(255,255,255,.14);padding:5px 10px;border-radius:999px}
+.bar{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding:10px 16px}
+.search{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit;font-size:14px}
+.chips{display:flex;gap:6px;overflow-x:auto;margin-top:8px;padding-bottom:2px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:7px 12px;border-radius:999px;font:inherit;font-size:13px;cursor:pointer;white-space:nowrap}
+.chip.on{background:var(--brand);border-color:var(--brand);color:#fff}
+main{padding:12px 16px 40px}
+.sec{margin:18px 0 8px;font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:10px}
+.card.star{border-left:4px solid var(--star)}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;align-items:center}
+.tag{font-size:11px;font-weight:600;padding:3px 8px;border-radius:6px;color:#fff}
+.t-deco{background:var(--deco)}.t-marine{background:var(--marine)}.t-prot{background:var(--prot)}.t-powder{background:var(--powder)}.t-corp{background:var(--corp)}
+.reg{font-size:11px;color:var(--muted);font-weight:600}
+.lang{font-size:10px;font-weight:700;border:1px solid var(--line);color:var(--muted);padding:1px 5px;border-radius:4px}
+.newb{font-size:10px;font-weight:700;background:var(--new);color:#fff;padding:2px 6px;border-radius:5px}
+.starb{font-size:11px;font-weight:700;color:var(--star)}
+.card h3{font-size:15px;margin:0 0 6px;line-height:1.35}
+.card p{font-size:14px;line-height:1.5;margin:0 0 10px;color:var(--muted)}
+.foot{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12px;color:var(--muted);flex-wrap:wrap}
+.foot a,.src a{color:var(--brand);font-weight:600;text-decoration:none}
+.save{border:none;background:none;font-size:18px;cursor:pointer;color:var(--muted);padding:0 2px}
+.save.on{color:var(--star)}
+.empty{text-align:center;color:var(--muted);padding:40px 0;font-size:14px}
+.note{font-size:12px;color:var(--muted);text-align:center;margin-top:24px;line-height:1.5}
+.src{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 14px;margin-bottom:8px}
+.src b{font-size:14px}
+.src small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
+.src .links{display:flex;gap:8px;flex:0 0 auto}
+.btn{font-size:12px;padding:6px 10px;border-radius:8px;border:1px solid var(--line);white-space:nowrap}
+.btn.li{background:var(--li);color:#fff !important;border-color:var(--li)}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <div class="brand"><div class="logo">🐧</div><div><h1>NEWSPENGUEN</h1><div class="sub">Jotun 4 segment haber akışı · Global &amp; Türkiye</div></div></div>
+  <div class="meta"><span class="pill" id="upd"></span><span class="pill" id="cnt"></span><span class="pill">⏱ 6 saatte bir güncellenir</span></div>
+</div></header>
+
+<div class="bar"><div class="wrap">
+  <input class="search" id="q" type="search" placeholder="Ara: Hempel, antifouling, Tekirdağ…">
+  <div class="chips" id="segChips"></div>
+  <div class="chips" id="regChips"></div>
+</div></div>
+
+<main class="wrap" id="list"></main>
+
+<script>
+/*DATA_START*/
+const UPDATED = "11.11.2026 22:30";
+const ITEMS = [
+ {id:"jotun-q3-2026",seg:"corp",reg:"global",lang:"EN",star:false,isNew:true,
+  title:"Jotun quarterly report Q3 2026 (via Orkla)",
+  summary:"Jotun does not issue a stand-alone Q3 update; according to the Orkla Q3 report published 6 November, Jotun's operating revenue rose 5.5% year on year in the third quarter and the long-term growth strategy is unchanged.",
+  source:"jotun.com",date:"2026-11-06",
+  url:"https://www.jotun.com/contentassets-b2b/fd5242ff2b3d47f7bf885a0acb6804ef/Jotun-quarterly-report-q3-2026-Orkla.pdf"},
+ {id:"jotun-ethiopia",seg:"corp",reg:"global",lang:"EN",star:false,isNew:true,
+  title:"Jotun supports humanitarian aid in Ethiopia",
+  summary:"Latest item on Jotun's corporate newsroom: the company has made a NOK 2 million donation to the Red Cross for humanitarian work in Ethiopia.",
+  source:"Jotun Corporate News",date:"2026-11-04",
+  url:"https://www.jotun.com/cy-en/news-and-insights/corporate"},
+ {id:"jotun-8ay-2026",seg:"corp",reg:"global",lang:"EN",star:false,isNew:true,
+  title:"Continued growth for Jotun",
+  summary:"Over the first eight months of 2026 operating revenue grew 2% and operating profit 4%, driven by volume growth plus price increases that partly offset higher raw-material costs.",
+  source:"Jotun Corporate News",date:"2026-09-24",
+  url:"https://www.jotun.com/mm-en/news-and-insights/corporate/continued-growth-for-jotun"},
+ {id:"jotun-q2-protective",seg:"prot",reg:"global",lang:"EN",star:false,isNew:true,
+  title:"Protective Coatings Drive Jotun's Q2 Underlying Growth",
+  summary:"Jotun posted double-digit underlying revenue and earnings growth in Q2 2026, with Protective among the strongest contributors; reported operating revenue was up 3.9%.",
+  source:"PCI Magazine",date:"2026-08-20",
+  url:"https://www.pcimag.com/articles/115075-protective-coatings-drive-jotuns-q2-underlying-growth"},
+ {id:"akzo-axalta-ec",seg:"corp",reg:"global",lang:"EN",star:false,isNew:true,
+  title:"EU Clears $25B Akzo-Axalta Merger with One Big Condition",
+  summary:"The European Commission conditionally approved the all-stock merger on 6 November; AkzoNobel must divest its European vehicle refinish business. Closing is expected in early 2027, pending other approvals.",
+  source:"PCI Magazine",date:"2026-11-06",
+  url:"https://www.pcimag.com/articles/115508-eu-clears-25b-akzo-axalta-merger-with-one-big-condition"},
+ {id:"akzo-q3",seg:"corp",reg:"global",lang:"EN",star:false,isNew:true,
+  title:"AkzoNobel's Q3 2026 Report Shows the 6th Consecutive Quarter of Margin Expansion",
+  summary:"Organic sales up 2% on pricing, revenue flat, adjusted EBITDA margin up to 15.3%. Decorative Paints volumes were lower; the SE Asia deco divestment closes the Asia paints review.",
+  source:"Coatings World",date:"2026-10-21",
+  url:"https://www.coatingsworld.com/breaking-news/akzonobels-q3-2026-report-shows-the-6th-consecutive-quarter-of-margin-expansion/"},
+ {id:"akzo-sea-nippon",seg:"deco",reg:"global",lang:"EN",star:false,isNew:true,
+  title:"AkzoNobel to Sell Southeast Asia Decorative Paints Business to Nippon Paint for $1.35 Billion",
+  summary:"Nippon Paint Singapore will acquire AkzoNobel's decorative paints subsidiaries in Vietnam and other SE Asian markets, reshaping the decorative competitive landscape where Jotun is strong.",
+  source:"PCI Magazine",date:"2026-10-05",
+  url:"https://www.pcimag.com/articles/115350-akzonobel-to-sell-southeast-asia-decorative-paints-business-to-nippon-paint-for-135-billion"},
+ {id:"shw-q3",seg:"deco",reg:"global",lang:"EN",star:false,isNew:true,
+  title:"Sherwin-Williams Reports 2026 Third Quarter Financial Results",
+  summary:"Net sales up 7.9% to $6.86 billion; Paint Stores Group same-store sales up 3.9%, with residential repaint highlighted as a key growth area.",
+  source:"Nasdaq / company release",date:"2026-10-27",
+  url:"https://www.nasdaq.com/press-release/sherwin-williams-company-reports-2026-third-quarter-financial-results-2026-10-27"},
+ {id:"ppg-q3",seg:"corp",reg:"global",lang:"EN",star:false,isNew:true,
+  title:"PPG reports record third quarter 2026 EPS",
+  summary:"Net sales rose about 7% to roughly $4.35 billion with record Q3 EPS, led by aerospace and Latin American architectural coatings; full-year EPS guidance midpoint raised.",
+  source:"Investing News / PPG",date:"2026-10-27",
+  url:"https://investingnews.com/ppg-reports-record-third-quarter-2026-eps-and-raises-midpoint-of-full-year-eps-guidance/"},
+ {id:"hempel-maersk",seg:"marine",reg:"global",lang:"EN",star:false,isNew:true,
+  title:"Hempel Secures Three-Year Maersk Hull-Coatings Agreement",
+  summary:"The deal covers a large share of Maersk's 2026–2028 dry-docking programme and widens cooperation on in-service hull performance — a direct competitive move in Jotun's core marine segment.",
+  source:"PCI Magazine",date:"2026-09-20",
+  url:"https://www.pcimag.com/keywords/2030-marine-coatings"},
+ {id:"cw-japan-marine",seg:"marine",reg:"global",lang:"EN",star:false,isNew:true,
+  title:"The Marine Coating Market in Japan",
+  summary:"Japanese marine coating producers are investing heavily in capacity as shipbuilders step up capital spending ahead of an expected demand wave.",
+  source:"Coatings World",date:"2026-11-03",
+  url:"https://www.coatingsworld.com/the-marine-coating-market-in-japan/"},
+ {id:"nippon-ceramo",seg:"marine",reg:"global",lang:"EN",star:false,isNew:true,
+  title:"Nippon Paint India sets sights on marine sector with launch of global shop primer NIPPON CERAMO",
+  summary:"Nippon Paint India's industrial coatings business is bringing its shop/pre-fabrication primer to Indian shipyards as local shipbuilding expands.",
+  source:"Indian Chemical News",date:"2026-11-04",
+  url:"https://www.indianchemicalnews.com/chemical/nippon-paint-india-sets-sights-on-marine-sector-with-launch-of-global-shop-primer-nippon-ceramo-32520"},
+ {id:"nippon-rightship",seg:"marine",reg:"global",lang:"EN",star:false,isNew:true,
+  title:"More than 2,500 vessels coated with Nippon Paint Marine technology now registered on RightShip platform",
+  summary:"Nippon Paint Marine says its low-friction hull coatings have helped customers save over 45 million tonnes of CO2 since launch.",
+  source:"Cyprus Shipping News",date:"2026-08-10",
+  url:"https://cyprusshippingnews.com/2026/08/10/more-than-2500-vessels-coated-with-nippon-paint-marine-technology-now-registered-on-rightship-platform/"},
+ {id:"cw-marine-steam",seg:"marine",reg:"global",lang:"EN",star:false,isNew:true,
+  title:"The Marine Coatings Market Picks Up Steam",
+  summary:"Shipowners are adding low-friction coatings and hull optimisation to planned dry-dock scopes; hull efficiency is now treated as a board-level decarbonisation issue.",
+  source:"Coatings World",date:"2026",
+  url:"https://www.coatingsworld.com/the-marine-coatings-market-picks-up-steam/"},
+ {id:"hempafire-515",seg:"prot",reg:"global",lang:"EN",star:false,isNew:true,
+  title:"Hempel launches new steel fire protection coating designed to reduce paint consumption",
+  summary:"Hempafire Optima 515: waterborne cellulosic PFP for interior steel, up to 150 min (BS 476), lower DFT requirements and an EPD. Launched first in the Middle East, wider rollout to follow.",
+  source:"Hempel",date:"2026-07-30",
+  url:"https://www.hempel.com/about-us/media-and-news/news/2026/hempel-launches-new-steel-fire-protection-coating"},
+ {id:"biobased-pfp",seg:"prot",reg:"global",lang:"EN",star:false,isNew:true,
+  title:"Bio-based smart coating combines fire protection, early warning and upcyclability",
+  summary:"Researchers developed an epoxy coating using a phytic-acid-based intumescent flame retardant with graphene oxide that also gives a fire warning signal. Early-stage research, not a commercial product.",
+  source:"Phys.org",date:"2026",
+  url:"https://phys.org/news/2026-11-bio-based-smart-coating-combines.html"},
+ {id:"hempel-ceo",seg:"corp",reg:"global",lang:"EN",star:false,isNew:true,
+  title:"Eric Alström appointed new Group President & CEO of Hempel",
+  summary:"Hempel named a new group CEO after Michael Hansen's departure was announced earlier in the year.",
+  source:"Cision News (via BCC Research)",date:"2026-07-03",
+  url:"https://www.bccresearch.com/company-index/profile/hempel-aslashs/news"},
+ {id:"akzo-powder-60m",seg:"powder",reg:"global",lang:"EN",star:false,isNew:true,
+  title:"Akzo Nobel Expands North American Powder Coatings",
+  summary:"A USD 60 million programme to upgrade and expand three powder coatings plants in North America.",
+  source:"European Coatings",date:"2026-10-28",
+  url:"https://www.european-coatings.com/news/markets-companies/akzo-nobel-expands-north-american-powder-coatings/"},
+ {id:"protech-ripol",seg:"powder",reg:"global",lang:"EN",star:false,isNew:true,
+  title:"Powder Coatings: Protech Group Acquires Ripol",
+  summary:"Canada's Protech bought Italian powder maker Ripol (near Milan), extending its European footprint to six countries — consolidation continues in European powder.",
+  source:"European Coatings",date:"2026-11-02",
+  url:"https://www.european-coatings.com/news/markets-companies/powder-coatings-protech-group-acquires-ripol/"},
+ {id:"powder-growth",seg:"powder",reg:"global",lang:"EN",star:false,isNew:true,
+  title:"Powder Coatings Poised for Growth",
+  summary:"Although a small share of the total coatings market, powder keeps outgrowing liquid coatings.",
+  source:"Powder Coated Tough",date:"2026-09-01",
+  url:"https://www.powdercoatedtough.com/News/ID/5538/Powder-Coatings-Poised-for-Growth"},
+ {id:"powder-arch-alu",seg:"powder",reg:"global",lang:"EN",star:false,isNew:true,
+  title:"Powder coatings for architectural aluminum",
+  summary:"Solvent-free performance and distinctive finishes are strengths; cost, aesthetics and entrenched liquid systems still limit US adoption.",
+  source:"PCI Magazine",date:"2026-09-21",
+  url:"https://www.pcimag.com/articles/topic/9465-powder-coating-perspectives"},
+ {id:"starstep-royal",seg:"powder",reg:"global",lang:"EN",star:false,isNew:true,
+  title:"Star Step Adds Powder Coatings with Acquisition",
+  summary:"Buying Royal Powder adds epoxy, hybrid, polyester and polyurethane powder systems to Star Step's industrial platform.",
+  source:"PCI Magazine",date:"2026-08-04",
+  url:"https://www.pcimag.com/articles/115006-star-step-adds-powder-coatings-with-acquisition"},
+ {id:"tr-deco-market",seg:"deco",reg:"tr",lang:"TR",star:false,isNew:true,
+  title:"Marshall: Türkiye dekoratif pazarı 2026'da %5 daralabilir",
+  summary:"Marshall Türkiye Genel Müdürü Özgür Orçunus, pazarın yaklaşık 380 milyon litreye gerileyebileceğini; buna rağmen 5 yılda pazar paylarını %50 artırmayı hedeflediklerini söyledi.",
+  source:"Capital",date:"2026",
+  url:"https://www.capital.com.tr/is-dunyasi/soylesiler/5-yilda-payimiz-yuzde-50-artar"},
+ {id:"tr-bianca",seg:"deco",reg:"tr",lang:"TR",star:false,isNew:true,
+  title:"Bianca Boya daralan pazarda %50 büyüme hedefliyor",
+  summary:"Son iki yılda ciddi daralan sektörde şirket, kapasitesini 12 bin tondan 18 bin tona çıkarmaya hazırlanıyor ve saha gücüyle pay kazanmayı planlıyor.",
+  source:"Türkiye Gazetesi",date:"2026",
+  url:"https://www.turkiyegazetesi.com.tr/sirket-haberleri/bianca-boya-daralan-pazarda-50-buyumeyi-hedefliyor-1787616"},
+ {id:"tr-deco-stable",seg:"deco",reg:"tr",lang:"TR",star:false,isNew:true,
+  title:"Dekoratif boyada büyüme hacimde değil, katma değerde",
+  summary:"Pandemi sonrası dalgalanmanın ardından Türkiye dekoratif boya sektörü 2026'da daha dengeli ve nitelik odaklı bir döneme girdi.",
+  source:"Ekonomi Gazetesi",date:"2026",
+  url:"https://www.ekonomigazetesi.com/sektor-haberleri/boyada-buyume-hacimde-degil-katma-deger-ve-inovatif-urunde-89739"},
+ {id:"tr-filli-trabzon",seg:"deco",reg:"tr",lang:"TR",star:false,isNew:true,
+  title:"Filli Boya Trabzon'da yapı sektörünü bir araya getirdi",
+  summary:"Rakip Filli Boya, bölgesel yapı sektörü ve ekonomi gündemi etkinliğiyle Karadeniz'de saha ilişkilerini güçlendiriyor.",
+  source:"Turkchem",date:"2026-08-05",
+  url:"https://turkchem.net/en/sektorden/boya-ve-kaplama/filli-boya-trabzonda-yapi-sektoru-ve-ekonomi-gundemini-bir-araya-getirdi"},
+ {id:"tr-sector-size",seg:"corp",reg:"tr",lang:"TR",star:false,isNew:true,
+  title:"Türkiye boya sektörü 2,47 milyar dolarlık büyüklükte",
+  summary:"Paintistanbul 2026 lansmanında sektörün ekonomik büyüklüğü 2,47 milyar dolar olarak açıklandı; fuar 17-19 Haziran'da İstanbul Fuar Merkezi'nde yapıldı.",
+  source:"Habertürk",date:"2026",
+  url:"https://www.haberturk.com/boya-sektoru-2-47-milyar-dolarlik-buyukluge-ulasti-3884662-ekonomi"},
+ {id:"bolge-model-fabrika",seg:"prot",reg:"tr",lang:"TR",star:true,isNew:true,
+  title:"Tekirdağ Velimeşe OSB'de Trakya Model Fabrika yükseliyor",
+  summary:"Sanayi ve Teknoloji Bakanı Kacır'ın temelini attığı fabrikanın 2026 sonunda açılması hedefleniyor. Çelik yapı ve tesis boyası için takip edilecek proje.",
+  source:"DHA",date:"2026",
+  url:"https://www.dha.com.tr/yerel-haberler/tekirdag/tekirdag-bakan-kacir-turkiyenin-planli-sana-2733692"},
+ {id:"bolge-formul-plastik",seg:"prot",reg:"tr",lang:"TR",star:true,isNew:true,
+  title:"Formül Plastik Tekirdağ'a 1 milyar liralık fabrika kuruyor",
+  summary:"Şirket kapasite artışı için Tekirdağ'da yeni fabrika yatırımı yapacak. Yeni tesis çelik konstrüksiyon ve zemin/koruyucu boya fırsatı olabilir.",
+  source:"Ekonomi Gazetesi",date:"2026",
+  url:"https://www.ekonomigazetesi.com/sirket-haberleri/formul-plastikten-1-milyar-liralik-fabrika-yatirimi-70624"},
+ {id:"bolge-hayrabolu",seg:"prot",reg:"tr",lang:"TR",star:true,isNew:true,
+  title:"Hayrabolu OSB'de 2,5 milyar liralık yatırım",
+  summary:"Tekirdağ Hayrabolu'da tarıma dayalı sanayi için yaklaşık 84,6 bin m² alanda tesis yükseliyor. İnşaat aşamasında bağlantı kurulabilir.",
+  source:"Ekonomist",date:"2026",
+  url:"https://www.ekonomist.com.tr/ekonomi-haberleri/hayrabolu-osb-de-2-5-milyar-liralik-dev-yatirim-79026"}
+];
+/*DATA_END*/
+
+/* Kaynaklar: li = LinkedIn adresi. "q:" ile başlayanlar LinkedIn şirket araması açar (resmi sayfa ilk sırada çıkar). */
+const SOURCES = [
+ {g:"🏢 Jotun",items:[
+  {n:"Jotun Corporate News",d:"Kurumsal haberler, finansal raporlar",w:"https://www.jotun.com/ww-en/news-and-insights/corporate",li:"q:Jotun"},
+  {n:"Jotun Performance Coatings",d:"Marine, Protective, Powder",w:"https://www.jotun.com/ww-en",li:"q:Jotun Performance Coatings"},
+  {n:"Jotun Group (Facebook)",d:"Kurumsal paylaşımlar",w:"https://www.facebook.com/JotunGroup/",li:""},
+  {n:"Orkla",d:"%42,7 ortak; Jotun çeyrek verileri Orkla raporlarında",w:"https://www.orkla.com",li:"q:Orkla"}]},
+ {g:"⚔️ Rakipler",items:[
+  {n:"Hempel",d:"Marine, Protective, Decorative",w:"https://www.hempel.com/about-us/media-and-news/news",li:"q:Hempel A/S"},
+  {n:"AkzoNobel",d:"Media releases",w:"https://www.akzonobel.com/en/media/media-releases",li:"q:AkzoNobel"},
+  {n:"International (AkzoNobel M&P)",d:"Marine & Protective markası",w:"https://www.international-marine.com/en",li:"q:International Paint AkzoNobel"},
+  {n:"Interpon (AkzoNobel Powder)",d:"Toz boya",w:"https://www.akzonobel.com/en/media/media-releases",li:"q:Powder Coatings by AkzoNobel"},
+  {n:"PPG",d:"Protective & Marine, Architectural",w:"https://www.ppg.com",li:"q:PPG Protective and Marine Coatings"},
+  {n:"Sherwin-Williams",d:"Protective & Marine, Paint Stores",w:"https://www.sherwin-williams.com",li:"q:Sherwin-Williams Protective & Marine"},
+  {n:"Nippon Paint Marine",d:"Marine",w:"https://www.marinelink.com/news/maritime/antifouling-technology",li:"q:Nippon Paint Marine"},
+  {n:"Axalta",d:"Akzo ile birleşme süreci",w:"https://www.axalta.com",li:"q:Axalta"}]},
+ {g:"📰 Sektör yayınları (Global)",items:[
+  {n:"Coatings World",d:"Genel sektör, şirket haberleri",w:"https://www.coatingsworld.com",li:"https://www.linkedin.com/company/coatings-world"},
+  {n:"European Coatings",d:"Avrupa pazarı, teknoloji",w:"https://www.european-coatings.com/news",li:"q:European Coatings"},
+  {n:"PCI Magazine",d:"Pazar, şirket, toz boya",w:"https://www.pcimag.com",li:"q:PCI Magazine"},
+  {n:"American Coatings Association",d:"Sektör haber akışı",w:"https://www.paint.org/newsroom/news/",li:"q:American Coatings Association"},
+  {n:"SpecialChem Coatings",d:"Hammadde, teknoloji",w:"https://www.specialchem.com/coatings",li:"q:SpecialChem"},
+  {n:"ipcm",d:"Endüstriyel boya, Avrupa",w:"https://www.ipcm.it/en",li:"q:ipcm international paint coating magazine"}]},
+ {g:"⚓ Marine",items:[
+  {n:"Riviera Maritime Media",d:"Hull coatings, webinarlar",w:"https://www.rivieramm.com/news-content-hub",li:"q:Riviera Maritime Media"},
+  {n:"Hellenic Shipping News",d:"Günlük denizcilik haberleri",w:"https://www.hellenicshippingnews.com",li:"q:Hellenic Shipping News"},
+  {n:"Marine Link",d:"Antifouling, hull coatings",w:"https://www.marinelink.com/news/maritime/hull-coatings",li:"q:Marine Link Maritime Reporter"},
+  {n:"The Maritime Executive",d:"Armatör, tersane haberleri",w:"https://maritime-executive.com",li:"q:The Maritime Executive"},
+  {n:"Cyprus Shipping News",d:"Marine boya basın bültenleri",w:"https://cyprusshippingnews.com",li:"q:Cyprus Shipping News"},
+  {n:"Clean Shipping International",d:"Marine coatings & hull protection",w:"https://www.cleanshippinginternational.com",li:"q:Clean Shipping International"},
+  {n:"Safety4Sea",d:"IMO, regülasyon",w:"https://safety4sea.com",li:"q:SAFETY4SEA"}]},
+ {g:"🛡 Protective",items:[
+  {n:"AMPP",d:"Korozyon, standartlar (eski NACE/SSPC)",w:"https://www.ampp.org",li:"q:AMPP Association for Materials Protection and Performance"},
+  {n:"PaintSquare / JPCL",d:"Koruyucu boya projeleri",w:"https://www.paintsquare.com",li:"q:PaintSquare JPCL"},
+  {n:"Engineering News",d:"Altyapı, PFP ürün haberleri",w:"https://www.engineeringnews.co.za",li:""}]},
+ {g:"🎨 Powder",items:[
+  {n:"Products Finishing – Powder",d:"Toz boya haber akışı",w:"https://www.pfonline.com/topics/powder",li:"q:Products Finishing"},
+  {n:"Powder Coated Tough",d:"Toz boya dergisi",w:"https://www.powdercoatedtough.com",li:"q:Powder Coating Institute"}]},
+ {g:"🇹🇷 Türkiye",items:[
+  {n:"Turkchem",d:"Kimya ve boya sektörü",w:"https://turkchem.net",li:"q:Turkchem"},
+  {n:"Sanayi Gazetesi",d:"OSB ve fabrika yatırım haberleri",w:"https://sanayigazetesi.com.tr",li:""},
+  {n:"Ekonomi Gazetesi – Sektör",d:"Boya sektörü haberleri",w:"https://www.ekonomigazetesi.com",li:""},
+  {n:"Dünya Gazetesi",d:"Sektörler",w:"https://www.dunya.com/sektorler",li:""},
+  {n:"Ticaret Bakanlığı – Boya Sektörü Raporu 2026",d:"Resmi sektör raporu",w:"https://ticaret.gov.tr",li:""}]}
+];
+
+const SEGS=[["all","Tümü"],["star","⭐ Bölgem"],["deco","🏠 Dekoratif"],["marine","⚓ Marine"],["prot","🛡 Protective"],["powder","🎨 Powder"],["corp","🏢 Jotun & Rakipler"],["saved","🔖 Kaydedilenler"],["src","🔗 Kaynaklar"]];
+const REGS=[["all","🌐 Hepsi"],["global","🌍 Global"],["tr","🇹🇷 Türkiye"]];
+const SEGNAME={deco:"Dekoratif",marine:"Marine",prot:"Protective",powder:"Powder",corp:"Jotun & Rakipler"};
+let seg="all",reg="all",q="";
+let saved=[];try{saved=JSON.parse(localStorage.getItem("np_saved")||"[]")}catch(e){}
+function persist(){try{localStorage.setItem("np_saved",JSON.stringify(saved))}catch(e){}}
+function fmt(d){if(/^\d{4}$/.test(d))return d+" (gün belirtilmemiş)";const [y,m,g]=d.split("-");return g+"."+m+"."+y}
+function chips(el,arr,cur,fn){el.innerHTML="";arr.forEach(([k,l])=>{const b=document.createElement("button");b.className="chip"+(k===cur?" on":"");b.textContent=l;b.onclick=()=>fn(k);el.appendChild(b)})}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+function liUrl(li){return li.startsWith("q:")?"https://www.linkedin.com/search/results/companies/?keywords="+encodeURIComponent(li.slice(2)):li}
+function renderSources(el){
+  let html='<div class="note" style="margin:6px 0 4px;text-align:left">LinkedIn butonları şirketin LinkedIn sayfasını ya da LinkedIn şirket aramasını açar (resmi sayfa ilk sırada çıkar). LinkedIn içeriğini görmek için LinkedIn hesabınla giriş yapman gerekir.</div>';
+  SOURCES.forEach(gr=>{
+    const its=gr.items.filter(s=>!q||(s.n+" "+s.d).toLocaleLowerCase("tr").includes(q));
+    if(!its.length)return;
+    html+='<div class="sec">'+gr.g+'</div>';
+    its.forEach(s=>{html+='<div class="src"><div><b>'+esc(s.n)+'</b><small>'+esc(s.d)+'</small></div><div class="links"><a class="btn" href="'+s.w+'" target="_blank" rel="noopener">🌐 Site</a>'+(s.li?'<a class="btn li" href="'+liUrl(s.li)+'" target="_blank" rel="noopener">in LinkedIn</a>':'')+'</div></div>'})});
+  el.innerHTML=html;
+}
+function render(){
+  chips(document.getElementById("segChips"),SEGS,seg,k=>{seg=k;render()});
+  const regEl=document.getElementById("regChips");
+  const el=document.getElementById("list");
+  if(seg==="src"){regEl.style.display="none";renderSources(el);return}
+  regEl.style.display="flex";
+  chips(regEl,REGS,reg,k=>{reg=k;render()});
+  let list=ITEMS.filter(i=>{
+    if(seg==="star"&&!i.star)return false;
+    if(seg==="saved"&&!saved.includes(i.id))return false;
+    if(!["all","star","saved"].includes(seg)&&i.seg!==seg)return false;
+    if(reg!=="all"&&i.reg!==reg)return false;
+    if(q){const t=(i.title+" "+i.summary+" "+i.source).toLocaleLowerCase("tr");if(!t.includes(q))return false}
+    return true});
+  const key=d=>/^\d{4}$/.test(d)?d+"-00-00":d;
+  list.sort((a,b)=>(b.star-a.star)||(reg==="all"?(a.reg===b.reg?0:(a.reg==="global"?-1:1)):0)||key(b.date).localeCompare(key(a.date)));
+  if(!list.length){el.innerHTML='<div class="empty">Bu filtrede haber yok.</div>';return}
+  let html="",lastGroup=null;
+  list.forEach(i=>{
+    const grp=i.star?"star":i.reg;
+    if(grp!==lastGroup){html+='<div class="sec">'+(grp==="star"?"⭐ Bölgem · Trakya & Avrupa Yakası":grp==="global"?"🌍 Global":"🇹🇷 Türkiye")+'</div>';lastGroup=grp}
+    html+='<div class="card'+(i.star?" star":"")+'"><div class="tags"><span class="tag t-'+i.seg+'">'+SEGNAME[i.seg]+'</span><span class="reg">'+(i.reg==="tr"?"🇹🇷 Türkiye":"🌍 Global")+'</span><span class="lang">'+(i.lang||"")+'</span>'+(i.star?'<span class="starb">⭐ Bölgem</span>':'')+(i.isNew?'<span class="newb">YENİ</span>':'')+'</div><h3 lang="'+(i.lang==="TR"?"tr":"en")+'">'+esc(i.title)+'</h3><p lang="'+(i.lang==="TR"?"tr":"en")+'">'+esc(i.summary)+'</p><div class="foot"><span>'+esc(i.source)+' · '+fmt(i.date)+'</span><span><button class="save'+(saved.includes(i.id)?" on":"")+'" data-id="'+i.id+'" aria-label="Kaydet">'+(saved.includes(i.id)?"★":"☆")+'</button> <a href="'+i.url+'" target="_blank" rel="noopener">Habere git →</a></span></div></div>'});
+  html+='<div class="note">Global haberler orijinal dilinde, Türkiye haberleri Türkçe verilir. Özetler kaynak metinden kopyalanmadan yazılmıştır; ayrıntı için kaynağa gidin.<br>Kaydettiklerin sadece bu cihazda saklanır.</div>';
+  el.innerHTML=html;
+  el.querySelectorAll(".save").forEach(b=>b.onclick=()=>{const id=b.dataset.id;saved=saved.includes(id)?saved.filter(x=>x!==id):[...saved,id];persist();render()});
+}
+document.getElementById("upd").textContent="🕒 Son güncelleme: "+UPDATED;
+document.getElementById("cnt").textContent="🆕 "+ITEMS.filter(i=>i.isNew).length+" yeni · toplam "+ITEMS.length+" · 🌍 "+ITEMS.filter(i=>i.reg==="global").length+" / 🇹🇷 "+ITEMS.filter(i=>i.reg==="tr").length;
+document.getElementById("q").addEventListener("input",e=>{q=e.target.value.trim().toLocaleLowerCase("tr");render()});
+render();
+</script>
+</body>
+</html>
