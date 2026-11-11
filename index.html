@@ -794,7 +794,7 @@ const PTYPE=[
 const projSeg=t=>{if(!PSIG.test(t))return null;for(const [s,rx] of PTYPE)if(rx.test(t))return s;return null};
 const isPaint=i=>PAINTSRC.test(i.source||"")||PAINT.test(i.title+" "+(i.feed?i.summary:"")+" "+(i.source||""));
 /* Boya haberi değilse: boya kullanacak potansiyel proje mi? (çelik yapı, gemi, inşaat, toz boya kullanıcısı) */
-for(let k=ITEMS.length-1;k>=0;k--){const it=ITEMS[k];if(isPaint(it))continue;if(projSeg(it.title+" "+it.summary)){it.project=true;continue}ITEMS.splice(k,1)}
+for(let k=ITEMS.length-1;k>=0;k--){const it=ITEMS[k];if(isPaint(it))continue;if(it.project||projSeg(it.title+" "+it.summary)){it.project=true;continue}ITEMS.splice(k,1)}
 const vis=()=>ITEMS.filter(i=>!S.hidden.includes(i.seg));
 const get=id=>ITEMS.find(i=>i.id===id);
 const langOf=i=>/TR$/.test(i.lang||"")?"tr":"en";
