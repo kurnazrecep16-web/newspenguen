@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#081733">
+<title>NEWSPENGUEN</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#071430;--bg2:#0B1D42;--card:#0F2552;--card2:#13306A;--line:rgba(255,255,255,.08);
+  --text:#F2F6FC;--text2:#B9C6DD;--muted:#7F90B0;--blue:#1E6BFF;--blue2:#3B82F6;--gold:#F5A623;
+  --marine:#1E6BFF;--prot:#22A45D;--deco:#F59E0B;--powder:#8B5CF6;--energy:#E11D48;
+  --r:18px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:radial-gradient(120% 80% at 50% 0%,#0E2350 0%,#071430 55%,#050E22 100%) fixed;color:var(--text);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--blue2);outline-offset:2px;border-radius:10px}
+.app{max-width:960px;margin:0 auto;min-height:100vh;padding-bottom:92px}
+.ic{width:20px;height:20px;flex:0 0 auto}
+
+/* header */
+.top{position:sticky;top:0;z-index:20;padding:14px 16px 10px;background:linear-gradient(180deg,rgba(7,20,48,.97) 70%,rgba(7,20,48,0));backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.bar{display:flex;align-items:center;gap:10px}
+.brand{display:flex;align-items:center;gap:10px;min-width:0;flex:1}
+.brand b{display:block;font-size:19px;font-weight:800;letter-spacing:.4px;line-height:1.1}
+.brand b sup{font-size:9px;font-weight:600;margin-left:1px}
+.brand small{display:block;color:var(--text2);font-size:12px;margin-top:1px}
+.logo{width:42px;height:42px;flex:0 0 auto}
+.rb{width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:rgba(255,255,255,.04);display:grid;place-items:center;position:relative}
+.rb .dot{position:absolute;top:9px;right:10px;width:8px;height:8px;border-radius:50%;background:#EF4444;border:2px solid var(--bg)}
+.av{width:42px;height:42px;border-radius:50%;background:var(--blue);display:grid;place-items:center;font-weight:800;font-size:16px}
+.pagetitle{font-size:24px;font-weight:800;margin:0;flex:1}
+.back{width:38px;height:38px;display:grid;place-items:center;border-radius:12px}
+
+/* chips */
+.chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:12px 0 2px}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;display:inline-flex;align-items:center;gap:7px;height:40px;padding:0 16px;border-radius:999px;font-size:14px;font-weight:600;color:var(--text2);background:rgba(255,255,255,.05);border:1px solid var(--line)}
+.chip svg{width:17px;height:17px}
+.chip[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#fff;box-shadow:0 6px 18px rgba(30,107,255,.35)}
+.chip .n{font-size:11.5px;opacity:.75}
+
+main{padding:4px 16px 0}
+.sec{display:flex;align-items:center;justify-content:space-between;margin:24px 0 12px}
+.sec h2{margin:0;font-size:20px;font-weight:800}
+.link{color:var(--text2);font-size:14px;font-weight:600;display:inline-flex;align-items:center;gap:4px}
+
+/* hero */
+.hero{position:relative;border-radius:22px;overflow:hidden;height:300px;box-shadow:0 18px 40px rgba(0,0,0,.35);background:#0b1b3d}
+.slide{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .45s}
+.slide.on{opacity:1;visibility:visible}
+.slide .scene{position:absolute;inset:0}
+.slide::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(5,14,34,.95) 0%,rgba(5,14,34,.55) 50%,rgba(5,14,34,0) 80%)}
+.cap{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:18px 18px 34px}
+.tag{display:inline-flex;align-items:center;height:24px;padding:0 10px;border-radius:7px;font-size:11.5px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;background:var(--c,var(--blue));color:#fff}
+.cap h3{margin:10px 0 6px;font-size:24px;line-height:1.15;font-weight:800;padding-right:44px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cap p{margin:0;color:var(--text2);font-size:14px;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;padding-right:44px}
+.go{position:absolute;right:16px;bottom:38px;z-index:3;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);display:grid;place-items:center}
+.dots{position:absolute;left:0;right:0;bottom:12px;z-index:3;display:flex;justify-content:center;gap:7px}
+.dots button{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.35)}
+.dots button[aria-current="true"]{background:#fff}
+
+/* list cards */
+.list{display:grid;gap:12px}
+.item{display:grid;grid-template-columns:118px 1fr 28px;gap:12px;align-items:center;padding:10px;border-radius:16px;background:linear-gradient(180deg,#EEF3FB,#E2E9F5);color:#0B1A36}
+.item .scene{height:84px;border-radius:11px;overflow:hidden}
+.item .b{min-width:0}
+.item .tag{height:21px;font-size:11px;letter-spacing:0;text-transform:none;border-radius:999px;padding:0 9px}
+.item h4{margin:6px 0 4px;font-size:15.5px;line-height:1.25;font-weight:800;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.item .meta{font-size:12px;color:#55647E;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.score{display:inline-flex;align-items:center;gap:3px;font-weight:800;color:#9A5B00}
+.star{color:#B45309;font-weight:800}
+.bm{align-self:start;width:28px;height:28px;display:grid;place-items:center;color:#0B1A36}
+.bm[aria-pressed="true"] svg{fill:currentColor}
+.open{all:unset;cursor:pointer;display:contents}
+
+/* sectors */
+.secs{display:grid;gap:12px}
+.sc{position:relative;height:118px;border-radius:18px;overflow:hidden;text-align:left;width:100%;box-shadow:0 10px 26px rgba(0,0,0,.3)}
+.sc .scene{position:absolute;inset:0}
+.sc::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--c) 0%,color-mix(in srgb,var(--c) 70%,transparent) 42%,transparent 75%);opacity:.92}
+.sc .t{position:absolute;left:18px;top:16px;bottom:14px;right:40%;z-index:2;display:flex;flex-direction:column;gap:4px}
+.sc b{font-size:20px;font-weight:800}
+.sc span{font-size:12.5px;color:rgba(255,255,255,.88);line-height:1.35}
+.sc em{font-style:normal;font-size:12px;font-weight:700;margin-top:auto;opacity:.9}
+.sc .arr{position:absolute;right:12px;bottom:12px;z-index:2;width:30px;height:30px;border-radius:50%;background:rgba(5,14,34,.55);display:grid;place-items:center}
+
+/* projects */
+.seg3{display:flex;gap:8px;margin:4px 0 12px}
+.seg3 button{height:34px;padding:0 14px;border-radius:999px;border:1px solid var(--line);font-size:13px;font-weight:600;color:var(--text2);background:rgba(255,255,255,.04)}
+.seg3 button[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#fff}
+.map{border-radius:18px;background:radial-gradient(90% 90% at 50% 50%,#10285A,#081A3E);border:1px solid var(--line);padding:6px;position:relative}
+.map svg{display:block;width:100%;height:auto}
+.pin{cursor:pointer}
+.pcard{display:grid;grid-template-columns:86px 1fr 26px;gap:12px;align-items:center;padding:10px;border-radius:16px;background:var(--card);border:1px solid var(--line)}
+.pcard .scene{height:66px;border-radius:10px;overflow:hidden}
+.pcard h4{margin:0 0 3px;font-size:14.5px;font-weight:800;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pcard small{display:block;color:var(--text2);font-size:12px}
+.pcard .loc{color:var(--muted);display:flex;align-items:center;gap:4px;margin-top:3px}
+.pcard .bm{color:var(--text)}
+
+/* article */
+.ahero{position:relative;height:300px;margin:0 -16px;overflow:hidden}
+.ahero .scene{position:absolute;inset:0}
+.ahero::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,var(--bg) 0%,rgba(7,20,48,.2) 55%,rgba(7,20,48,0) 100%)}
+.ahero .cap{padding:16px}
+.ahero h1{margin:10px 0 6px;font-size:25px;line-height:1.2;font-weight:800}
+.ahero .m{color:var(--text2);font-size:13px}
+.why{margin:16px 0;padding:14px 16px;border-radius:16px;background:linear-gradient(135deg,rgba(245,166,35,.16),rgba(245,166,35,.05));border:1px solid rgba(245,166,35,.35)}
+.why .h{display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:#FFD38A;margin-bottom:6px}
+.why .co{font-weight:800;margin:0 0 6px;font-size:15px}
+.why p{margin:0;line-height:1.55;font-size:15px;color:var(--text)}
+.body{font-size:16px;line-height:1.65;color:var(--text2)}
+.facts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}
+.facts div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 12px}
+.facts small{display:block;color:var(--muted);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+.facts b{font-size:14px}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;height:50px;border-radius:14px;background:var(--blue);font-weight:700;font-size:15px;box-shadow:0 10px 24px rgba(30,107,255,.35)}
+.also{color:var(--text2);font-size:13.5px;margin:12px 0}
+.also a{color:#8DB4FF}
+
+/* profile */
+.prof{display:flex;align-items:center;gap:14px;padding:18px;border-radius:20px;background:linear-gradient(135deg,#123170,#0B1F4B);border:1px solid var(--line)}
+.prof .av{width:60px;height:60px;font-size:24px}
+.prof b{display:block;font-size:18px}
+.prof small{color:var(--text2)}
+.rows{display:grid;gap:10px;margin-top:16px}
+.row{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:16px;background:var(--card);border:1px solid var(--line);width:100%;text-align:left}
+.row b{display:block;font-size:14.5px}
+.row small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
+.row .chev{margin-left:auto;color:var(--muted)}
+.toggles{display:flex;flex-wrap:wrap;gap:8px;padding:4px 2px 2px}
+.stat{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.stat div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center}
+.stat b{display:block;font-size:22px}
+.stat small{color:var(--muted);font-size:12px}
+
+.empty{text-align:center;color:var(--text2);padding:40px 16px;border:1px dashed var(--line);border-radius:18px}
+.foot{color:var(--muted);font-size:12px;margin:24px 0 8px;text-align:center}
+
+/* bottom nav */
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:30;background:rgba(7,18,42,.96);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
+.nav .in{max-width:960px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr);padding:8px 8px 10px;gap:4px}
+.nav button{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 0;border-radius:14px;font-size:11.5px;font-weight:600;color:var(--text2)}
+.nav button[aria-current="page"]{background:var(--blue);color:#fff}
+.nav svg{width:22px;height:22px}
+
+@media (min-width:760px){
+  .list{grid-template-columns:1fr 1fr}
+  .secs{grid-template-columns:1fr 1fr}
+  .hero{height:360px}
+  .cap h3{font-size:30px}
+  .ahero{margin:0;border-radius:22px;height:360px}
+}
+@media (prefers-reduced-motion:reduce){.slide{transition:none}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top" id="top"></header>
+  <main id="main"></main>
+</div>
+<nav class="nav" aria-label="Ana menü"><div class="in" id="nav"></div></nav>
+
+<script>
+/*DATA_START*/
+const UPDATED = "12.11.2026 18:56";
+const ITEMS = [
+ {id:"uzmar-smit-guyana-tugs",seg:"marine",reg:"tr",lang:"TR",kind:"investment",project:true,score:72,company:"UZMAR Tersanesi – SMIT Lamnalco için 4 adet 60 m RAmpage 6000DE açık deniz terminal römorkörü (ExxonMobil Guyana)",why:"Omurgaları kızağa konan dört güçlü römorkör yeni inşa aşamasında: karina, güverte, balast tankı ve üst yapı için marine boya paketi; UZMAR satın alma ve SMIT Lamnalco teknik ekibiyle boya şartnamesi için hemen görüşülmeli.",star:false,isNew:true,
+  title:"UZMAR'da ExxonMobil'in dört açık deniz destek gemisinin omurgası kızağa kondu",
+  summary:"UZMAR Tersanesi, SMIT Lamnalco filosu için Robert Allan tasarımı dört adet RAmpage 6000DE açık deniz terminal destek römorkörünün omurgasını 27 Ekim'de kızağa koydu. 60 metre boyundaki, 135 ton çekme gücüne sahip gemiler Guyana'daki ExxonMobil terminal operasyonlarında çalışacak.",
+  source:"Neta Haber",date:"2026-11-05",
+  also:[{source:"Baird Maritime",url:"https://www.bairdmaritime.com/tugs/offshore-tugs-and-operations/uzmar-lays-keels-guyana-tugs"}],
+  url:"https://www.netahaber.com/haber/uzmar-da-guyana-icin-dort-acik-deniz-destek-gemisinin-omurgasi-kizaga-kondu"},
+ {id:"turktelekom-malatya-ges",seg:"energy",reg:"tr",lang:"TR",kind:"investment",project:true,score:60,company:"Türk Telekom – Malatya Darende GES (yaklaşık 4 milyon m², yıllık 470 GWh; ilk 150 MW faz Ocak 2028)",why:"Temeli atılan büyük GES'te trafo merkezi, inverter/trafo köşkleri ve çelik yapılar için koruyucu boya ihtiyacı; Türk Telekom enerji birimi ve EPC yüklenicisine malzeme onayı öncesi ulaşılmalı.",star:false,isNew:true,
+  title:"Dört milyon metrekareye kuruluyor: Malatya'da temeli atıldı, Türkiye'nin 3'üncü büyüğü olacak",
+  summary:"Türk Telekom, Malatya Darende Gaziköy'de yaklaşık 4 milyon metrekarelik alana kurulacak ve yıllık 470 GWh üretmesi beklenen güneş enerjisi santralinin temelini attı. İlk 150 MW'lık fazın Ocak 2028'de, tam kapasitenin Eylül 2028'de devreye girmesi planlanıyor.",
+  source:"Yeni Şafak",date:"2026-11-11",edate:"2028-01",
+  url:"https://www.yenisafak.com/gundem/dort-milyon-metrekareye-kuruluyor-malatyada-temeli-atildi-turkiyenin-3uncu-buyugu-olacak-4871610"},
+ {id:"inrail-25-teklif",seg:"prot",reg:"tr",lang:"TR",kind:"tender",score:82,company:"İstanbul Kuzey Demir Yolu Geçişi (INRAIL) – 125 km çift hat, 42 köprü ve viyadük, 6,75 milyar $ finansman",why:"22,4 km köprü/viyadük ve tünel çelik yapıları için antikorozif ve yangın koruyucu boya; Çatalca–İstanbul Havalimanı kesimi bölgemde. 25 teklif veren yüklenici konsorsiyumlarına ihale sonuçlanmadan ulaşılıp şartnameye girilmeli.",star:true,isNew:false,
+  title:"İstanbul Kuzey Demir Yolu Geçişi Projesi için 25 teklif verildi",
+  summary:"Ulaştırma ve Altyapı Bakanı Uraloğlu, Gebze–Sabiha Gökçen–Yavuz Sultan Selim Köprüsü–İstanbul Havalimanı–Çatalca güzergâhındaki 125 km'lik hattın tasarım ve yapım ihalesine Çin ve İtalya'dan firmaların da katıldığı 25 teklif geldiğini açıkladı. Projede 42 köprü ve viyadük (22,4 km) ile 44 tünel bulunuyor; hat Çatalca'da Halkalı–Çerkezköy hızlı tren hattına bağlanacak.",
+  source:"Anadolu Ajansı",date:"2026-11-12",
+  also:[{source:"Diken",url:"https://www.diken.com.tr/istanbulun-kuzeyinden-gececek-demiryoluna-25-teklif/"}],
+  url:"https://www.aa.com.tr/tr/ekonomi/istanbul-kuzey-demir-yolu-gecisi-projesi-icin-25-teklif-verildi/4122122"},
+ {id:"eh-enerji-kapakli-res",seg:"energy",reg:"tr",lang:"TR",kind:"investment",project:true,score:70,company:"EH Enerji – Kapaklı/Saray RES ve depolama tesisi (50 MW, 8 türbin, 50 MWh)",why:"Bölgemde ÇED olumlu çıkan rüzgar santrali: türbin kulesi, trafo ve depolama konteynerleri için koruyucu boya; EH Enerji ve EPC yüklenicisiyle inşaat öncesi görüşülmeli.",star:true,isNew:false,
+  title:"Kapaklı ve Saray'da planlanan rüzgâr enerji santrali projesine ÇED olumlu kararı",
+  summary:"EH Enerji A.Ş.'nin Tekirdağ Kapaklı (İnönü, Yanıkağıl) ve Saray (Büyükyoncalı Atatürk, Bozoba) mahallelerinde kuracağı 8 türbinli, 50 MWe rüzgar santrali ve 50 MWh elektrik depolama tesisi için ÇED olumlu kararı verildi. Karar inşaatın başladığı anlamına gelmiyor.",
+  source:"Kapaklı Gazetesi",date:"2026-11-08",
+  also:[{source:"Marmara Haber",url:"https://marmarahaber.com.tr/8-turbinli-enerji-projesine-ced-olumlu-karari"}],
+  url:"https://www.kapakligazetesi.com.tr/kapakli-ve-sarayda-planlanan-ruzgar-enerji-santrali-projesine-ced-olumlu-karari"},
+ {id:"yeka-res-2026-1500mw",seg:"energy",reg:"tr",lang:"EN",kind:"tender",score:72,company:"YEKA RES-2026 – 7 rüzgar projesi, yaklaşık 1,5 GW (Sivas, Balıkesir, Manisa, Kütahya)",why:"Kazananlar (Metgün, Egesa, Fe Girişim, Poyraz, Ecogreen) kule üreticisi ve EPC seçecek: türbin kulesi, trafo merkezi ve çelik yapı kaplaması için erken temas; Balıkesir projeleri Marmara bölgesinde.",star:false,isNew:false,
+  title:"Türkiye selects contractors for 7 wind power projects under YEKA",
+  summary:"In the YEKA RES-2026 round, Metgün won Sivas (320 MW), Egesa won Balıkesir-2 (235 MW) and Manisa, Fe Girişim won Balıkesir-3 (170 MW) and Balıkesir-4 (140 MW), Poyraz won Balıkesir-1 (140 MW) and Ecogreen won Kütahya (260 MW), about 1.5 GW in total.",
+  source:"Daily Sabah",date:"2026-11-02",
+  url:"https://www.dailysabah.com/business/energy/turkiye-selects-contractors-for-7-wind-power-projects-under-yeka"},
+ {id:"aselsan-malatya-5-fabrika",seg:"prot",reg:"tr",lang:"TR",kind:"investment",project:true,score:80,company:"ASELSAN – Malatya OSB 5 fabrikalık üretim kompleksi",why:"Beş yeni fabrika binası: çelik konstrüksiyon, pasif yangın koruma ve epoksi zemin kaplaması için proje ve müteahhit aşamasında şartnameye girme fırsatı.",star:false,isNew:false,
+  title:"Erdoğan talimatı verdi: ASELSAN'dan Malatya'ya 5 fabrikalık yatırım",
+  summary:"ASELSAN, Malatya OSB'de 66 dönümlük arazide beş fabrikadan oluşan bir üretim kompleksi kuracak; ilk fabrikanın Ağustos 2027'de tamamlanması hedefleniyor. Çelik konstrüksiyon, zemin kaplaması ve pasif yangın koruma için takip edilecek büyük bir savunma sanayi tesisi.",
+  source:"Ekotürk",date:"2026-11-11",edate:"2027-08",
+  url:"https://www.ekoturk.com/sektorler/erdogan-talimati-verdi-aselsandan-malatyaya-5-fabrikalik-yatirim"},
+ {id:"eruslu-bursa-ced-43mlr",seg:"prot",reg:"tr",lang:"TR",kind:"investment",project:true,score:60,company:"Eruslu Sağlık Ürünleri – Mustafakemalpaşa OSB genişleme (43,9 milyar TL)",why:"ÇED sürecindeki büyük kapasite artışı: yeni üretim binaları, geri dönüşüm tesisi ve zemin kaplaması için orta vadeli fırsat.",star:false,isNew:false,
+  title:"Bursa'ya 43,9 milyar TL'lik dev fabrika yatırımı! 744 kişiye yeni iş imkânı",
+  summary:"Eruslu Sağlık Ürünleri, Mustafakemalpaşa OSB'deki tesisini geri dönüşüm tesisi ve yeni hatlarla büyütmeyi planlıyor; ÇED raporu 10 gün askıda, nihai karar henüz verilmedi. Kapasite artışı yeni fabrika binası, çelik yapı ve zemin kaplaması ihtiyacı doğurabilir.",
+  source:"Bursa Hakimiyet",date:"2026-11-11",
+  url:"https://www.bursahakimiyet.com.tr/bursa/bursa-ya-43-9-milyar-tl-lik-dev-fabrika-yatirimi-744-kisiye-yeni-is-imkani-1749293"},
+ {id:"socar-star-jetfuel",seg:"prot",reg:"tr",lang:"EN",kind:"investment",project:true,score:80,company:"SOCAR – STAR Rafinerisi jet yakıtı ünitesi (yaklaşık 120 milyon $)",why:"Yeni proses ünitesi: tank, boru, çelik yapı için koruyucu boya ve pasif yangın koruma; mevcut rafineri bakım boyası ilişkisine de kapı açar.",star:false,isNew:false,
+  title:"SOCAR to invest $120 mln in new jet fuel unit at Turkish refinery",
+  summary:"SOCAR plans to invest about 6 billion lira (roughly $120 million) in a new jet fuel production unit at its STAR refinery in Aliağa. A new process unit means new steel structures, tanks and piping that need corrosion protection and passive fire protection.",
+  source:"Interfax",date:"2026-11-09",
+  url:"https://interfax.com/newsroom/top-stories/119845/"},
+ {id:"rwe-kkr-vanguard",seg:"energy",reg:"global",lang:"EN",kind:"finance",project:true,score:55,company:"RWE & KKR – Vanguard West/East offshore rüzgar (2,8 GW)",why:"Finansal kapanış tamam, yapım başlıyor: monopil, geçiş parçası ve kule kaplamaları için Jotun global offshore ekibine iletilecek fırsat.",star:false,isNew:false,
+  title:"RWE and KKR Reach Financial Close for 2.8 GW UK Offshore Wind Projects",
+  summary:"RWE and KKR completed their 50:50 joint venture for the Vanguard West and East offshore wind projects in the UK, moving 2.8 GW toward construction — a large demand for monopile, transition piece and tower corrosion protection.",
+  source:"offshoreWIND.biz",date:"2026-11-11",
+  url:"https://www.offshorewind.biz/2026/11/11/rwe-and-kkr-reach-financial-close-for-28-gw-uk-offshore-wind-projects"},
+ {id:"ebrd-sanmar-tugs",seg:"marine",reg:"tr",lang:"EN",kind:"finance",project:true,score:75,company:"Sanmar Tersaneleri – EBRD finansmanlı elektrikli römorkörler",why:"22,5 milyon € finansmanla yeni inşa römorkörler: karina, güverte ve üst yapı marine boyası; sürekli yeni inşa müşterisi.",star:false,isNew:false,
+  title:"EBRD support to boost growth for Türkiye's Sanmar",
+  summary:"EBRD is lending EUR 22.5 million (via a risk-sharing facility with Akbank) to finance construction of electric tugboats and solar generation at the Turkish shipbuilder — new-build hull and deck coating demand at a domestic yard.",
+  source:"EBRD",date:"2026-10-16",
+  url:"https://www.ebrd.com/home/news-and-events/news/2026/ebrd-support-to-boost-growth-for-tuerkiye-s-sanmar.html"},
+ {id:"yeka-ges-2026-785mw",seg:"energy",reg:"tr",lang:"EN",kind:"tender",score:70,company:"YEKA GES-2026 – 11 proje, 785 MW",why:"Kazananlar santral yapımına geçiyor: trafo merkezi ve çelik yapılar için EPC firmalarıyla görüşme fırsatı.",star:false,isNew:false,
+  title:"Turkey awards 785MW solar PV in latest YEKA tender",
+  summary:"The Ministry of Energy allocated 785 MW across 11 projects in the YEKA GES-2026 round, below the 900 MW initially planned; winners move to plant construction — steel structure and substation coating opportunities.",
+  source:"PV Tech",date:"2026-11-04",
+  url:"https://www.pv-tech.org/turkey-awards-785mw-solar-pv-in-latest-yeka-tender/"},
+ {id:"bolge-model-fabrika",seg:"prot",reg:"tr",lang:"TR",project:true,score:75,company:"Trakya Model Fabrika – Tekirdağ Velimeşe OSB",why:"Bölgemdeki yeni fabrika binası: çelik yapı, zemin kaplaması ve tesis boyası için doğrudan ziyaret fırsatı.",star:true,isNew:false,
+  title:"Tekirdağ Velimeşe OSB'de Trakya Model Fabrika yükseliyor",
+  summary:"Sanayi ve Teknoloji Bakanı Kacır'ın temelini attığı fabrikanın 2026 sonunda açılması hedefleniyor. Çelik yapı ve tesis boyası için takip edilecek proje.",
+  source:"DHA",date:"2026",
+  url:"https://www.dha.com.tr/yerel-haberler/tekirdag/tekirdag-bakan-kacir-turkiyenin-planli-sana-2733692"},
+ {id:"bolge-formul-plastik",seg:"prot",reg:"tr",lang:"TR",project:true,score:75,company:"Formül Plastik – Tekirdağ 1 milyar TL yeni fabrika",why:"İnşaatı başlayan fabrika: çelik konstrüksiyon ve zemin/koruyucu boya için bölgemde öncelikli hedef.",star:true,isNew:false,
+  title:"Formül Plastik Tekirdağ'a 1 milyar liralık fabrika kuruyor",
+  summary:"Şirket kapasite artışı için Tekirdağ'da yeni fabrika yatırımı yapacak. Yeni tesis çelik konstrüksiyon ve zemin/koruyucu boya fırsatı olabilir.",
+  source:"Ekonomi Gazetesi",date:"2026",
+  url:"https://www.ekonomigazetesi.com/sirket-haberleri/formul-plastikten-1-milyar-liralik-fabrika-yatirimi-70624"},
+ {id:"bolge-hayrabolu",seg:"prot",reg:"tr",lang:"TR",project:true,score:70,company:"Hayrabolu OSB – 2,5 milyar TL tarıma dayalı sanayi tesisi",why:"84,6 bin m²'lik tesis inşaat aşamasında: çelik yapı ve zemin kaplaması için bölgemde fırsat.",star:true,isNew:false,
+  title:"Hayrabolu OSB'de 2,5 milyar liralık yatırım",
+  summary:"Tekirdağ Hayrabolu'da tarıma dayalı sanayi için yaklaşık 84,6 bin m² alanda tesis yükseliyor. İnşaat aşamasında bağlantı kurulabilir.",
+  source:"Ekonomist",date:"2026",
+  url:"https://www.ekonomist.com.tr/ekonomi-haberleri/hayrabolu-osb-de-2-5-milyar-liralik-dev-yatirim-79026"}
+];
+/*DATA_END*/
+
+const MINSCORE=50;
+const SEGS=["marine","prot","deco","powder","energy"];
+const SEGN={marine:"Marine",prot:"Protective",deco:"Decorative",powder:"Toz Boya",energy:"Enerji"};
+const SEGD={marine:"Tersane, gemi inşa ve denizcilik yatırımları",prot:"Endüstriyel, altyapı ve ağır sanayi projeleri",deco:"Mimari, iç ve dış cephe boya projeleri",powder:"Otomotiv, beyaz eşya, alüminyum ve metal üretim",energy:"GES, RES, santral, iletim ve depolama projeleri"};
+const SEGC={marine:"#1E6BFF",prot:"#16A34A",deco:"#E08A00",powder:"#7C3AED",energy:"#E11D48"};
+const KIND={tender:"İhale",investment:"Yatırım",finance:"Finansman",deal:"Anlaşma"};
+for(let k=ITEMS.length-1;k>=0;k--)if((+ITEMS[k].score||0)<MINSCORE)ITEMS.splice(k,1);
+
+const store={get(k,d){try{const v=localStorage.getItem("np4_"+k);return v===null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem("np4_"+k,JSON.stringify(v))}catch(e){}}};
+const S={view:"home",seg:"all",slide:0,proj:"all",saved:store.get("saved",[]),article:null,prev:"home",hidden:store.get("hidden",[]),pin:null};
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const pD=d=>/^\d{4}-\d{2}-\d{2}/.test(d||"")?new Date(d.slice(0,10)+"T12:00:00Z"):null;
+const ts=i=>{const x=pD(i.date);return x?x.getTime():0};
+function rel(d){const x=pD(d);if(!x)return d||"";const n=Math.floor((Date.now()-x)/864e5);if(n<=0)return "bugün";if(n===1)return "dün";if(n<14)return n+" gün önce";return new Intl.DateTimeFormat("tr-TR",{day:"numeric",month:"short"}).format(x)}
+const byScore=(a,b)=>(b.score-a.score)||(b.star-a.star)||(ts(b)-ts(a));
+const byDate=(a,b)=>(ts(b)-ts(a))||(b.score-a.score);
+const vis=()=>ITEMS.filter(i=>!S.hidden.includes(i.seg));
+const get=id=>ITEMS.find(i=>i.id===id);
+
+/* ---------- icons ---------- */
+const P={search:'<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',bell:'<path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/>',home:'<path d="M3 10.5 12 3l9 7.5V21h-6v-6H9v6H3z"/>',layers:'<path d="m12 3 9 5-9 5-9-5z"/><path d="m3 13 9 5 9-5"/>',brief:'<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>',bm:'<path d="M6 3h12v18l-6-4-6 4z"/>',user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/>',right:'<path d="M5 12h14M13 6l6 6-6 6"/>',chev:'<path d="m9 18 6-6-6-6"/>',left:'<path d="m15 18-6-6 6-6"/>',share:'<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/>',ext:'<path d="M14 4h6v6M20 4l-9 9M19 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"/>',pin:'<path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/>',info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.01"/>',tune:'<path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/>',
+ ship:'<path d="M3 17l2 3h14l2-3H3z"/><path d="M6 17V9h12v8"/><path d="M9 9V5h6v4"/><path d="M12 5V3"/>',factory:'<path d="M3 21V10l5 3V10l5 3V5h3v16"/><path d="M16 9h5v12H3"/>',box:'<path d="m12 3 8 4.5v9L12 21l-8-4.5v-9z"/><path d="m4 7.5 8 4.5 8-4.5M12 12v9"/>',drop:'<path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/>',bolt:'<path d="M13 2 4 14h7l-1 8 9-12h-7z"/>'};
+const ic=(n,c="ic")=>'<svg class="'+c+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+P[n]+'</svg>';
+const SEGI={marine:"ship",prot:"factory",deco:"drop",powder:"box",energy:"bolt"};
+const LOGO='<svg class="logo" viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="lg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2A63C9"/><stop offset="1" stop-color="#0A2A6B"/></linearGradient></defs><path d="M14 52C8 40 10 22 24 13c10-6 24-5 32 4-9-2-16 1-20 6 6 1 10 5 10 5-9 2-16 9-17 24z" fill="url(#lg1)"/><path d="M22 52c-1-12 4-23 14-27-8 7-10 17-8 27z" fill="#fff"/><path d="M36 23c6-1 14 0 20 4-6 1-12 0-20-4z" fill="#F5A623"/><circle cx="40" cy="18" r="2.2" fill="#fff"/></svg>';
+
+/* ---------- generated scenes (no stock photos) ---------- */
+function h32(s){let h=0;for(const c of String(s))h=(h*31+c.charCodeAt(0))>>>0;return h}
+function scene(seg,key){
+  const h=h32(key),g="s"+h%1e6+seg,skies=[["#1B2D5C","#4B5C9A","#E9A16B"],["#0E2350","#2E5FA8","#8FC0F0"],["#24204F","#7A4F86","#F2B272"]],sk=skies[h%3];
+  let fg="";
+  if(seg==="marine")fg='<path d="M0 150Q60 142 120 150T240 150T400 150V225H0Z" fill="#0B3A78"/><path d="M60 132h250l-22 34H86z" fill="#B91C1C"/><path d="M60 132h250l-6 10H66z" fill="#0F172A"/><rect x="90" y="104" width="150" height="28" fill="#E5E7EB"/><rect x="240" y="92" width="40" height="40" fill="#F8FAFC"/><rect x="250" y="70" width="10" height="24" fill="#334155"/><g fill="#F59E0B">'+[100,128,156,184,212].map(x=>'<rect x="'+x+'" y="110" width="20" height="16"/>').join("")+'</g><path d="M300 40v92M300 50h70" stroke="#94A3B8" stroke-width="5"/><path d="M0 178Q60 170 120 178T240 178T400 178V225H0Z" fill="#082a5a"/>';
+  else if(seg==="deco")fg='<rect x="0" y="0" width="400" height="225" fill="#E9C46A" opacity=".85"/><rect x="0" y="0" width="400" height="225" fill="url(#t'+g+')" opacity=".35"/><path d="M0 120c80-20 160 30 240 10s110-30 160-20v115H0z" fill="#F4D35E"/><g transform="rotate(-28 250 90)"><rect x="170" y="70" width="150" height="44" rx="20" fill="#FACC15" stroke="#B45309" stroke-width="3"/><rect x="236" y="114" width="12" height="70" fill="#64748B"/><rect x="232" y="180" width="20" height="60" rx="6" fill="#1E3A8A"/></g>';
+  else if(seg==="powder")fg='<rect x="0" y="120" width="400" height="105" fill="#1E2A44"/><path d="M20 120V80l40-20v20l40-20v20l40-20v20l40-20v60z" fill="#334155"/><rect x="220" y="70" width="160" height="50" fill="#475569"/><g fill="#A78BFA">'+[30,80,130,180,230,280,330].map(x=>'<rect x="'+x+'" y="150" width="34" height="46" rx="3"/>').join("")+'</g><rect x="0" y="196" width="400" height="6" fill="#94A3B8"/>';
+  else if(seg==="energy")fg='<path d="M0 160L120 120 260 140 400 110V225H0Z" fill="#1F3B2D"/>'+[70,170,290].map((x,k)=>'<g stroke="#F1F5F9" stroke-width="4" stroke-linecap="round"><path d="M'+x+' 160V'+(70+k*8)+'"/><path d="M'+x+' '+(70+k*8)+'l0-38M'+x+' '+(70+k*8)+'l33 19M'+x+' '+(70+k*8)+'l-33 19"/></g>').join("")+'<g fill="#1D4ED8" stroke="#93C5FD" stroke-width="1.5">'+[0,1,2,3,4,5].map(k=>'<path d="M'+(10+k*66)+' 205l20-28h44l-20 28z"/>').join("")+'</g>';
+  else fg='<g fill="#E2E8F0"><rect x="40" y="96" width="70" height="104" rx="4"/><ellipse cx="75" cy="96" rx="35" ry="8" fill="#CBD5E1"/><rect x="130" y="80" width="90" height="120" rx="4"/><ellipse cx="175" cy="80" rx="45" ry="9" fill="#CBD5E1"/><rect x="240" y="110" width="60" height="90" rx="4"/><ellipse cx="270" cy="110" rx="30" ry="6" fill="#CBD5E1"/></g><g stroke="#F59E0B" stroke-width="2" fill="none"><path d="M40 120h70M40 150h70M130 110h90M130 145h90M240 135h60"/><path d="M220 80l20 30"/></g><path d="M320 40v160M320 60h50M345 60v40" stroke="#94A3B8" stroke-width="5"/><rect x="0" y="200" width="400" height="25" fill="#1E293B"/>';
+  return '<div class="scene" aria-hidden="true"><svg viewBox="0 0 400 225" preserveAspectRatio="xMidYMid slice" width="100%" height="100%"><defs><linearGradient id="'+g+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+sk[0]+'"/><stop offset=".6" stop-color="'+sk[1]+'"/><stop offset="1" stop-color="'+sk[2]+'"/></linearGradient><pattern id="t'+g+'" width="8" height="8" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="#fff"/></pattern></defs><rect width="400" height="225" fill="url(#'+g+')"/><circle cx="'+(60+h%280)+'" cy="70" r="26" fill="#FFE6A8" opacity=".55"/>'+fg+'</svg></div>';
+}
+
+/* ---------- map ---------- */
+const PX=(lon,lat)=>[((lon-25.6)*20.5).toFixed(1),((42.4-lat)*29).toFixed(1)];
+const poly=a=>a.map(([lo,la])=>PX(lo,la).join(",")).join(" ");
+const THRACE=[[26.35,41.75],[26.6,41.98],[27.5,42.0],[28.05,41.95],[28.6,41.4],[29.05,41.25],[28.9,41.02],[28.0,40.98],[27.5,40.97],[26.9,40.55],[26.2,40.05],[26.4,40.5],[26.05,40.75],[26.35,41.2],[26.6,41.6]];
+const ANAT=[[29.1,41.2],[29.6,41.18],[30.5,41.15],[31.8,41.45],[33.3,42.0],[35.1,42.03],[36.3,41.3],[37.9,41.05],[39.7,41.0],[41.5,41.45],[42.5,41.55],[43.4,41.2],[43.6,40.6],[44.8,39.7],[44.3,38.4],[44.7,37.2],[43.0,37.3],[41.2,37.1],[38.0,36.8],[37.0,36.7],[36.6,36.2],[35.9,35.85],[35.8,36.3],[36.1,36.65],[35.0,36.6],[34.6,36.8],[33.9,36.3],[32.8,36.05],[32.0,36.5],[30.7,36.85],[29.6,36.2],[29.1,36.6],[28.2,36.7],[27.4,37.0],[27.2,37.8],[26.3,38.3],[26.8,38.7],[26.7,39.3],[26.2,39.6],[26.3,40.0],[27.0,40.4],[28.0,40.4],[29.0,40.4],[29.9,40.75],[29.2,40.9]];
+const GEO=[["kapaklı|saray",27.97,41.33],["çerkezköy|velimeşe|çorlu|ergene",27.85,41.2],["hayrabolu",27.1,41.2],["tekirdağ",27.5,40.98],["keşan|yenimuhacir",26.64,40.85],["edirne|uzunköprü",26.56,41.68],["kırklareli",27.22,41.73],["çatalca|silivri|arnavutköy|hadımköy|istanbul|i̇stanbul|avrupa yakası|kuzey demir",28.6,41.2],["kocaeli|gebze|uzmar",29.9,40.77],["yalova",29.27,40.65],["bursa|mustafakemalpaşa",29.06,40.19],["balıkesir",27.9,39.65],["aliağa|star rafineri",26.97,38.8],["izmir|i̇zmir",27.14,38.42],["manisa",27.4,38.6],["kütahya",29.98,39.42],["aydın|söke",27.85,37.85],["bodrum|muğla",27.43,37.04],["ankara",32.85,39.93],["konya",32.5,37.87],["sivas",37.0,39.75],["kayseri",35.48,38.72],["malatya|darende",38.3,38.35],["elazığ",39.2,38.67],["gaziantep",37.38,37.07],["adana|yumurtalık",35.8,36.77],["trabzon",39.72,41.0],["antalya|alanya",30.7,36.9]];
+function geo(i){for(const s of [i.company+" "+i.title,i.summary||""]){const t=String(s).toLocaleLowerCase("tr");for(const [rx,lo,la] of GEO)if(new RegExp(rx).test(t))return {lo,la,name:rx.split("|")[0]}}return null}
+const cap=s=>s.charAt(0).toLocaleUpperCase("tr")+s.slice(1);
+const planned=i=>/çed|planlan|mutabakat|hedef|kurulacak|planned|plans|ihale|tender|teklif/i.test(i.title+" "+(i.summary||""));
+function mapSVG(list){
+  const pins=list.map(i=>[i,geo(i)]).filter(x=>x[1]);
+  return '<svg viewBox="0 0 400 190" role="img" aria-label="Türkiye proje haritası"><defs><pattern id="dotp" width="5" height="5" patternUnits="userSpaceOnUse"><circle cx="2.5" cy="2.5" r="1.1" fill="#4D7BD6"/></pattern></defs>'+
+   '<polygon points="'+poly(ANAT)+'" fill="url(#dotp)" stroke="#3B6FD1" stroke-width="1.2"/><polygon points="'+poly(THRACE)+'" fill="url(#dotp)" stroke="#F5A623" stroke-width="1.6"/>'+
+   pins.map(([i,g])=>{const [x,y]=PX(g.lo,g.la);const on=S.pin===i.id;return '<g class="pin" data-pin="'+i.id+'" tabindex="0" role="button" aria-label="'+esc(i.company||i.title)+'"><circle cx="'+x+'" cy="'+y+'" r="'+(on?11:8)+'" fill="'+SEGC[i.seg]+'" opacity=".25"/><path transform="translate('+(x-7)+','+(y-17)+') scale(.58)" d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z" fill="'+(i.star?"#F5A623":"#2F7BFF")+'" stroke="#fff" stroke-width="2"/></g>'}).join("")+'</svg>';
+}
+
+/* ---------- components ---------- */
+const bmBtn=i=>{const on=S.saved.includes(i.id);return '<button class="bm" data-save="'+i.id+'" aria-pressed="'+on+'" aria-label="'+(on?"Kayıttan çıkar":"Kaydet")+'">'+ic("bm")+'</button>'};
+const tag=i=>'<span class="tag" style="--c:'+SEGC[i.seg]+'">'+SEGN[i.seg]+'</span>';
+function item(i){return '<article class="item"><button class="open" data-open="'+i.id+'">'+scene(i.seg,i.id)+'<div class="b">'+tag(i)+'<h4>'+esc(i.company||i.title)+'</h4><div class="meta"><span class="score">★ '+i.score+'</span>'+(i.star?'<span class="star">· Bölgem</span>':'')+'<span>· '+esc(i.source)+'</span><span>· '+esc(rel(i.date))+'</span>'+(i.kind?'<span>· '+KIND[i.kind]+'</span>':'')+'</div></div></button>'+bmBtn(i)+'</article>'}
+function pcard(i){const g=geo(i);return '<article class="pcard"><button class="open" data-open="'+i.id+'">'+scene(i.seg,i.id)+'<div><h4>'+esc(i.company||i.title)+'</h4><small>'+SEGN[i.seg]+' · '+(planned(i)?"Planlanan":"Devam Eden")+' · ★ '+i.score+'</small>'+(g?'<small class="loc">'+ic("pin","ic")+cap(g.name)+'</small>':'')+'</div></button>'+bmBtn(i)+'</article>'}
+function header(){
+  const v=S.view;
+  const right='<button class="rb" aria-label="Ara" data-view="search">'+ic("search")+'</button><button class="rb" aria-label="Bildirimler" data-view="home">'+ic("bell")+(ITEMS.some(i=>i.isNew)?'<span class="dot"></span>':'')+'</button><button class="av" data-view="profile" aria-label="Profil">R</button>';
+  if(v==="article")return '<div class="bar"><button class="back" data-back="1" aria-label="Geri">'+ic("left")+'</button><span style="flex:1"></span>'+bmBtn(get(S.article)).replace('class="bm"','class="rb"')+'<button class="rb" data-copy="'+esc(get(S.article).url)+'" aria-label="Linki kopyala">'+ic("share")+'</button></div>';
+  if(v!=="home")return '<div class="bar"><h1 class="pagetitle">'+({sectors:"Sektörler",projects:"Projeler",saved:"Kaydedilenler",profile:"Profil",search:"Arama"}[v]||"")+'</h1>'+right+'</div>';
+  const pool=vis();
+  return '<div class="bar"><div class="brand">'+LOGO+'<div><b>NEWSPENGUEN<sup>®</sup></b><small>Industry &amp; Project Insights</small></div></div>'+right+'</div>'+
+   '<nav class="chips" aria-label="Segmentler"><button class="chip" data-seg="all" aria-pressed="'+(S.seg==="all")+'">Tümü <span class="n">'+pool.length+'</span></button><button class="chip" data-seg="star" aria-pressed="'+(S.seg==="star")+'">★ Bölgem <span class="n">'+pool.filter(i=>i.star).length+'</span></button>'+SEGS.filter(s=>!S.hidden.includes(s)).map(s=>'<button class="chip" data-seg="'+s+'" aria-pressed="'+(S.seg===s)+'">'+ic(SEGI[s])+SEGN[s]+' <span class="n">'+pool.filter(i=>i.seg===s).length+'</span></button>').join("")+'</nav>';
+}
+function filtered(){const p=vis();return S.seg==="all"?p:S.seg==="star"?p.filter(i=>i.star):p.filter(i=>i.seg===S.seg)}
+function viewHome(){
+  const list=filtered().sort(byScore);
+  if(!list.length)return '<div class="empty">Bu filtrede fırsat yok.</div>';
+  const hero=list.slice(0,4);if(S.slide>=hero.length)S.slide=0;
+  let h='<section class="hero" aria-roledescription="carousel" aria-label="Öne çıkan fırsatlar">'+hero.map((i,k)=>'<div class="slide'+(k===S.slide?" on":"")+'"'+(k===S.slide?"":' aria-hidden="true"')+'>'+scene(i.seg,i.id+"h")+'<div class="cap"><span class="tag" style="--c:'+(i.star?"#D97706":SEGC[i.seg])+'">'+(i.star?"★ Bölgem":(KIND[i.kind]||SEGN[i.seg]))+'</span><h3>'+esc(i.company||i.title)+'</h3><p>'+esc(i.why||i.summary)+'</p></div><button class="go" data-open="'+i.id+'" aria-label="Detayı aç"'+(k===S.slide?"":' tabindex="-1"')+'>'+ic("right")+'</button></div>').join("")+
+   (hero.length>1?'<div class="dots">'+hero.map((_,k)=>'<button data-slide="'+k+'" aria-label="Fırsat '+(k+1)+'" aria-current="'+(k===S.slide)+'"></button>').join("")+'</div>':'')+'</section>';
+  h+='<div class="sec"><h2>Güncel Fırsatlar</h2><button class="link" data-view="projects">Harita '+ic("right")+'</button></div><div class="list">'+list.slice(hero.length).sort(byDate).map(item).join("")+'</div>';
+  h+='<p class="foot">Son güncelleme: '+esc(UPDATED)+' · Yalnızca 50+ satış potansiyeli puanlı fırsatlar</p>';
+  return h;
+}
+function viewSectors(){
+  return '<div class="secs">'+SEGS.map(s=>{const n=vis().filter(i=>i.seg===s);const top=n.sort(byScore)[0];return '<button class="sc" data-segview="'+s+'" style="--c:'+SEGC[s]+'">'+scene(s,"sec"+s)+'<span class="t"><b>'+SEGN[s]+'</b><span>'+SEGD[s]+'</span><em>'+n.length+' fırsat'+(top?' · en yüksek ★'+top.score:'')+'</em></span><span class="arr">'+ic("right")+'</span></button>'}).join("")+'</div>';
+}
+function viewProjects(){
+  let list=vis().sort(byScore);
+  if(S.proj==="run")list=list.filter(i=>!planned(i));if(S.proj==="plan")list=list.filter(planned);
+  if(S.pin)list=list.filter(i=>i.id===S.pin).concat(list.filter(i=>i.id!==S.pin));
+  return '<div class="seg3" role="group" aria-label="Proje durumu">'+[["all","Tümü"],["run","Devam Eden"],["plan","Planlanan"]].map(([k,l])=>'<button data-proj="'+k+'" aria-pressed="'+(S.proj===k)+'">'+l+'</button>').join("")+'</div><div class="map">'+mapSVG(list)+'</div><p style="color:var(--muted);font-size:12px;margin:8px 2px 14px">Turuncu çerçeve: Trakya · Turuncu iğne: bölge projesi. İğneye dokununca proje en üste gelir.</p><div class="list">'+(list.length?list.map(pcard).join(""):'<div class="empty">Proje yok.</div>')+'</div>';
+}
+function viewSaved(){const l=S.saved.map(get).filter(Boolean);return l.length?'<div class="list">'+l.map(item).join("")+'</div>':'<div class="empty">'+ic("bm")+'<p>Henüz kayıtlı fırsat yok. Kartlardaki yer imine dokunarak buraya ekleyebilirsin.</p></div>'}
+function viewSearch(){return '<input id="q" type="search" placeholder="Şirket, şehir veya konu ara…" style="width:100%;height:48px;border-radius:14px;border:1px solid var(--line);background:var(--card);color:var(--text);padding:0 16px;font-size:15px" value="'+esc(S.q||"")+'" aria-label="Ara"><div class="list" id="res" style="margin-top:14px"></div>'}
+function viewProfile(){
+  const p=vis();
+  return '<div class="prof"><div class="av">R</div><div><b>Recep Kurnaz</b><small>Jotun · Satış Müdürü</small><br><small>İstanbul Avrupa Yakası + Trakya</small></div></div>'+
+   '<div class="stat"><div><b>'+p.length+'</b><small>Fırsat</small></div><div><b>'+p.filter(i=>i.star).length+'</b><small>Bölgemde</small></div><div><b>'+p.filter(i=>i.kind==="tender").length+'</b><small>İhale</small></div></div>'+
+   '<div class="rows"><div class="row" style="display:block"><div style="display:flex;align-items:center;gap:14px">'+ic("layers")+'<div><b>İlgi Alanlarım</b><small>Kapalı segmentler akışta görünmez</small></div></div><div class="toggles" style="margin-top:10px">'+SEGS.map(s=>'<button class="chip" data-hide="'+s+'" aria-pressed="'+!S.hidden.includes(s)+'">'+ic(SEGI[s])+SEGN[s]+'</button>').join("")+'</div></div>'+
+   '<button class="row">'+ic("bell")+'<div><b>Bildirim Tercihleri</b><small>75+ bölge fırsatı ve 10 günden az kalan ihaleler</small></div><span class="chev">'+ic("chev")+'</span></button>'+
+   '<button class="row">'+ic("pin")+'<div><b>Bölge Ayarları</b><small>İstanbul Avrupa Yakası, Tekirdağ, Kırklareli, Edirne</small></div><span class="chev">'+ic("chev")+'</span></button>'+
+   '<button class="row">'+ic("info")+'<div><b>Uygulama Hakkında</b><small>Jotun satış fırsatı puanlamasıyla seçilmiş yatırım ve ihale haberleri</small></div><span class="chev">'+ic("chev")+'</span></button></div>';
+}
+function viewArticle(){
+  const i=get(S.article);if(!i)return "";const g=geo(i);
+  return '<div class="ahero">'+scene(i.seg,i.id+"h")+'<div class="cap">'+tag(i)+(i.star?' <span class="tag" style="--c:#D97706">★ Bölgem</span>':'')+(i.kind?' <span class="tag" style="--c:#334155">'+KIND[i.kind]+'</span>':'')+'<h1>'+esc(i.title)+'</h1><div class="m">'+esc(i.source)+' · '+esc(rel(i.date))+'</div></div></div>'+
+   (i.why?'<div class="why"><div class="h"><span>Jotun için neden fırsat</span><span>★ '+i.score+'/100</span></div><p class="co">'+esc(i.company||"")+'</p><p>'+esc(i.why)+'</p></div>':'')+
+   '<p class="body">'+esc(i.summary)+'</p>'+
+   '<div class="facts"><div><small>Segment</small><b>'+SEGN[i.seg]+'</b></div><div><small>Konum</small><b>'+(g?cap(g.name):(i.reg==="tr"?"Türkiye":"Global"))+'</b></div><div><small>Yayın</small><b>'+esc(i.date)+'</b></div><div><small>'+(i.deadline?"Son teklif":i.edate?"Hedef tarih":"Dil")+'</small><b>'+esc(i.deadline||i.edate||i.lang)+'</b></div></div>'+
+   (i.also&&i.also.length?'<p class="also">Diğer kaynaklar: '+i.also.map(a=>'<a href="'+esc(a.url)+'" target="_blank" rel="noopener">'+esc(a.source)+'</a>').join(" · ")+'</p>':'')+
+   '<a class="btn" href="'+esc(i.url)+'" target="_blank" rel="noopener">Orijinal haberi oku '+ic("ext")+'</a>';
+}
+function render(){
+  $("top").innerHTML=header();
+  const v=S.view;
+  $("main").innerHTML=v==="home"?viewHome():v==="sectors"?viewSectors():v==="projects"?viewProjects():v==="saved"?viewSaved():v==="profile"?viewProfile():v==="search"?viewSearch():viewArticle();
+  const tab={article:S.prev,search:"home"}[v]||v;
+  $("nav").innerHTML=[["home","Ana Sayfa","home"],["sectors","Sektörler","layers"],["projects","Projeler","brief"],["saved","Kaydedilenler","bm"],["profile","Profil","user"]].map(([k,l,n])=>'<button data-view="'+k+'"'+(tab===k?' aria-current="page"':'')+'>'+ic(n)+l+'</button>').join("");
+  if(v==="search"){const q=$("q");q.addEventListener("input",doSearch);doSearch();q.focus()}
+}
+function doSearch(){const q=($("q").value||"").toLocaleLowerCase("tr");S.q=$("q").value;const r=q?ITEMS.filter(i=>(i.title+" "+(i.company||"")+" "+i.summary+" "+i.source).toLocaleLowerCase("tr").includes(q)):[];$("res").innerHTML=q?(r.length?r.sort(byScore).map(item).join(""):'<div class="empty">Sonuç yok.</div>'):''}
+function go(v){if(v!=="article")S.article=null;S.view=v;render();window.scrollTo(0,0)}
+document.addEventListener("click",e=>{
+  const el=e.target.closest("[data-open],[data-view],[data-save],[data-seg],[data-slide],[data-back],[data-segview],[data-proj],[data-pin],[data-hide],[data-copy]");if(!el)return;const d=el.dataset;
+  if(d.save){e.stopPropagation();S.saved=S.saved.includes(d.save)?S.saved.filter(x=>x!==d.save):[...S.saved,d.save];store.set("saved",S.saved);render();return}
+  if(d.open){if(S.view!=="article")S.prev=S.view;S.article=d.open;go("article");return}
+  if(d.back){go(S.prev||"home");return}
+  if(d.view){go(d.view);return}
+  if(d.seg){S.seg=d.seg;S.slide=0;render();return}
+  if(d.segview){S.seg=d.segview;S.slide=0;go("home");return}
+  if(d.slide){S.slide=+d.slide;render();return}
+  if(d.proj){S.proj=d.proj;S.pin=null;render();return}
+  if(d.pin){S.pin=S.pin===d.pin?null:d.pin;render();return}
+  if(d.hide){S.hidden=S.hidden.includes(d.hide)?S.hidden.filter(x=>x!==d.hide):[...S.hidden,d.hide];store.set("hidden",S.hidden);render();return}
+  if(d.copy){try{navigator.clipboard.writeText(d.copy)}catch(_){};return}
+});
+document.addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&e.target.closest&&e.target.closest("[data-pin]")){e.preventDefault();e.target.closest("[data-pin]").dispatchEvent(new MouseEvent("click",{bubbles:true}))}});
+setInterval(()=>{if(S.view==="home"&&!matchMedia("(prefers-reduced-motion: reduce)").matches){const n=document.querySelectorAll(".slide").length;if(n>1){S.slide=(S.slide+1)%n;document.querySelectorAll(".slide").forEach((s,k)=>{s.classList.toggle("on",k===S.slide);k===S.slide?s.removeAttribute("aria-hidden"):s.setAttribute("aria-hidden","true")});document.querySelectorAll(".dots button").forEach((b,k)=>b.setAttribute("aria-current",k===S.slide))}}},7000);
+render();
+
+/* Canlı akış (Supabase, sadece okuma) — 50+ puanlı kayıtlar */
+(function(){
+  const SUPA="https://qpwkiauhazpyaywjderc.supabase.co/rest/v1/",KEY="sb_publishable_eDv33WBVXDj1bmVkNS3Pxw_-4Cn_iPj";
+  const since=new Date(Date.now()-30*864e5).toISOString().slice(0,10);
+  fetch(SUPA+"news_items?select=id,seg,reg,lang,kind,star,title,summary,source,date,url,deadline,project,score,company,why&hidden=eq.false&score=gte."+MINSCORE+"&date=gte."+since+"&order=date.desc&limit=400",{headers:{apikey:KEY}}).then(r=>r.ok?r.json():[]).then(rows=>{
+    const urls=new Set(ITEMS.map(i=>i.url));let n=0;
+    for(const r of rows||[]){if(!r.url||urls.has(r.url)||!SEGS.includes(r.seg))continue;urls.add(r.url);ITEMS.push({id:r.id,seg:r.seg,reg:r.reg,lang:r.lang,kind:r.kind||null,star:!!r.star,score:+r.score,company:r.company||"",why:r.why||"",title:r.title,summary:r.summary||"",source:r.source,date:(r.date||"").slice(0,10),url:r.url,deadline:r.deadline||null,isNew:(Date.now()-Date.parse(r.date))<2*864e5});n++}
+    if(n)render();
+  }).catch(()=>{});
+})();
+</script>
+</body>
+</html>
