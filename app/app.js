@@ -195,6 +195,13 @@
   const photoSrc = n => (window.NP_PHOTOS && window.NP_PHOTOS[n]) || ((window.NP_PHOTO_BASE || "photos/") + n + ".jpg");
   const photoImg = n => '<img class="scene" src="' + photoSrc(n) + '" alt="" loading="lazy" decoding="async">';
   const photoFor = i => PHOTO_OF[i._t] || (i._t === "factory" && i.seg === "powder" ? "powder" : "");
+  /* Ana sayfa segment filtresi: tek düğme, aşağı açılan seçenek listesi */
+  const segDropdown = pool => {
+    const opts = [["all", "Tümü", pool.length, "", ""], ["star", "Bölgem", pool.filter(i => i.star).length, "", "var(--np-amber-400)"]].concat(SEC_KEYS.map(k => [k, SECTORS[k].n, pool.filter(i => i._s === k).length, SECTORS[k].i, SECTORS[k].c]));
+    const cur0 = opts.find(o => o[0] === S.seg) || opts[0];
+    return '<div class="segdd' + (S.segOpen ? ' open' : '') + '"><button class="ddbtn" data-act="segDD" aria-expanded="' + !!S.segOpen + '" aria-haspopup="listbox">' + ic("filter", "ic sm") + '<span class="ddl"><small>Segment</small><b>' + esc(cur0[1]) + ' <span class="n">' + cur0[2] + '</span></b></span>' + ic("chev", "ic sm ddchev") + '</button>' +
+      (S.segOpen ? '<div class="ddpanel" role="listbox" aria-label="Segment">' + opts.map(([k, l, n, icn, c]) => '<button class="ddopt' + (n ? '' : ' zero') + '" role="option" aria-selected="' + (S.seg === k) + '" data-seg="' + k + '"><span class="ddi" style="--c:' + (c || 'var(--np-blue-500)') + '">' + (icn ? ic(icn, "ic sm") : (k === "star" ? '★' : ic("layers", "ic sm"))) + '</span><span class="ddt">' + esc(l) + '</span><span class="n">' + n + '</span>' + (S.seg === k ? ic("check", "ic sm ddck") : '<span style="width:18px"></span>') + '</button>').join("") + '</div>' : '') + '</div>';
+  };
   const scene = (i, k = "") => { const n = photoFor(i); return n ? photoImg(n) : NS.sceneSVG(i._t, i.id + k); };
   const place = i => i._c[0] === GLOBAL ? "Global" : i._c.length ? i._c.slice(0, 2).join(" · ") : "Türkiye";
   function ncard(i) {
@@ -268,8 +275,7 @@
     const anyNew = pool.some(i => i.isNew);
     let h = '<header class="navbar"><div class="navrow"><button class="brand" data-act="goHome" aria-label="Ana Sayfa">' + MARK() + '<span><b>COAT<span style="color:var(--np-blue-500)">NEWS</span></b><small>Global Coatings Media</small></span></button>' + langPill() +
       '<button class="iconbtn fill" data-go="notifs" aria-label="Yeni haberler">' + ic("bell") + (anyNew ? '<span class="dot"></span>' : '') + '</button><button class="avatar" data-go="profile" aria-label="Profil">' + initials() + '</button></div>' + locBar() +
-      '<div class="chips" role="group" aria-label="Filtre" style="margin-top:10px"><button class="chip" data-seg="all" aria-pressed="' + (S.seg === "all") + '">Tümü <span class="n">' + pool.length + '</span></button><button class="chip" data-seg="star" aria-pressed="' + (S.seg === "star") + '">★ Bölgem <span class="n">' + pool.filter(i => i.star).length + '</span></button>' +
-      SEC_KEYS.map(k => { const n = pool.filter(i => i._s === k).length; return n ? '<button class="chip" data-seg="' + k + '" aria-pressed="' + (S.seg === k) + '">' + SECTORS[k].n + ' <span class="n">' + n + '</span></button>' : ""; }).join("") + '</div></header><main class="wrap">';
+      segDropdown(pool) + '</header><main class="wrap">';
     if (!list.length) return h + empty("Bu filtrede haber yok", "Konumu ya da filtreyi değiştir.") + '</main>';
     h += '<section class="hero" aria-roledescription="carousel" aria-label="Öne çıkanlar"><div class="track" id="herotrack">' + hero.map(i => '<button class="slide" data-open="' + esc(i.id) + '">' + scene(i, "h") + '<div class="cap"><span>' + (i.star ? '<span class="tag" style="--c:#E06A00">★ Bölgem</span> ' : '') + tag(i) + '</span><h3>' + esc(i.company || i.title) + '</h3><p>' + esc(i.why || i.summary) + '</p></div></button>').join("") + '</div><div class="dots">' + hero.map((_, k) => '<i class="' + (k ? "" : "on") + '"></i>').join("") + '</div></section>';
     h += '<div class="quick"><button class="qa" data-tab="calc"><span class="qi" style="background:rgba(255,122,0,.16);color:var(--np-amber-400)">' + ic("roller") + '</span><span><b>Boya Hesapla</b><small>Protective sarfiyat</small></span></button><button class="qa" data-go="map"><span class="qi" style="background:rgba(77,184,255,.16);color:var(--np-blue-300)">' + ic("map") + '</span><span><b>Proje Haritası</b><small>' + pool.filter(i => i._c.length && i._c[0] !== GLOBAL).length + ' konumlu haber</small></span></button></div>';
@@ -525,6 +531,7 @@
      ========================================================= */
   function render(dir) {
     const c = cur(), name = c.name;
+    if (name !== "home") S.segOpen = false;
     const el = $("screen");
     el.className = "screen " + (dir === "back" ? "enter-back" : dir === "fwd" ? "enter" : "") + (NO_TAB.includes(name) ? " notab" : "");
     el.innerHTML = (V[name] || V.home)(c.p);
@@ -549,6 +556,7 @@
      OLAYLAR
      ========================================================= */
   document.addEventListener("click", async e => {
+    if (S.segOpen && !e.target.closest(".segdd")) { S.segOpen = false; render(); if (!e.target.closest("[data-tab],[data-go],[data-open],[data-act],[data-save]")) return; }
     const t = e.target.closest("[data-tab],[data-go],[data-back],[data-open],[data-save],[data-share],[data-seg],[data-kind],[data-proj],[data-sector],[data-ptab],[data-stab],[data-act],[data-locc],[data-locr],[data-loco],[data-city],[data-cmode],[data-m2t],[data-loss],[data-cdel],[data-step]");
     if (!t) return;
     const d = t.dataset;
@@ -560,7 +568,7 @@
     if (d.go) { if (d.go === "calcResult" || d.go === "calcSystem") saveC(); return go(d.go); }
     if (d.open) { const i = get(d.open); return go(i && i._isProject ? "project" : "news", { id: d.open }); }
     if (d.share) { const i = get(d.share); return share(i.company || i.title, i.url); }
-    if (d.seg) { S.seg = d.seg; return render(); }
+    if (d.seg) { S.seg = d.seg; S.segOpen = false; return render(); }
     if (d.kind) { S.kind = d.kind; return render(); }
     if (d.proj) { S.proj = d.proj; return render(); }
     if (d.sector) { S.kind = "all"; return go("opps", { sector: d.sector }); }
@@ -588,6 +596,7 @@
     if (a === "forgot") { const em = document.querySelector('[name="email"]').value.trim(); if (!/\S+@\S+\.\S+/.test(em)) { $("ferr").textContent = "Şifre sıfırlama için önce e-postanı yaz."; return; } try { await auth("recover", { email: em }); toast("Sıfırlama bağlantısı e-postana gönderildi"); } catch (er) { $("ferr").textContent = AUTH_ERR(er.message); } return; }
     if (a === "lang") { const cl = window.NPLang ? NPLang.get() : "tr"; return sheet('<h2>Dil · Language</h2><div class="rows" style="margin-top:12px">' + [["tr", "Türkçe"], ["en", "English"]].map(([k, l]) => '<button class="row" data-act="setLang" data-l="' + k + '"><span class="rt"><b>' + l + '</b></span><span class="cbox' + (cl === k ? " on" : "") + '"></span></button>').join("") + '</div><p class="hint" style="margin-top:10px">Haber başlık ve özetleri kaynağın dilinde gösterilir. · Story titles and summaries are shown in the source language.</p>'); }
     if (a === "setLang") { closeSheet(); if (window.NPLang) NPLang.set(d.l); return; }
+    if (a === "segDD") { S.segOpen = !S.segOpen; return render(); }
     if (a === "goHome") { if (cur().name === "home") { window.scrollTo({ top: 0, behavior: "smooth" }); return; } return tab("home"); }
     if (a === "goSaved") return go("saved");
     if (a === "goMap") return go("map");
