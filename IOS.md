@@ -1,12 +1,13 @@
 # NEWSPENGUEN iOS uygulaması (TestFlight)
 
-Uygulama, kökteki `index.html`'i Capacitor ile saran bir iOS uygulamasıdır. Zamanlanmış görev `index.html`'i güncellemeye devam eder; her yeni TestFlight derlemesi o anki haberleri içine alır ve açılışta Supabase'den güncel haberleri çeker.
+Uygulama `app/` klasöründeki ayrı bir iOS arayüzüdür (Design System v2, `docs/DESIGN-SYSTEM.md`). Haber verisi kökteki `index.html`'den alınır: `scripts/build-www.mjs`, zamanlanmış görevin güncellediği `/*DATA_START*/…/*DATA_END*/` bloğunu `www/data.js`'e çıkarır; `index.html` ve web sitesi değişmez. Uygulama açılışta Supabase'den son 30 günün haberlerini de çeker.
 
-Uygulamaya özel eklemeler (`app/` klasöründe; web sitesini etkilemez):
-- **Protective Hesap** sekmesi (`app/app.js`): yalnızca protective boyalar. (1) Yüzey alanı: çelik tonajından (ton × profil tipine göre m²/ton, elle değiştirilebilir) veya doğrudan m². (2) Elle fire (%), %20–50 kısayolları. (3) Katlar: hacimce katı madde, kat sayısı, kuru film ⇄ yaş film, isteğe bağlı $/L fiyat. (4) Sonuç: kat bazında litre, WFT, pratik yayılma, USD maliyet ve m² maliyeti.
-- **Konum filtresi**: Ana Sayfa, Sektörler ve Projeler'de bölge (Marmara, Ege…) veya il bazında seçim; ilçe ve kurum adlarından (Çorlu, Gebze, İBB…) ile eşleştirme, "Bölgem" ve "Global" kısayolları.
-- Arayüz (`app/app.css`): ana sayfada Boya Hesapla kısayolu, çentik/Dynamic Island boşluğu, yeni alt menü (Ana Sayfa, Sektörler, Projeler, Hesapla, Kayıtlı; Profil sağ üstte), işlevsiz zil ve ayar satırları kaldırıldı.
-- Haberler uygulama içi Safari görünümünde açılır, "linki kopyala" yerine iOS paylaş menüsü çıkar; açılış ekranı ve simge.
+Ekranlar (`app/app.js`): açılış, onboarding, giriş, kayıt (Supabase e-posta hesabı, misafir modu), ana sayfa, güncel fırsatlar, sektörler, projeler, proje detayı, haber detayı, konum seçimi (bölge/il/Global), proje haritası (Türkiye/Marmara), Protective hesaplama (başlangıç, yüzey bilgisi, sistem, sonuç), kayıtlılar (fırsat, proje, hesap), profil ve ayarlar, arama.
+
+- **Hesaplama**: çelik tonajı × m²/ton veya doğrudan m²; elle fire (%); katlar: hacimce katı madde, kat sayısı, kuru film ⇄ yaş film, isteğe bağlı $/L. Formüller: teorik yayılma = KM × 10 ÷ DFT, pratik = teorik × (1 − fire), WFT = DFT × 100 ÷ KM.
+- **Görseller**: haber konusuna göre çizilmiş vektör sahneler (`app/scenes.js`).
+- **Marka**: `app/brand/mark.svg`, `docs/brand/` (ikon, açık/koyu logo).
+- Haberler uygulama içi Safari görünümünde açılır, paylaşım iOS menüsüyle yapılır (`app/native-bridge.js`).
 
 ## Senin yapman gerekenler (bir kerelik)
 
