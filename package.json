@@ -1,0 +1,21 @@
+{
+  "name": "newspenguen",
+  "version": "1.0.0",
+  "private": true,
+  "description": "NEWSPENGUEN iOS uygulaması (Capacitor)",
+  "scripts": {
+    "build:www": "node scripts/build-www.mjs",
+    "sync": "npm run build:www && npx cap sync ios"
+  },
+  "dependencies": {
+    "@capacitor/browser": "8.0.5",
+    "@capacitor/core": "8.6.3",
+    "@capacitor/ios": "8.6.3",
+    "@capacitor/share": "8.0.3",
+    "@capacitor/splash-screen": "8.0.2",
+    "@capacitor/status-bar": "8.0.4"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "8.6.3"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "appId": "io.github.kurnazrecep16.newspenguen",
+  "appName": "NEWSPENGUEN",
+  "webDir": "www",
+  "backgroundColor": "#081733",
+  "ios": {
+    "contentInset": "never",
+    "backgroundColor": "#081733",
+    "limitsNavigationsToAppBoundDomains": false
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchAutoHide": false,
+      "backgroundColor": "#081733",
+      "showSpinner": false
+    }
+  }
+}
