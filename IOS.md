@@ -7,6 +7,7 @@ Ekranlar (`app/app.js`): açılış, onboarding, giriş, kayıt (Supabase e-post
 - **Hesaplama**: çelik tonajı × m²/ton veya doğrudan m²; elle fire (%); katlar: hacimce katı madde, kat sayısı, kuru film ⇄ yaş film, isteğe bağlı $/L. Formüller: teorik yayılma = KM × 10 ÷ DFT, pratik = teorik × (1 − fire), WFT = DFT × 100 ÷ KM.
 - **Görseller**: haber konusuna göre çizilmiş vektör sahneler (`app/scenes.js`).
 - **Marka**: `app/brand/mark.svg`, `docs/brand/` (ikon, açık/koyu logo).
+- **Dil**: Türkçe / English (`app/i18n.js`; profilde ve giriş ekranında seçilir). Haber içerikleri kaynağın dilinde kalır.
 - Haberler uygulama içi Safari görünümünde açılır, paylaşım iOS menüsüyle yapılır (`app/native-bridge.js`).
 
 ## Senin yapman gerekenler (bir kerelik)
