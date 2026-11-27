@@ -2,7 +2,7 @@
   "name": "newspenguen",
   "version": "1.0.0",
   "private": true,
-  "description": "NEWSPENGUEN iOS uygulaması (Capacitor)",
+  "description": "COATNEWS iOS uygulaması (Capacitor)",
   "scripts": {
     "build:www": "node scripts/build-www.mjs",
     "sync": "npm run build:www && npx cap sync ios"

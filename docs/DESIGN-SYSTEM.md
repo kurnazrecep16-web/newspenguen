@@ -1,44 +1,43 @@
-# NEWSPENGUEN · Design System v2 (Premium Dark)
+# COATNEWS · Design System v3
 
-Kaynak kod: `app/app.css` (tokenlar `:root` içinde). Logo ve ikon dosyaları: `docs/brand/`.
+Kaynak: COATNEWS Brand Guideline & UI Concept v1.2. Kod: `app/app.css` (tokenlar `:root` içinde). Logo ve ikon dosyaları: `docs/brand/`.
 
 ## Marka
 
+Ad **COATNEWS** · tanım *Global Coatings Media* · slogan *The Global Voice of the Coatings Industry.*
+
 | Öğe | Dosya | Not |
 |---|---|---|
-| Sembol (penguen başı + kanat çizgisi) | `docs/brand/mark.svg`, `app/brand/mark.svg` | Mavi gövde gradyanı, beyaz yüz hilali, amber gaga, kanat "swoosh" çizgisi |
-| Koyu zemin logo | `docs/brand/logo-dark.png` | Uygulama içi varsayılan |
-| Açık zemin logo | `docs/brand/logo-light.png` | Sunum, doküman, e-posta |
+| Sembol (üç akışkan bantlı katmanlı küre) | `docs/brand/mark.svg`, `app/brand/mark.svg` | Sky Blue, Coat Blue ve lacivert bantlar |
+| Tek renk sembol | `docs/brand/mark-mono.svg`, `symbol-mono.png` | Tek renk baskı |
+| Sembol (şeffaf) | `docs/brand/symbol.png` | |
+| Yatay logo, açık / koyu | `docs/brand/logo-light.png`, `logo-dark.png` | "NEWS" News Orange |
+| Dikey logo, açık / koyu | `docs/brand/logo-stacked-light.png`, `logo-stacked-dark.png` | |
 | App ikonu (1024, alfasız) | `docs/brand/icon-1024.png` | iOS `AppIcon` setine kopyalandı |
 | Açılış ekranı | `ios/App/App/Assets.xcassets/Splash.imageset/` | 2732×2732 |
 
-Yazı: **NEWSPENGUEN®** (800 ağırlık, 2–3 pt harf aralığı) · alt satır *Industry & Project Insights*.
-Koruma alanı: sembol yüksekliğinin %25'i. En küçük kullanım: 24 pt sembol.
-
 ## Renk
 
-| Token | HEX | Kullanım |
+| Ad | HEX | Token |
 |---|---|---|
-| `--np-night-900` | `#050B1F` | Uygulama zemini |
-| `--np-night-800` | `#081230` | İkincil zemin |
-| `--np-night-700` | `#0C1A40` | Kart |
-| `--np-night-600` | `#12234F` | Giriş alanı, vurgulu kart |
-| `--np-night-500` | `#1A2E62` | Çizgi vurgusu |
-| `--np-blue-500` | `#2F6BFF` | Birincil buton, seçili sekme |
-| `--np-blue-400` | `#4C8DFF` | Odak halkası, bağlantı |
-| `--np-blue-300` | `#8DB8FF` | İkincil vurgu metni |
-| `--np-amber-400` | `#FFB547` | Fırsat puanı, "Bölgem", uyarı |
-| `--np-green-400` | `#2BD48A` | Başarı, "Devam ediyor" |
-| `--np-red-400` | `#FF5A5F` | Hata, çıkış |
-| `--np-white` | `#F3F6FC` | Birincil metin |
-| `--np-grey-300` | `#B4C1DC` | İkincil metin |
-| `--np-grey-500` | `#7486AD` | Üçüncül metin, ikon |
+| Deep Navy | `#0B1F3B` | `--np-night-800` (zemin) |
+| Coat Blue | `#0066FF` | `--np-blue-500` (birincil) |
+| Sky Blue | `#4DB8FF` | `--np-blue-400` |
+| News Orange | `#FF7A00` | `--np-amber-400` (vurgu, fırsat puanı) |
+| Violet | `#7B61FF` | segment |
+| Teal | `#00A58C` | segment |
+| Slate | `#E2E8F0` | çizgi, açık zemin |
+| Cloud | `#F5F7FA` | `--np-white` (birincil metin) |
 
-Sektör renkleri: Endüstri `#4C8DFF` · Altyapı `#2BB7D4` · Enerji `#2BD48A` · Denizcilik `#5A7CFF` · Petrokimya `#FF8A4C` · Yapı `#B28DFF`.
+Segmentler (bu sırayla): Marine Coatings `#4DB8FF` · Protective Coatings `#14B89C` · Powder Coatings `#9784FF` · Decorative Coatings `#FFB547` · Energy `#7BD36A`. Industrial yok (Protective içinde), Automotive yok.
 
 ## Tipografi
 
-iOS sistem fontu (SF Pro). Ölçek (pt): Large title 32 · Title1 26 · Title2 21 · Title3 19 · Headline 17 · Body 16 · Callout 15 · Subhead 14 · Footnote 13 · Caption 12 · Caption2 11. Başlıklar 700–800, gövde 400–500, satır yüksekliği 1.45–1.6. Türkçe karakterler (ç ğ ı İ ö ş ü) tüm ağırlıklarda test edildi.
+Montserrat (başlık, menü, buton) · Inter (arayüz, gövde) · Source Serif 4 (editoryal haber başlığı). Fontlar `app/fonts/` içinde gömülü (çevrimdışı çalışır). Ölçek (pt): Large title 32 · Title1 26 · Title2 21 · Headline 17 · Body 16 · Subhead 14 · Caption 12.
+
+## Menü
+
+Ana Sayfa · Haberler (segmentler) · Projeler · Hesapla · Daha Fazla (Kayıtlılar, harita, ayarlar, dil, yardım, hakkında). Arama Ana Sayfa üst çubuğunda. Misafir okuma açık; TR/EN tercih saklanır.
 
 ## Boşluk, köşe, gölge
 
@@ -52,7 +51,7 @@ iOS sistem fontu (SF Pro). Ölçek (pt): Large title 32 · Title1 26 · Title2 2
 | Bileşen | Sınıf | Not |
 |---|---|---|
 | Gezinme çubuğu | `.navbar`, `.navrow`, `.ltitle`, `.ntitle` | Yapışkan, bulanık arka plan; büyük başlık sekme ekranlarında |
-| Alt sekme çubuğu | `.tabbar`, `.tab` | Ana Sayfa, Sektörler, Projeler, Hesapla, Kayıtlı |
+| Alt sekme çubuğu | `.tabbar`, `.tab` | Ana Sayfa, Haberler, Projeler, Hesapla, Daha Fazla |
 | Butonlar | `.btn`, `.secondary`, `.ghost`, `.danger`, `.apple` | 52 pt yükseklik |
 | Çip ve segment | `.chip`, `.seg` | Sayaçlı (`.n`) |
 | Form | `.field`, `.input`, `.unit`, `.hint`, `.err`, `.check`, `.switch` | Birimli sayı alanları |

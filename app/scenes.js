@@ -1,4 +1,4 @@
-/* NEWSPENGUEN · konuya göre haber görselleri
+/* COATNEWS · konuya göre haber görselleri
    Telifli fotoğraf yerine, haberin konusunu gösteren gece tonlu vektör sahneler.
    topicOf(item) haberin başlık, şirket ve özetinden konuyu bulur; sceneSVG(topic, key) sahneyi çizer. */
 (function () {

@@ -1,5 +1,5 @@
 /* =========================================================
-   NEWSPENGUEN iOS uygulaması · v2 (Premium Dark)
+   COATNEWS iOS uygulaması · v2 (Premium Dark)
    Veri: data.js (sitedeki index.html'den derlemede çıkarılır) + Supabase canlı akış.
    Ekranlar: açılış, onboarding, giriş, kayıt, ana sayfa, fırsatlar, sektörler, projeler,
    proje detayı, haber detayı, konum, proje haritası, hesaplama (giriş, yüzey, sistem, sonuç),
@@ -22,6 +22,8 @@
   /* ---------- İkonlar (24 px, 2 px çizgi) ---------- */
   const P = {
     home: '<path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
+    news: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h10M7 12h10M7 16h6"/>',
+    more: '<circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/>',
     layers: '<path d="m12 3 9 5-9 5-9-5z"/><path d="m3 13 9 5 9-5"/>',
     brief: '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18"/>',
     calc: '<rect x="5" y="2.5" width="14" height="19" rx="2.5"/><path d="M8.5 6.5h7M8.5 11h.01M12 11h.01M15.5 11h.01M8.5 14.5h.01M12 14.5h.01M15.5 14.5v3.5M8.5 18h.01M12 18h.01"/>',
@@ -67,16 +69,16 @@
     target: '<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/>'
   };
   const ic = (n, c = "ic") => '<svg class="' + c + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (P[n] || "") + '</svg>';
-  const MARK = (cls = "mark") => '<svg class="' + cls + '" viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="mkB" x1="10" y1="8" x2="50" y2="58" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#4C8DFF"/><stop offset=".55" stop-color="#1E5BFF"/><stop offset="1" stop-color="#0B2E9E"/></linearGradient><linearGradient id="mkW" x1="6" y1="56" x2="60" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#1E5BFF" stop-opacity="0"/><stop offset=".5" stop-color="#5AA2FF"/><stop offset="1" stop-color="#9CD0FF"/></linearGradient><linearGradient id="mkA" x1="40" y1="20" x2="60" y2="26" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#FFB547"/><stop offset="1" stop-color="#FF8A1F"/></linearGradient></defs><path d="M15 51C8.5 39 10.5 21 25 12.5 36 6 50.5 8.5 57 18.5L45.5 22.5C39 25 34.5 31.5 34.8 40.5 35 45 36.6 48.6 38.4 51Z" fill="url(#mkB)"/><path d="M27.5 51C26 39.5 30 29.5 40.5 24.8 35.6 31 33.6 39.8 35.4 51Z" fill="#fff"/><path d="M44.5 21.3 61 20.4 46.5 27.6C45 26 44.3 23.6 44.5 21.3Z" fill="url(#mkA)"/><circle cx="44.2" cy="16.6" r="2.3" fill="#fff"/><path d="M5 57.5C22 49.5 42 49 59.5 41" stroke="url(#mkW)" stroke-width="3.2" stroke-linecap="round" fill="none"/></svg>';
+  const MARK = (cls = "mark") => '<svg class="' + cls + '" viewBox="0 0 64 64" aria-hidden="true"><defs> <linearGradient id="cnTop" x1="8" y1="6" x2="56" y2="26" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#4DB8FF"/><stop offset="1" stop-color="#8FD6FF"/></linearGradient> <linearGradient id="cnMid" x1="6" y1="24" x2="58" y2="42" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#0066FF"/><stop offset="1" stop-color="#2E8BFF"/></linearGradient> <linearGradient id="cnBot" x1="10" y1="40" x2="54" y2="60" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#123B8C"/><stop offset="1" stop-color="#0B2A66"/></linearGradient> <radialGradient id="cnHi" cx="22" cy="16" r="30" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fff" stop-opacity=".35"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient> <clipPath id="cnClip"><circle cx="32" cy="32" r="28"/></clipPath> </defs> <g clip-path="url(#cnClip)"> <rect x="0" y="0" width="64" height="64" fill="url(#cnBot)"/> <path d="M0 42C14 30 30 50 64 34V0H0Z" fill="url(#cnMid)"/> <path d="M0 26C16 12 32 32 64 16V0H0Z" fill="url(#cnTop)"/> <path d="M0 26C16 12 32 32 64 16" stroke="#0B1F3B" stroke-width="2.6" fill="none"/> <path d="M0 42C14 30 30 50 64 34" stroke="#0B1F3B" stroke-width="2.6" fill="none"/> <circle cx="32" cy="32" r="28" fill="url(#cnHi)"/> </g></svg>';
 
   /* ---------- Sektörler (konuya göre) ---------- */
-  /* Jotun segmentleri (haberin seg alanı) */
+  /* Beş ana segment (haberin seg alanı) */
   const SECTORS = {
-    marine: { n: "Marine", d: "Tersane, gemi inşa ve denizcilik yatırımları", i: "ship", c: "var(--seg-marine)" },
-    prot: { n: "Protective", d: "Endüstriyel, altyapı ve ağır sanayi projeleri", i: "factory", c: "var(--seg-prot)" },
-    deco: { n: "Decorative", d: "Mimari, iç ve dış cephe boya projeleri", i: "drop", c: "var(--seg-deco)" },
-    powder: { n: "Toz Boya", d: "Otomotiv, beyaz eşya, alüminyum ve metal üretim", i: "box", c: "var(--seg-powder)" },
-    energy: { n: "Enerji", d: "GES, RES, santral, iletim ve depolama projeleri", i: "bolt", c: "var(--seg-energy)" }
+    marine: { n: "Marine Coatings", d: "Gemiler, tersaneler, offshore, limanlar ve deniz altyapısı", i: "ship", c: "var(--seg-marine)" },
+    prot: { n: "Protective Coatings", d: "Korozyon koruma, çelik yapılar, tanklar, köprüler ve endüstriyel tesisler", i: "factory", c: "var(--seg-prot)" },
+    powder: { n: "Powder Coatings", d: "Toz boya teknolojileri, uygulama hatları ve üretim yatırımları", i: "box", c: "var(--seg-powder)" },
+    deco: { n: "Decorative Coatings", d: "Mimari boyalar, iç ve dış cephe, renk ve yapı yüzeyleri", i: "drop", c: "var(--seg-deco)" },
+    energy: { n: "Energy", d: "Rüzgar, güneş, santraller ve enerji altyapısı", i: "bolt", c: "var(--seg-energy)" }
   };
   const SEC_KEYS = Object.keys(SECTORS);
   const TOPIC_SECTOR = { rail: "infra", bridge: "infra", tunnel: "infra", road: "infra", water: "infra", airport: "infra", wind: "energy", solar: "energy", grid: "energy", plant: "energy", offshore: "energy", port: "marine", ship: "marine", refinery: "petro", pipeline: "petro", tank: "petro", factory: "industry", steel: "industry", building: "building" };
@@ -170,7 +172,7 @@
   const initials = () => { const n = displayName().trim(); if (!S.user) return ic("user", "ic"); return esc(n.split(/\s+/).map(x => x[0]).slice(0, 2).join("").toLocaleUpperCase("tr")); };
 
   /* ---------- Yönlendirme ---------- */
-  const TAB_OF = { home: "home", opps: "home", news: "home", search: "home", sectors: "sectors", projects: "projects", map: "projects", calc: "calc", saved: "saved" };
+  const TAB_OF = { home: "home", opps: "sectors", news: "home", search: "home", sectors: "sectors", projects: "projects", map: "projects", calc: "calc", saved: "more", more: "more" };
   const NO_TAB = ["splash", "onboarding", "login", "signup", "project", "news", "location", "calcSurface", "calcSystem", "calcResult", "profile", "legal", "notifs", "help", "about", "settings"];
   const cur = () => S.stack[S.stack.length - 1] || { name: "home", p: {} };
   function go(name, p = {}, opt = {}) {
@@ -202,7 +204,7 @@
   }
   const empty = (t, s, icon = "search") => '<div class="empty">' + ic(icon) + '<b>' + t + '</b>' + (s || "") + '</div>';
   const nav = (title, right = "", opt = {}) => '<header class="navbar"><div class="navrow">' + (opt.noBack ? "" : '<button class="iconbtn" data-back="1" aria-label="Geri">' + ic("left") + '</button>') + (opt.large ? '<span class="sp"></span>' : '<h1 class="ntitle">' + esc(title) + '</h1>') + (right || (opt.noBack ? "" : '<span style="width:44px"></span>')) + '</div>' + (opt.large ? '<h1 class="ltitle">' + esc(title) + '</h1>' : '') + (opt.extra || "") + '</header>';
-  const tabNav = (title, right = "", extra = "") => '<header class="navbar"><div class="navrow"><h1 class="ltitle" style="flex:1;margin:0">' + esc(title) + '</h1>' + right + '</div>' + extra + '</header>';
+  const tabNav = (title, right = "", extra = "") => '<header class="navbar"><div class="navrow">' + (S.stack.length > 1 ? '<button class="iconbtn" data-back="1" aria-label="Geri">' + ic("left") + '</button>' : '') + '<h1 class="ltitle" style="flex:1;margin:0">' + esc(title) + '</h1>' + right + '</div>' + extra + '</header>';
   function locLabel() {
     if (!S.loc.size) return "Tüm Türkiye ve Global";
     const full = REGIONS.filter(([, cs]) => cs.every(c => S.loc.has(c))).map(([r]) => r);
@@ -220,12 +222,12 @@
   const V = {};
 
   // 1 · Açılış
-  V.splash = () => '<div class="splash"><div>' + MARK() + '<h1>NEWSPENGUEN<sup style="font-size:12px">®</sup></h1><p>Industry &amp; Project Insights</p></div>' +
-    '<svg class="swoosh" viewBox="0 0 400 140" preserveAspectRatio="none" aria-hidden="true"><path d="M0 120 C120 60 260 70 400 10" stroke="#2F6BFF" stroke-width="3" fill="none" opacity=".7"/><path d="M0 135 C140 80 260 90 400 40" stroke="#4C8DFF" stroke-width="1.5" fill="none" opacity=".45"/></svg></div>';
+  V.splash = () => '<div class="splash"><div>' + MARK() + '<h1>COAT<span style="color:var(--np-amber-400)">NEWS</span></h1><p>Global Coatings Media</p><p style="margin-top:14px;font-size:14px;opacity:.8">The Global Voice of the Coatings Industry.</p></div>' +
+    '<svg class="swoosh" viewBox="0 0 400 140" preserveAspectRatio="none" aria-hidden="true"><path d="M0 120 C120 60 260 70 400 10" stroke="#0066FF" stroke-width="3" fill="none" opacity=".7"/><path d="M0 135 C140 80 260 90 400 40" stroke="#4DB8FF" stroke-width="1.5" fill="none" opacity=".45"/></svg></div>';
 
   // 2 · Onboarding
   const ONB = [
-    { t: "rail", h: "Sektör haberleri, projeler ve yatırım fırsatları", p: "Endüstri, enerji, altyapı ve denizcilik projelerini tek platformda takip et." },
+    { t: "ship", h: "Boya ve kaplama sektörünün haberleri", p: "Marine, Protective, Powder, Decorative ve Energy segmentlerindeki projeleri ve yatırımları tek yerde takip et." },
     { t: "wind", h: "Bölgendeki fırsatları ilk sen gör", p: "İl ya da bölge seç; ihaleler, yatırımlar ve finansman haberleri sana göre süzülsün." },
     { t: "steel", h: "Protective boya hesabı cebinde", p: "Çelik tonajından yüzey alanını, katlardan boya miktarını ve maliyeti saniyeler içinde hesapla." }
   ];
@@ -238,7 +240,7 @@
 
   // 3 · Giriş
   V.login = p => '<div class="auth"><div style="display:flex;align-items:center">' + (S.stack.length > 1 ? '<button class="iconbtn" data-back="1" aria-label="Geri">' + ic("left") + '</button>' : '') + '<span style="flex:1"></span>' + langPill() + '</div>' +
-    '<div class="logo">' + MARK() + '<b>NEWSPENGUEN</b><small>Industry &amp; Project Insights</small></div><h1>Hesabına giriş yap</h1>' +
+    '<div class="logo">' + MARK() + '<b>COAT<span style="color:var(--np-amber-400)">NEWS</span></b><small>Global Coatings Media</small></div><h1>Hesabına giriş yap</h1>' +
     '<form class="stack" data-form="login" novalidate><label class="field"><span class="sr">E-posta</span><span class="input">' + ic("mail") + '<input type="email" name="email" placeholder="E-posta" autocomplete="email" inputmode="email" required></span></label>' +
     '<label class="field"><span class="sr">Şifre</span><span class="input">' + ic("lock") + '<input type="password" name="password" placeholder="Şifre" autocomplete="current-password" required><button type="button" class="iconbtn" style="width:36px;height:36px" data-act="pwToggle" aria-label="Şifreyi göster">' + ic("eye", "ic sm") + '</button></span></label>' +
     '<div style="display:flex;justify-content:flex-end"><button type="button" class="btn ghost" style="width:auto" data-act="forgot">Şifremi unuttum</button></div>' +
@@ -259,13 +261,13 @@
     const pool = visible(), list = S.seg === "all" ? pool : S.seg === "star" ? pool.filter(i => i.star) : pool.filter(i => i._s === S.seg);
     const hero = list.slice().sort(byScore).slice(0, 4), rest = list.filter(i => !hero.includes(i)).sort(byDate);
     const anyNew = pool.some(i => i.isNew);
-    let h = '<header class="navbar"><div class="navrow"><div class="brand">' + MARK() + '<div><b>NEWSPENGUEN<sup>®</sup></b><small>Industry &amp; Project Insights</small></div></div>' +
+    let h = '<header class="navbar"><div class="navrow"><div class="brand">' + MARK() + '<div><b>COAT<span style="color:var(--np-amber-400)">NEWS</span></b><small>Global Coatings Media</small></div></div>' +
       '<button class="iconbtn fill" data-go="notifs" aria-label="Yeni haberler">' + ic("bell") + (anyNew ? '<span class="dot"></span>' : '') + '</button><button class="avatar" data-go="profile" aria-label="Profil">' + initials() + '</button></div>' + locBar() +
       '<div class="chips" role="group" aria-label="Filtre" style="margin-top:10px"><button class="chip" data-seg="all" aria-pressed="' + (S.seg === "all") + '">Tümü <span class="n">' + pool.length + '</span></button><button class="chip" data-seg="star" aria-pressed="' + (S.seg === "star") + '">★ Bölgem <span class="n">' + pool.filter(i => i.star).length + '</span></button>' +
       SEC_KEYS.map(k => { const n = pool.filter(i => i._s === k).length; return n ? '<button class="chip" data-seg="' + k + '" aria-pressed="' + (S.seg === k) + '">' + SECTORS[k].n + ' <span class="n">' + n + '</span></button>' : ""; }).join("") + '</div></header><main class="wrap">';
     if (!list.length) return h + empty("Bu filtrede haber yok", "Konumu ya da filtreyi değiştir.") + '</main>';
-    h += '<section class="hero" aria-roledescription="carousel" aria-label="Öne çıkanlar"><div class="track" id="herotrack">' + hero.map(i => '<button class="slide" data-open="' + esc(i.id) + '">' + scene(i, "h") + '<div class="cap"><span>' + (i.star ? '<span class="tag" style="--c:#D97706">★ Bölgem</span> ' : '') + tag(i) + '</span><h3>' + esc(i.company || i.title) + '</h3><p>' + esc(i.why || i.summary) + '</p></div></button>').join("") + '</div><div class="dots">' + hero.map((_, k) => '<i class="' + (k ? "" : "on") + '"></i>').join("") + '</div></section>';
-    h += '<div class="quick"><button class="qa" data-tab="calc"><span class="qi" style="background:rgba(255,181,71,.16);color:var(--np-amber-400)">' + ic("roller") + '</span><span><b>Boya Hesapla</b><small>Protective sarfiyat</small></span></button><button class="qa" data-go="map"><span class="qi" style="background:rgba(76,141,255,.16);color:var(--np-blue-300)">' + ic("map") + '</span><span><b>Proje Haritası</b><small>' + pool.filter(i => i._c.length && i._c[0] !== GLOBAL).length + ' konumlu haber</small></span></button></div>';
+    h += '<section class="hero" aria-roledescription="carousel" aria-label="Öne çıkanlar"><div class="track" id="herotrack">' + hero.map(i => '<button class="slide" data-open="' + esc(i.id) + '">' + scene(i, "h") + '<div class="cap"><span>' + (i.star ? '<span class="tag" style="--c:#E06A00">★ Bölgem</span> ' : '') + tag(i) + '</span><h3>' + esc(i.company || i.title) + '</h3><p>' + esc(i.why || i.summary) + '</p></div></button>').join("") + '</div><div class="dots">' + hero.map((_, k) => '<i class="' + (k ? "" : "on") + '"></i>').join("") + '</div></section>';
+    h += '<div class="quick"><button class="qa" data-tab="calc"><span class="qi" style="background:rgba(255,122,0,.16);color:var(--np-amber-400)">' + ic("roller") + '</span><span><b>Boya Hesapla</b><small>Protective sarfiyat</small></span></button><button class="qa" data-go="map"><span class="qi" style="background:rgba(77,184,255,.16);color:var(--np-blue-300)">' + ic("map") + '</span><span><b>Proje Haritası</b><small>' + pool.filter(i => i._c.length && i._c[0] !== GLOBAL).length + ' konumlu haber</small></span></button></div>';
     h += '<div class="h-sec"><h2>Güncel Fırsatlar</h2><button class="more" data-go="opps">Tümü ' + ic("chev", "ic xs") + '</button></div><div class="list">' + rest.slice(0, 6).map(ncard).join("") + '</div>';
     h += '<p class="foot">Son güncelleme: ' + esc(UPD) + ' · 50+ fırsat puanlı haberler</p></main>';
     return h;
@@ -284,7 +286,7 @@
   // 7 · Sektörler
   V.sectors = () => {
     const pool = visible();
-    return tabNav("Segmentler", '<button class="iconbtn fill" data-go="search" aria-label="Ara">' + ic("search") + '</button>') + '<main class="wrap"><p class="lead" style="margin:0 0 14px">Haberler Jotun’un beş segmentinde toplanır.</p><div class="rows">' +
+    return tabNav("Haberler", '<button class="iconbtn fill" data-go="search" aria-label="Ara">' + ic("search") + '</button>') + '<main class="wrap"><p class="lead" style="margin:0 0 14px">Tüm içerik beş ana segmentte toplanır.</p><div class="rows">' +
       SEC_KEYS.map(k => { const s = SECTORS[k], n = pool.filter(i => i._s === k); const top = n.slice().sort(byScore)[0]; return '<button class="row" data-sector="' + k + '"><span class="ri" style="background:color-mix(in srgb,' + s.c + ' 18%,transparent);color:' + s.c + '">' + ic(s.i) + '</span><span class="rt"><b>' + s.n + '</b><small>' + s.d + (top ? ' · en yüksek ★' + top.score : '') + '</small></span><span class="cnt">' + n.length + '</span>' + ic("chev", "ic sm chev") + '</button>'; }).join("") +
       '</div></main>';
   };
@@ -303,7 +305,7 @@
     const i = get(p.id); if (!i) return nav("Proje") + empty("Proje bulunamadı");
     const t = p.t || "general";
     const heroNav = '<header class="navbar"><div class="navrow"><button class="iconbtn" data-back="1" aria-label="Geri">' + ic("left") + '</button><span class="sp"></span>' + bmBtn(i, "iconbtn") + '<button class="iconbtn" data-share="' + esc(i.id) + '" aria-label="Paylaş">' + ic("share") + '</button></div></header>';
-    let h = '<div class="dhero">' + scene(i, "h") + heroNav + '<div class="cap"><span>' + tag(i) + ' <span class="tag soft" style="--c:' + (i._p ? "#FFB547" : "#2BD48A") + '">' + (i._p ? "Planlanan" : "Devam Ediyor") + '</span></span><h1 class="dtitle">' + esc(i.company || i.title) + '</h1><span class="score" style="font-size:18px">★ ' + i.score + '<span class="dim" style="font-size:13px;font-weight:600">/100 fırsat puanı</span></span></div></div><main class="wrap">';
+    let h = '<div class="dhero">' + scene(i, "h") + heroNav + '<div class="cap"><span>' + tag(i) + ' <span class="tag soft" style="--c:' + (i._p ? "#FF7A00" : "#00C29E") + '">' + (i._p ? "Planlanan" : "Devam Ediyor") + '</span></span><h1 class="dtitle">' + esc(i.company || i.title) + '</h1><span class="score" style="font-size:18px">★ ' + i.score + '<span class="dim" style="font-size:13px;font-weight:600">/100 fırsat puanı</span></span></div></div><main class="wrap">';
     h += '<div class="seg" role="tablist" style="margin:6px 0 16px">' + [["general", "Genel"], ["detail", "Detay"], ["docs", "Doküman"]].map(([k, l]) => '<button role="tab" data-ptab="' + k + '" aria-pressed="' + (t === k) + '">' + l + '</button>').join("") + '</div>';
     if (t === "general") {
       h += '<div class="card facts">' + [["pin", "Konum", place(i)], ["clock", "Durum", i._p ? "Planlanan" : "Devam Ediyor"], ["calendar", i.deadline ? "Son teklif tarihi" : i.edate ? "Hedef tarih" : "Yayın tarihi", i.deadline || i.edate || fdate(i.date)], ["brief", "Tür", KIND[i.kind] || "Haber"], ["layers", "Boya segmenti", PAINT[i.seg] || "–"]].map(([ii, l, v]) => '<div class="fact"><span class="fi">' + ic(ii) + '</span><span><small>' + l + '</small><b>' + esc(v) + '</b></span></div>').join("") + '</div>';
@@ -323,7 +325,7 @@
     const i = get(p.id); if (!i) return nav("Haber") + empty("Haber bulunamadı");
     const rel2 = DATA.filter(x => x.id !== i.id && x._s === i._s).sort(byScore).slice(0, 2);
     const heroNav = '<header class="navbar"><div class="navrow"><button class="iconbtn" data-back="1" aria-label="Geri">' + ic("left") + '</button><span class="sp"></span>' + bmBtn(i, "iconbtn") + '<button class="iconbtn" data-share="' + esc(i.id) + '" aria-label="Paylaş">' + ic("share") + '</button></div></header>';
-    let h = '<div class="dhero">' + scene(i, "h") + heroNav + '<div class="cap"><span>' + tag(i) + (i.kind ? ' <span class="tag soft" style="--c:#8DB8FF">' + KIND[i.kind] + '</span>' : '') + '</span><h1 class="dtitle">' + esc(i.title) + '</h1><span class="meta">' + ic("calendar", "ic xs") + '<span>' + fdate(i.date) + '</span><span class="sep"></span>' + ic("clock", "ic xs") + '<span>' + readMin(i) + ' dk okuma</span><span class="sep"></span><span>' + esc(i.source) + '</span></span></div></div><main class="wrap">';
+    let h = '<div class="dhero">' + scene(i, "h") + heroNav + '<div class="cap"><span>' + tag(i) + (i.kind ? ' <span class="tag soft" style="--c:#9AD4FF">' + KIND[i.kind] + '</span>' : '') + '</span><h1 class="dtitle">' + esc(i.title) + '</h1><span class="meta">' + ic("calendar", "ic xs") + '<span>' + fdate(i.date) + '</span><span class="sep"></span>' + ic("clock", "ic xs") + '<span>' + readMin(i) + ' dk okuma</span><span class="sep"></span><span>' + esc(i.source) + '</span></span></div></div><main class="wrap">';
     h += '<p class="body">' + esc(i.summary) + '</p>';
     if (i.why) h += '<div class="why" style="margin-top:18px"><div class="h"><span>Neden fırsat</span><span>★ ' + i.score + '/100</span></div>' + (i.company ? '<p style="font-weight:700;margin-bottom:6px">' + esc(i.company) + '</p>' : '') + '<p>' + esc(i.why) + '</p></div>';
     h += '<div class="card facts" style="margin-top:14px">' + [["pin", "Konum", place(i)], ["layers", "Segment", SECTORS[i._s].n + " · " + (NS.TOPIC_LABEL[i._t] || "")], ["calendar", i.deadline ? "Son teklif tarihi" : "Yayın tarihi", i.deadline || fdate(i.date)]].map(([ii, l, v]) => '<div class="fact"><span class="fi">' + ic(ii) + '</span><span><small>' + l + '</small><b>' + esc(v) + '</b></span></div>').join("") + '</div>';
@@ -341,7 +343,7 @@
     let h = nav("Konum", '<button class="iconbtn" data-act="locNone" aria-label="Temizle" style="width:auto;padding:0 6px;font-size:15px;color:var(--np-blue-300)">Temizle</button>', { large: true }) + '<main class="wrap" style="padding-bottom:90px">';
     h += '<label class="search">' + ic("search") + '<input type="search" placeholder="Konum ara…" value="' + esc(d.q) + '" data-locq="1" aria-label="Konum ara"></label>';
     h += '<div class="rows" style="margin-top:14px"><button class="row" data-act="locAll"><span class="ri">' + ic("pin") + '</span><span class="rt"><b>Tüm Türkiye ve Global</b><small>Konum filtresi yok</small></span><span class="cbox' + (d.sel.size ? "" : " on") + '"></span></button>' +
-      '<button class="row" data-act="locMine"><span class="ri" style="color:var(--np-amber-400);background:rgba(255,181,71,.14)">' + ic("star") + '</span><span class="rt"><b>Bölgem</b><small>İstanbul + Trakya</small></span><span class="cbox' + (MINE.every(c => d.sel.has(c)) ? " on" : MINE.some(c => d.sel.has(c)) ? " part" : "") + '"></span></button>' +
+      '<button class="row" data-act="locMine"><span class="ri" style="color:var(--np-amber-400);background:rgba(255,122,0,.14)">' + ic("star") + '</span><span class="rt"><b>Bölgem</b><small>İstanbul + Trakya</small></span><span class="cbox' + (MINE.every(c => d.sel.has(c)) ? " on" : MINE.some(c => d.sel.has(c)) ? " part" : "") + '"></span></button>' +
       '<button class="row" data-locc="' + GLOBAL + '"><span class="ri">' + ic("globe") + '</span><span class="rt"><b>Global</b><small>Yurt dışı projeler</small></span><span class="cnt">' + (cnt[GLOBAL] || 0) + '</span><span class="cbox' + (d.sel.has(GLOBAL) ? " on" : "") + '"></span></button></div>';
     h += '<div class="h-sec" style="margin-top:20px"><h2 style="font-size:var(--fs-headline)">Bölgeler</h2></div><div class="rows">';
     for (const [r, cs] of REGIONS) {
@@ -366,11 +368,11 @@
     const sel = p.city, zm = p.zoom === "mm", k = zm ? 3.2 : 1;
     const globalN = pool.filter(i => i._c[0] === GLOBAL).length;
     const vb = zm ? "6 4 112 72" : "-6 -10 412 214";
-    let svg = '<svg viewBox="' + vb + '" role="img" aria-label="' + (zm ? "Marmara" : "Türkiye") + ' proje haritası"><defs><pattern id="mdot" width="' + 5 / k + '" height="' + 5 / k + '" patternUnits="userSpaceOnUse"><circle cx="' + 2.5 / k + '" cy="' + 2.5 / k + '" r="' + 1 / k + '" fill="#3D6BD6"/></pattern><radialGradient id="mglow"><stop offset="0" stop-color="#4C8DFF" stop-opacity=".55"/><stop offset="1" stop-color="#4C8DFF" stop-opacity="0"/></radialGradient></defs>' +
-      '<polygon points="' + poly(ANAT) + '" fill="url(#mdot)" stroke="#3B6FD1" stroke-width="' + 1 / k + '"/><polygon points="' + poly(THRACE) + '" fill="url(#mdot)" stroke="#3B6FD1" stroke-width="' + 1 / k + '"/>';
+    let svg = '<svg viewBox="' + vb + '" role="img" aria-label="' + (zm ? "Marmara" : "Türkiye") + ' proje haritası"><defs><pattern id="mdot" width="' + 5 / k + '" height="' + 5 / k + '" patternUnits="userSpaceOnUse"><circle cx="' + 2.5 / k + '" cy="' + 2.5 / k + '" r="' + 1 / k + '" fill="#2E7FD0"/></pattern><radialGradient id="mglow"><stop offset="0" stop-color="#4DB8FF" stop-opacity=".55"/><stop offset="1" stop-color="#4DB8FF" stop-opacity="0"/></radialGradient></defs>' +
+      '<polygon points="' + poly(ANAT) + '" fill="url(#mdot)" stroke="#2F78C8" stroke-width="' + 1 / k + '"/><polygon points="' + poly(THRACE) + '" fill="url(#mdot)" stroke="#2F78C8" stroke-width="' + 1 / k + '"/>';
     Object.entries(byCity).sort((a, b) => a[1].length - b[1].length).forEach(([c, l]) => {
       const [x, y] = PX(COORD[c][1], COORD[c][0]), r = (6 + Math.min(8, l.length * 1.2)) / k, on = sel === c, mine = MINE.includes(c);
-      svg += '<g class="bub" data-city="' + c + '" role="button" tabindex="0" aria-label="' + c + ', ' + l.length + ' haber"><circle cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="' + (r + 7 / k) + '" fill="url(#mglow)"/><circle cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="' + r + '" fill="' + (mine ? "#F59E0B" : "#2F6BFF") + '" stroke="' + (on ? "#fff" : "rgba(255,255,255,.6)") + '" stroke-width="' + (on ? 2.5 : 1.2) / k + '"/><text x="' + x.toFixed(1) + '" y="' + (y + 3.6 / k).toFixed(2) + '" text-anchor="middle" style="font-size:' + (11 / k).toFixed(2) + 'px">' + l.length + '</text>' + (zm ? '<text x="' + x.toFixed(1) + '" y="' + (y + r + 4.2).toFixed(1) + '" text-anchor="middle" class="lbl" style="font-size:3.2px">' + c + '</text>' : '') + '</g>';
+      svg += '<g class="bub" data-city="' + c + '" role="button" tabindex="0" aria-label="' + c + ', ' + l.length + ' haber"><circle cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="' + (r + 7 / k) + '" fill="url(#mglow)"/><circle cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="' + r + '" fill="' + (mine ? "#FF7A00" : "#0066FF") + '" stroke="' + (on ? "#fff" : "rgba(255,255,255,.6)") + '" stroke-width="' + (on ? 2.5 : 1.2) / k + '"/><text x="' + x.toFixed(1) + '" y="' + (y + 3.6 / k).toFixed(2) + '" text-anchor="middle" style="font-size:' + (11 / k).toFixed(2) + 'px">' + l.length + '</text>' + (zm ? '<text x="' + x.toFixed(1) + '" y="' + (y + r + 4.2).toFixed(1) + '" text-anchor="middle" class="lbl" style="font-size:3.2px">' + c + '</text>' : '') + '</g>';
     });
     svg += '</svg>';
     const ranked = Object.entries(byCity).sort((a, b) => b[1].length - a[1].length);
@@ -380,7 +382,7 @@
     return nav("Proje Haritası", '<button class="iconbtn" data-go="location" aria-label="Konum filtresi">' + ic("filter") + '</button>', { large: true }) + '<main class="wrap">' +
       '<div class="seg" style="margin-bottom:12px"><button data-act="mapTr" aria-pressed="' + !zm + '">Türkiye</button><button data-act="mapMm" aria-pressed="' + zm + '">Marmara</button></div>' +
       '<div class="mapbox' + (zm ? " zm" : "") + '">' + svg + '</div>' +
-      '<div class="legend"><span><i style="background:#2F6BFF"></i>Haber sayısı</span><span><i style="background:#F59E0B"></i>Bölgem</span><span>' + ic("globe", "ic xs") + ' Global: ' + globalN + '</span></div>' + below + '</main>';
+      '<div class="legend"><span><i style="background:#0066FF"></i>Haber sayısı</span><span><i style="background:#FF7A00"></i>Bölgem</span><span>' + ic("globe", "ic xs") + ' Global: ' + globalN + '</span></div>' + below + '</main>';
   };
 
   // Arama
@@ -421,7 +423,7 @@
   const stepsBar = n => '<div class="steps" role="list">' + [["calcSurface", "Yüzey Bilgisi"], ["calcSystem", "Sistem"], ["calcResult", "Sonuç"]].map(([k, l], j) => '<button role="listitem" data-step="' + k + '"' + (j === n ? ' aria-current="step"' : '') + ' class="' + (j < n ? "done" : "") + '"><i>' + (j < n ? "✓" : j + 1) + '</i>' + l + '</button>').join("") + '</div>';
   const fin = (k, label, val, unit, attrs = "", cls = "") => '<label class="field"><span class="lbl">' + label + '</span><span class="input ' + cls + '"><input inputmode="decimal" ' + attrs + ' value="' + esc(String(val ?? "")) + '" placeholder="0"><span class="unit">' + unit + '</span></span></label>';
 
-  V.calc = () => tabNav("Boya Hesapla") + '<main class="wrap"><div class="intro-art">' + '<svg width="200" height="200" viewBox="0 0 200 200" aria-hidden="true"><defs><radialGradient id="ia"><stop offset="0" stop-color="#2F6BFF" stop-opacity=".45"/><stop offset="1" stop-color="#2F6BFF" stop-opacity="0"/></radialGradient><linearGradient id="ib" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8DB8FF"/><stop offset="1" stop-color="#2F6BFF"/></linearGradient></defs><circle cx="100" cy="100" r="96" fill="url(#ia)"/><g transform="rotate(-30 100 100)"><rect x="40" y="56" width="110" height="38" rx="12" fill="url(#ib)"/><rect x="40" y="56" width="110" height="10" rx="5" fill="#fff" opacity=".35"/><path d="M150 75h14v34H96v26" stroke="#C9D6F2" stroke-width="7" fill="none" stroke-linejoin="round"/><rect x="88" y="132" width="16" height="44" rx="5" fill="#FFB547"/></g></svg></div>' +
+  V.calc = () => tabNav("Boya Hesapla") + '<main class="wrap"><div class="intro-art">' + '<svg width="200" height="200" viewBox="0 0 200 200" aria-hidden="true"><defs><radialGradient id="ia"><stop offset="0" stop-color="#0066FF" stop-opacity=".45"/><stop offset="1" stop-color="#0066FF" stop-opacity="0"/></radialGradient><linearGradient id="ib" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9AD4FF"/><stop offset="1" stop-color="#0066FF"/></linearGradient></defs><circle cx="100" cy="100" r="96" fill="url(#ia)"/><g transform="rotate(-30 100 100)"><rect x="40" y="56" width="110" height="38" rx="12" fill="url(#ib)"/><rect x="40" y="56" width="110" height="10" rx="5" fill="#fff" opacity=".35"/><path d="M150 75h14v34H96v26" stroke="#C9D4E3" stroke-width="7" fill="none" stroke-linejoin="round"/><rect x="88" y="132" width="16" height="44" rx="5" fill="#FF7A00"/></g></svg></div>' +
     '<h1 style="font-size:var(--fs-title1);margin:0;font-weight:800">Protective Boya Hesapla</h1><p class="lead">Çelik tonajı ya da yüzey alanı, fire oranı ve boya katlarının bilgileriyle sarfiyatı ve maliyeti hesapla.</p>' +
     '<div class="feat">' + ["Tonajdan yüzey alanı (m²)", "Kat bazında sarfiyat (L)", "Kuru ve yaş film kalınlığı", "Toplam boya miktarı ve maliyet ($)"].map(t => '<div><span>' + ic("check", "ic xs") + '</span>' + t + '</div>').join("") + '</div>' +
     '<button class="btn" data-go="calcSurface">Hesaplamaya Başla</button>' + (S.calcs.length ? '<button class="btn ghost" style="margin-top:6px" data-act="savedCalcs">Kayıtlı hesaplar (' + S.calcs.length + ')</button>' : '') + '</main>';
@@ -464,7 +466,7 @@
   };
   function calcText(c = C) {
     const r = calc(c);
-    return "NEWSPENGUEN · Protective boya hesabı\n" + (c.mode === "ton" ? "Çelik: " + f(num(c.ton), 0) + " ton × " + f(num(c.m2t), 0) + " m²/t = " : "Alan: ") + f(r.A, 0) + " m² · Fire: %" + f(r.L * 100, 0) + "\n" +
+    return "COATNEWS · Protective boya hesabı\n" + (c.mode === "ton" ? "Çelik: " + f(num(c.ton), 0) + " ton × " + f(num(c.m2t), 0) + " m²/t = " : "Alan: ") + f(r.A, 0) + " m² · Fire: %" + f(r.L * 100, 0) + "\n" +
       r.rows.map((x, i) => (i + 1) + ". " + (x.n || "Kat") + ": " + x.coats + " × " + f(x.dft, 0) + " µm DFT (WFT " + (x.wft || "–") + " µm, KM %" + f(x.vs, 0) + ") → " + f(x.liters, 0) + " L" + (x.cost ? ", " + usd(x.cost) : "")).join("\n") +
       "\nToplam: " + f(r.liters, 0) + " L · toplam DFT " + f(r.dft, 0) + " µm" + (r.cost ? "\nMaliyet: " + usd(r.cost) + " (" + usd(r.cpm, 2) + "/m²)" : "");
   }
@@ -478,6 +480,10 @@
     return h + '</div></main>';
   };
 
+  // Daha fazla
+  V.more = () => tabNav("Daha Fazla") + '<main class="wrap"><button class="phead" data-go="profile" style="width:100%"><span class="avatar">' + initials() + '</span><b>' + esc(displayName()) + '</b><small>' + esc(S.user ? S.user.email || "" : "Profil ve hesap") + '</small></button><div class="rows">' +
+    [["bm", "Kayıtlılar", S.saved.length + " haber · " + S.calcs.length + " hesap", "goSaved"], ["map", "Proje Haritası", "Türkiye ve Marmara", "goMap"], ["gear", "Uygulama ayarları", "Segmentler ve konum", "goSettings"], ["bell", "Bildirim tercihleri", "Bölge fırsatları, ihaleler", "notifPrefs"], ["globe", "Dil · Language", window.NPLang && NPLang.get() === "en" ? "English" : "Türkçe", "lang"], ["help", "Yardım ve destek", "Sık sorulanlar, iletişim", "goHelp"], ["info", "Hakkında", "Sürüm " + VERSION + ", gizlilik", "goAbout"]].map(([i, t, s2, a]) => '<button class="row" data-act="' + a + '"><span class="ri">' + ic(i) + '</span><span class="rt"><b>' + t + '</b><small>' + s2 + '</small></span>' + ic("chev", "ic sm chev") + '</button>').join("") + '</div></main>';
+
   // 18 · Profil ve ayarlar
   V.profile = () => {
     const signed = !!S.user;
@@ -488,9 +494,9 @@
   V.settings = () => nav("Uygulama Ayarları") + '<main class="wrap"><div class="h-sec" style="margin-top:4px"><h2 style="font-size:var(--fs-headline)">İlgi alanların</h2></div><p class="lead" style="margin:-6px 0 12px">Kapattığın sektörler akışta görünmez.</p><div class="rows">' +
     SEC_KEYS.map(k => '<label class="row"><span class="ri" style="background:color-mix(in srgb,' + SECTORS[k].c + ' 18%,transparent);color:' + SECTORS[k].c + '">' + ic(SECTORS[k].i) + '</span><span class="rt"><b>' + SECTORS[k].n + '</b><small>' + SECTORS[k].d + '</small></span><input type="checkbox" class="switch" data-hide="' + k + '"' + (S.hidden.includes(k) ? "" : " checked") + ' aria-label="' + SECTORS[k].n + '"></label>').join("") + '</div>' +
     '<div class="h-sec"><h2 style="font-size:var(--fs-headline)">Konum</h2></div>' + locBar() + '</main>';
-  V.help = () => nav("Yardım ve Destek") + '<main class="wrap prose"><h3>Haberler nereden geliyor?</h3><p>NEWSPENGUEN, sektör yayınlarını ve kamu ihale duyurularını her 6 saatte bir tarar; boya ve kaplama ihtiyacı doğurabilecek projeleri 0–100 arası fırsat puanıyla listeler. 50 puanın altındakiler gösterilmez.</p><h3>Konum filtresi nasıl çalışır?</h3><p>Haber metnindeki il, ilçe ve kurum adlarından konum bulunur (ör. Çorlu → Tekirdağ). Bölge ya da il seçerek akışı daraltabilirsin.</p><h3>Boya hesabı ne kadar kesin?</h3><p>Hesap; teknik föydeki hacimce katı madde ve film kalınlığıyla standart formülü kullanır. Ton başına yüzey değerleri tipiktir, kesin sonuç için proje metrajını kullan.</p><h3>İletişim</h3><p>Destek e-postası: <b style="color:#fff;user-select:all">destek@newspenguen.app</b></p></main>';
-  V.about = () => nav("Hakkında") + '<main class="wrap"><div class="phead">' + MARK() .replace('class="mark"', 'class="mark" style="width:80px;height:80px"') + '<b>NEWSPENGUEN</b><small>Sürüm ' + VERSION + ' · Industry &amp; Project Insights</small></div><div class="rows"><button class="row" data-go="legal"><span class="ri">' + ic("shield") + '</span><span class="rt"><b>Gizlilik politikası ve kullanım koşulları</b></span>' + ic("chev", "ic sm chev") + '</button></div><p class="foot">Veri: kamuya açık haber ve ihale kaynakları. Haber içerikleri ilgili yayıncılara aittir.<br>Son veri güncellemesi: ' + esc(UPD) + '</p></main>';
-  V.legal = () => nav("Gizlilik ve Koşullar") + '<main class="wrap prose"><h3>Gizlilik politikası</h3><p>NEWSPENGUEN reklam veya takip amaçlı veri toplamaz. Kayıtlı haberlerin, hesapların, konum ve ilgi alanı tercihlerin yalnızca cihazında saklanır. Hesap açarsan adın ve e-posta adresin, kimlik doğrulama için güvenli bir sunucuda (Supabase) tutulur ve üçüncü taraflarla paylaşılmaz.</p><p>Hesabını ve verilerini silmek için destek adresine yazabilirsin; talebin 30 gün içinde yerine getirilir.</p><h3>Kullanım koşulları</h3><p>Haber özetleri bilgilendirme amaçlıdır; asıl içerik ilgili yayıncıya aittir ve bağlantıyla kaynağa yönlendirilir. Boya hesapları tahmini değerlerdir; uygulama öncesi ürün teknik föyü ve proje spesifikasyonu esas alınmalıdır.</p></main>';
+  V.help = () => nav("Yardım ve Destek") + '<main class="wrap prose"><h3>Haberler nereden geliyor?</h3><p>COATNEWS, sektör yayınlarını ve kamu ihale duyurularını her 6 saatte bir tarar; boya ve kaplama ihtiyacı doğurabilecek projeleri 0–100 arası fırsat puanıyla listeler. 50 puanın altındakiler gösterilmez.</p><h3>Konum filtresi nasıl çalışır?</h3><p>Haber metnindeki il, ilçe ve kurum adlarından konum bulunur (ör. Çorlu → Tekirdağ). Bölge ya da il seçerek akışı daraltabilirsin.</p><h3>Boya hesabı ne kadar kesin?</h3><p>Hesap; teknik föydeki hacimce katı madde ve film kalınlığıyla standart formülü kullanır. Ton başına yüzey değerleri tipiktir, kesin sonuç için proje metrajını kullan.</p></main>';
+  V.about = () => nav("Hakkında") + '<main class="wrap"><div class="phead">' + MARK() .replace('class="mark"', 'class="mark" style="width:80px;height:80px"') + '<b>COAT<span style="color:var(--np-amber-400)">NEWS</span></b><small>Sürüm ' + VERSION + ' · Global Coatings Media</small></div><div class="rows"><button class="row" data-go="legal"><span class="ri">' + ic("shield") + '</span><span class="rt"><b>Gizlilik politikası ve kullanım koşulları</b></span>' + ic("chev", "ic sm chev") + '</button></div><p class="foot">Veri: kamuya açık haber ve ihale kaynakları. Haber içerikleri ilgili yayıncılara aittir.<br>Son veri güncellemesi: ' + esc(UPD) + '</p></main>';
+  V.legal = () => nav("Gizlilik ve Koşullar") + '<main class="wrap prose"><h3>Gizlilik politikası</h3><p>COATNEWS reklam veya takip amaçlı veri toplamaz. Kayıtlı haberlerin, hesapların, konum ve ilgi alanı tercihlerin yalnızca cihazında saklanır. Hesap açarsan adın ve e-posta adresin, kimlik doğrulama için güvenli bir sunucuda (Supabase) tutulur ve üçüncü taraflarla paylaşılmaz.</p><p>Hesabını ve verilerini silmek için destek adresine yazabilirsin; talebin 30 gün içinde yerine getirilir.</p><h3>Kullanım koşulları</h3><p>Haber özetleri bilgilendirme amaçlıdır; asıl içerik ilgili yayıncıya aittir ve bağlantıyla kaynağa yönlendirilir. Boya hesapları tahmini değerlerdir; uygulama öncesi ürün teknik föyü ve proje spesifikasyonu esas alınmalıdır.</p></main>';
 
   /* ---------- Alt sayfa (sheet) ---------- */
   function sheet(html) {
@@ -521,7 +527,7 @@
     if (NO_TAB.includes(name)) tb.hidden = true;
     else {
       tb.hidden = false; const t = TAB_OF[name] || "home";
-      tb.innerHTML = '<div class="in">' + [["home", "Ana Sayfa", "home"], ["sectors", "Segmentler", "layers"], ["projects", "Projeler", "brief"], ["calc", "Hesapla", "calc"], ["saved", "Kayıtlı", "bm"]].map(([k, l, i]) => '<button class="tab" data-tab="' + k + '"' + (t === k ? ' aria-current="page"' : '') + '>' + ic(i) + l + '</button>').join("") + '</div>';
+      tb.innerHTML = '<div class="in">' + [["home", "Ana Sayfa", "home"], ["sectors", "Haberler", "news"], ["projects", "Projeler", "brief"], ["calc", "Hesapla", "calc"], ["more", "Daha Fazla", "more"]].map(([k, l, i]) => '<button class="tab" data-tab="' + k + '"' + (t === k ? ' aria-current="page"' : '') + '>' + ic(i) + l + '</button>').join("") + '</div>';
     }
     if (name === "search") { doSearch(); const q = $("q"); if (q && !q.value) setTimeout(() => q.focus(), 50); }
     if (name === "home") heroDots();
@@ -577,6 +583,8 @@
     if (a === "forgot") { const em = document.querySelector('[name="email"]').value.trim(); if (!/\S+@\S+\.\S+/.test(em)) { $("ferr").textContent = "Şifre sıfırlama için önce e-postanı yaz."; return; } try { await auth("recover", { email: em }); toast("Sıfırlama bağlantısı e-postana gönderildi"); } catch (er) { $("ferr").textContent = AUTH_ERR(er.message); } return; }
     if (a === "lang") { const cl = window.NPLang ? NPLang.get() : "tr"; return sheet('<h2>Dil · Language</h2><div class="rows" style="margin-top:12px">' + [["tr", "Türkçe"], ["en", "English"]].map(([k, l]) => '<button class="row" data-act="setLang" data-l="' + k + '"><span class="rt"><b>' + l + '</b></span><span class="cbox' + (cl === k ? " on" : "") + '"></span></button>').join("") + '</div><p class="hint" style="margin-top:10px">Haber başlık ve özetleri kaynağın dilinde gösterilir. · Story titles and summaries are shown in the source language.</p>'); }
     if (a === "setLang") { closeSheet(); if (window.NPLang) NPLang.set(d.l); return; }
+    if (a === "goSaved") return go("saved");
+    if (a === "goMap") return go("map");
     if (a === "goLogin") return go("login");
     if (a === "goSettings") return go("settings");
     if (a === "goHelp") return go("help");

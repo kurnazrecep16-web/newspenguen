@@ -1,6 +1,6 @@
-# NEWSPENGUEN
+# COATNEWS
 
-Jotun 4 segment (Dekoratif, Marine, Protective, Powder) haber akışı — Global & Türkiye.
+Global Coatings Media: Marine, Protective, Powder, Decorative ve Energy segmentlerinde boya ve kaplama sektörü haberleri, projeler ve boya hesabı.
 
 Canlı site: https://kurnazrecep16-web.github.io/newspenguen/
 

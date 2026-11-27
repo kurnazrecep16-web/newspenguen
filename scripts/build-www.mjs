@@ -9,7 +9,9 @@ if (!m) throw new Error("index.html içinde DATA_START/DATA_END bloğu bulunamad
 if (!/const ITEMS\s*=/.test(m[1])) throw new Error("Veri bloğunda ITEMS yok");
 
 mkdirSync("www/brand", { recursive: true });
+mkdirSync("www/fonts", { recursive: true });
 writeFileSync("www/data.js", "/* index.html'den otomatik çıkarıldı */\n" + m[1].trim() + "\n");
-for (const f of ["index.html", "app.css", "app.js", "scenes.js", "i18n.js", "native-bridge.js"]) copyFileSync("app/" + f, "www/" + f);
+for (const f of ["index.html", "fonts.css", "app.css", "app.js", "scenes.js", "i18n.js", "native-bridge.js"]) copyFileSync("app/" + f, "www/" + f);
 for (const f of readdirSync("app/brand")) copyFileSync("app/brand/" + f, "www/brand/" + f);
+for (const f of readdirSync("app/fonts")) copyFileSync("app/fonts/" + f, "www/fonts/" + f);
 console.log("www/ hazır");

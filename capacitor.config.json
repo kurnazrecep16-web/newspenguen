@@ -1,17 +1,17 @@
 {
-  "appId": "io.github.kurnazrecep16.newspenguen",
-  "appName": "NEWSPENGUEN",
+  "appId": "io.github.kurnazrecep16.coatnews",
+  "appName": "COATNEWS",
   "webDir": "www",
-  "backgroundColor": "#081733",
+  "backgroundColor": "#0B1F3B",
   "ios": {
     "contentInset": "never",
-    "backgroundColor": "#081733",
+    "backgroundColor": "#0B1F3B",
     "limitsNavigationsToAppBoundDomains": false
   },
   "plugins": {
     "SplashScreen": {
       "launchAutoHide": false,
-      "backgroundColor": "#081733",
+      "backgroundColor": "#0B1F3B",
       "showSpinner": false
     }
   }

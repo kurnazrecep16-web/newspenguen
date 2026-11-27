@@ -1,4 +1,4 @@
-/* NEWSPENGUEN · Türkçe / English arayüz dili
+/* COATNEWS · Türkçe / English arayüz dili
    Arayüz Türkçe yazılır; İngilizce seçiliyse ekran her çizildiğinde görünen metinler
    ve placeholder/aria-label değerleri bu sözlükle çevrilir. Haber içerikleri (başlık,
    özet, "neden fırsat") kaynağın dilinde kalır, uydurma çeviri yapılmaz. */
@@ -26,14 +26,14 @@
     "Konum": "Location", "Tüm Türkiye ve Global": "All of Türkiye and Global", "Tümü": "All", "★ Bölgem": "★ My region", "Bölgem": "My region",
     "Toz Boya": "Powder", "Enerji": "Energy", "Boya Hesapla": "Paint Calculator", "Protective sarfiyat": "Protective consumption",
     "Proje Haritası": "Project Map", "Güncel Fırsatlar": "Latest Opportunities", "İhale": "Tender", "Yatırım": "Investment", "Finansman": "Financing", "Anlaşma": "Deal", "Haber": "News",
-    "Ana Sayfa": "Home", "Segmentler": "Segments", "Projeler": "Projects", "Hesapla": "Calculate", "Kayıtlı": "Saved",
+    "Ana Sayfa": "Home", "Segmentler": "Segments", "Projeler": "Projects", "Hesapla": "Calculate", "Kayıtlı": "Saved", "Haberler": "News", "Daha Fazla": "More", "Segmentler ve konum": "Segments and location", "Proje Haritası": "Project Map", "Türkiye ve Marmara": "Türkiye and Marmara", "Profil ve hesap": "Profile and account", "Boya ve kaplama sektörünün haberleri": "News from the paint and coatings industry", "Marine, Protective, Powder, Decorative ve Energy segmentlerindeki projeleri ve yatırımları tek yerde takip et.": "Follow projects and investments across Marine, Protective, Powder, Decorative and Energy in one place.",
     "Yeni haberler": "New stories", "Profil": "Profile", "Filtre": "Filter", "Öne çıkanlar": "Highlights", "Kaydet": "Save", "Kayıttan çıkar": "Remove from saved", "Ara": "Search", "Paylaş": "Share",
-    "Haberler Jotun’un beş segmentinde toplanır.": "Stories are grouped into Jotun's five segments.",
-    "Tersane, gemi inşa ve denizcilik yatırımları": "Shipyards, shipbuilding and marine investments",
-    "Endüstriyel, altyapı ve ağır sanayi projeleri": "Industrial, infrastructure and heavy industry projects",
-    "Mimari, iç ve dış cephe boya projeleri": "Architectural, interior and exterior paint projects",
-    "Otomotiv, beyaz eşya, alüminyum ve metal üretim": "Automotive, appliances, aluminium and metal production",
-    "GES, RES, santral, iletim ve depolama projeleri": "Solar, wind, power plant, transmission and storage projects",
+    "Tüm içerik beş ana segmentte toplanır.": "All content is grouped into five core segments.",
+    "Gemiler, tersaneler, offshore, limanlar ve deniz altyapısı": "Ships, shipyards, offshore, ports and marine infrastructure",
+    "Korozyon koruma, çelik yapılar, tanklar, köprüler ve endüstriyel tesisler": "Corrosion protection, steel structures, tanks, bridges and industrial plants",
+    "Mimari boyalar, iç ve dış cephe, renk ve yapı yüzeyleri": "Architectural paints, interior and exterior facades, colour and building surfaces",
+    "Toz boya teknolojileri, uygulama hatları ve üretim yatırımları": "Powder coating technologies, application lines and production investments",
+    "Rüzgar, güneş, santraller ve enerji altyapısı": "Wind, solar, power plants and energy infrastructure",
     "Devam Eden": "Ongoing", "Devam Ediyor": "Ongoing", "Planlanan": "Planned", "Harita": "Map", "Durum": "Status",
     "Türkiye": "Türkiye", "Ege": "Aegean", "Akdeniz": "Mediterranean", "İç Anadolu": "Central Anatolia", "Karadeniz": "Black Sea", "Doğu Anadolu": "Eastern Anatolia", "Güneydoğu Anadolu": "Southeastern Anatolia",
     "Haber sayısı": "Number of stories", "En çok haber olan iller": "Provinces with most stories", "Konum filtresi": "Location filter", "Türkiye proje haritası": "Türkiye project map", "Marmara proje haritası": "Marmara project map",
@@ -66,7 +66,7 @@
     "Hakkında": "About", "Çıkış yap": "Sign out", "Dil": "Language",
     "İlgi alanların": "Your interests", "Kapattığın sektörler akışta görünmez.": "Segments you turn off are hidden from the feed.",
     "Haberler nereden geliyor?": "Where do the stories come from?",
-    "NEWSPENGUEN, sektör yayınlarını ve kamu ihale duyurularını her 6 saatte bir tarar; boya ve kaplama ihtiyacı doğurabilecek projeleri 0–100 arası fırsat puanıyla listeler. 50 puanın altındakiler gösterilmez.": "NEWSPENGUEN scans industry publications and public tender notices every 6 hours and lists projects that may need paints and coatings with an opportunity score from 0 to 100. Stories below 50 are not shown.",
+    "COATNEWS, sektör yayınlarını ve kamu ihale duyurularını her 6 saatte bir tarar; boya ve kaplama ihtiyacı doğurabilecek projeleri 0–100 arası fırsat puanıyla listeler. 50 puanın altındakiler gösterilmez.": "COATNEWS scans industry publications and public tender notices every 6 hours and lists projects that may need paints and coatings with an opportunity score from 0 to 100. Stories below 50 are not shown.",
     "Konum filtresi nasıl çalışır?": "How does the location filter work?",
     "Haber metnindeki il, ilçe ve kurum adlarından konum bulunur (ör. Çorlu → Tekirdağ). Bölge ya da il seçerek akışı daraltabilirsin.": "Location is detected from province, district and agency names in the story (e.g. Çorlu → Tekirdağ). Pick a region or province to narrow the feed.",
     "Boya hesabı ne kadar kesin?": "How accurate is the paint calculation?",
@@ -74,7 +74,7 @@
     "İletişim": "Contact", "Destek e-postası:": "Support email:",
     "Gizlilik politikası ve kullanım koşulları": "Privacy policy and terms of use", "Gizlilik ve Koşullar": "Privacy and Terms", "Gizlilik politikası": "Privacy policy", "Kullanım koşulları": "Terms of use",
     "Veri: kamuya açık haber ve ihale kaynakları. Haber içerikleri ilgili yayıncılara aittir.": "Data: public news and tender sources. Story content belongs to the respective publishers.",
-    "NEWSPENGUEN reklam veya takip amaçlı veri toplamaz. Kayıtlı haberlerin, hesapların, konum ve ilgi alanı tercihlerin yalnızca cihazında saklanır. Hesap açarsan adın ve e-posta adresin, kimlik doğrulama için güvenli bir sunucuda (Supabase) tutulur ve üçüncü taraflarla paylaşılmaz.": "NEWSPENGUEN does not collect data for advertising or tracking. Your saved stories, calculations, location and interest preferences are stored only on your device. If you create an account, your name and email are kept on a secure server (Supabase) for authentication and are not shared with third parties.",
+    "COATNEWS reklam veya takip amaçlı veri toplamaz. Kayıtlı haberlerin, hesapların, konum ve ilgi alanı tercihlerin yalnızca cihazında saklanır. Hesap açarsan adın ve e-posta adresin, kimlik doğrulama için güvenli bir sunucuda (Supabase) tutulur ve üçüncü taraflarla paylaşılmaz.": "COATNEWS does not collect data for advertising or tracking. Your saved stories, calculations, location and interest preferences are stored only on your device. If you create an account, your name and email are kept on a secure server (Supabase) for authentication and are not shared with third parties.",
     "Hesabını ve verilerini silmek için destek adresine yazabilirsin; talebin 30 gün içinde yerine getirilir.": "To delete your account and data, write to the support address; requests are completed within 30 days.",
     "Haber özetleri bilgilendirme amaçlıdır; asıl içerik ilgili yayıncıya aittir ve bağlantıyla kaynağa yönlendirilir. Boya hesapları tahmini değerlerdir; uygulama öncesi ürün teknik föyü ve proje spesifikasyonu esas alınmalıdır.": "Story summaries are for information; the original content belongs to the publisher and is linked at the source. Paint calculations are estimates; the product data sheet and project specification must govern before application.",
     "/100 fırsat puanı": "/100 opportunity score", "Genel": "Overview", "Detay": "Details", "Doküman": "Documents", "Son teklif tarihi": "Bid deadline", "Tür": "Type", "Boya segmenti": "Paint segment", "Segment": "Segment",
@@ -98,6 +98,9 @@
   const reg = r => REGN[r] || r;
   const PAT = [
     [/^(\d+) haber$/, (m, n) => n + (n === "1" ? " story" : " stories")],
+    [/^(\d+) haber · (\d+) hesap$/, (m, a, b) => a + " stories · " + b + " calculations"],
+    [/^Sürüm (\S+) · (.+)$/, (m, v, r) => "Version " + v + " · " + r],
+    [/^Sürüm (\S+), gizlilik$/, (m, v) => "Version " + v + ", privacy"],
     [/^(\d+) haber · (\d+) il seçili$/, (m, a, b) => a + " stories · " + b + " provinces selected"],
     [/^Uygula · (\d+) haber$/, (m, n) => "Apply · " + n + " stories"],
     [/^(\d+) konumlu haber$/, (m, n) => n + " located stories"],

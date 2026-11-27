@@ -1,4 +1,4 @@
-# NEWSPENGUEN iOS uygulaması (TestFlight)
+# COATNEWS iOS uygulaması (TestFlight)
 
 Uygulama `app/` klasöründeki ayrı bir iOS arayüzüdür (Design System v2, `docs/DESIGN-SYSTEM.md`). Haber verisi kökteki `index.html`'den alınır: `scripts/build-www.mjs`, zamanlanmış görevin güncellediği `/*DATA_START*/…/*DATA_END*/` bloğunu `www/data.js`'e çıkarır; `index.html` ve web sitesi değişmez. Uygulama açılışta Supabase'den son 30 günün haberlerini de çeker.
 
@@ -15,9 +15,9 @@ Ekranlar (`app/app.js`): açılış, onboarding, giriş, kayıt (Supabase e-post
 1. **Apple Developer Program**'a katıl (yıllık 99 USD): https://developer.apple.com/programs/enroll/
 2. **Team ID**'yi not et: https://developer.apple.com/account → Membership details → Team ID (10 karakter).
 3. **Uygulama kaydı** aç: https://appstoreconnect.apple.com → Apps → "+" → New App
-   - Platform: iOS, Ad: NEWSPENGUEN, Dil: Türkçe
-   - Bundle ID: `io.github.kurnazrecep16.newspenguen` (listede yoksa önce https://developer.apple.com/account/resources/identifiers/list adresinden "App IDs" olarak ekle)
-   - SKU: `newspenguen`
+   - Platform: iOS, Ad: COATNEWS, Dil: Türkçe
+   - Bundle ID: `io.github.kurnazrecep16.coatnews` (listede yoksa önce https://developer.apple.com/account/resources/identifiers/list adresinden "App IDs" olarak ekle)
+   - SKU: `coatnews`
 4. **API anahtarı** oluştur: App Store Connect → Users and Access → Integrations → App Store Connect API → Team Keys → "+"
    - Erişim: **Admin** (bulut imzalama sertifikası için gerekli)
    - `.p8` dosyasını indir (yalnızca bir kez indirilebilir), **Key ID** ve sayfanın üstündeki **Issuer ID**'yi not et.

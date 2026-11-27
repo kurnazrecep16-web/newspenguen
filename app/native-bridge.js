@@ -1,4 +1,4 @@
-/* NEWSPENGUEN iOS köprüsü: yalnızca uygulama içinde (Capacitor) çalışır, web sitesini etkilemez. */
+/* COATNEWS iOS köprüsü: yalnızca uygulama içinde (Capacitor) çalışır, web sitesini etkilemez. */
 (function () {
   var C = window.Capacitor;
   if (!C || !C.isNativePlatform || !C.isNativePlatform()) return;
@@ -19,7 +19,7 @@
       e.preventDefault();
       e.stopPropagation();
       var url = c.dataset.copy;
-      P.Share.share({ title: "NEWSPENGUEN", url: url, dialogTitle: "Haberi paylaş" }).catch(function () {});
+      P.Share.share({ title: "COATNEWS", url: url, dialogTitle: "Haberi paylaş" }).catch(function () {});
     }
   }, true);
 
