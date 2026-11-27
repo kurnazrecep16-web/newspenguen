@@ -23,6 +23,9 @@ jobs:
   build:
     runs-on: macos-latest
     timeout-minutes: 45
+    defaults:
+      run:
+        shell: bash  # -eo pipefail: xcodebuild hatası '| tail' ile gizlenmesin
     env:
       ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
       ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
