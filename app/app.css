@@ -1,0 +1,45 @@
+/* NEWSPENGUEN iOS uygulaması: yalnızca uygulamaya eklenen stiller */
+html,body{-webkit-tap-highlight-color:transparent;overscroll-behavior-y:none}
+.nav,.chips,.top,button{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+/* Çentik / Dynamic Island boşluğu */
+.top{padding-top:calc(10px + env(safe-area-inset-top))}
+.app{padding-bottom:calc(92px + env(safe-area-inset-bottom))}
+.nav .in{padding-bottom:6px}
+.nav button{font-size:11px;letter-spacing:-.1px}
+
+/* Boya Hesapla */
+.clead{color:var(--text2);font-size:14px;line-height:1.5;margin:4px 0 12px}
+.cpre{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 -16px 12px;padding:0 16px}
+.cpre::-webkit-scrollbar{display:none}
+.cpre .chip{height:36px;font-size:13px;padding:0 14px}
+.cmode{margin-bottom:12px}
+.ccard{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;margin-bottom:12px}
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cgrid .cf:first-child:nth-last-child(odd){grid-column:1/-1}
+.cf{display:flex;flex-direction:column;gap:6px;min-width:0}
+.cf>span:first-child{font-size:12px;font-weight:600;color:var(--text2)}
+.ciw{display:flex;align-items:center;height:46px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid var(--line);padding:0 12px;gap:6px}
+.ciw:focus-within{border-color:var(--blue2);background:rgba(59,130,246,.10)}
+.ciw input{flex:1;min-width:0;background:none;border:0;outline:0;color:var(--text);font:inherit;font-size:16px;font-weight:700}
+.ciw input::placeholder{color:var(--muted);font-weight:500;font-size:13px}
+.ciw em{font-style:normal;font-size:12px;color:var(--muted);font-weight:600;white-space:nowrap}
+.cf select{height:46px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid var(--line);color:var(--text);font:inherit;font-size:15px;font-weight:600;padding:0 12px;-webkit-appearance:none;appearance:none}
+.chead{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.cname{flex:1;min-width:0;background:none;border:0;border-bottom:1px dashed var(--line);color:var(--text);font:inherit;font-size:16px;font-weight:800;padding:4px 0;outline:0}
+.cdel{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;color:var(--muted)}
+.cadd{width:100%;height:48px;border-radius:14px;border:1px dashed rgba(255,255,255,.25);color:var(--text2);font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:16px}
+.cres{border-radius:20px;padding:16px;background:linear-gradient(135deg,#123170,#0B1F4B);border:1px solid rgba(59,130,246,.35)}
+.ctot{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.ctot div{background:rgba(255,255,255,.06);border-radius:14px;padding:10px;text-align:center}
+.ctot small{display:block;font-size:11px;color:var(--text2);font-weight:600}
+.ctot b{display:block;font-size:18px;font-weight:800;margin-top:2px;white-space:nowrap}
+.cl{padding:10px 0;border-top:1px solid var(--line)}
+.crow{display:flex;justify-content:space-between;gap:10px;font-size:14px;padding:3px 0}
+.crow span{color:var(--text2)}
+.csub{font-size:12px;color:var(--muted);line-height:1.5;margin-top:2px}
+.cshare{margin-top:14px;width:100%}
+.csum{position:sticky;bottom:calc(84px + env(safe-area-inset-bottom));z-index:10;display:flex;align-items:center;gap:10px;width:100%;height:52px;margin-top:12px;padding:0 16px;border-radius:16px;background:var(--blue);color:#fff;box-shadow:0 10px 28px rgba(0,0,0,.45);transition:opacity .2s,transform .2s}
+.csum span{font-size:13px;opacity:.85}
+.csum b{flex:1;text-align:right;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.csum svg{width:18px;height:18px;transform:rotate(90deg)}
+.csum.hide{opacity:0;transform:translateY(12px);pointer-events:none}

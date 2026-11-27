@@ -2,7 +2,10 @@
 
 Uygulama, kökteki `index.html`'i Capacitor ile saran bir iOS uygulamasıdır. Zamanlanmış görev `index.html`'i güncellemeye devam eder; her yeni TestFlight derlemesi o anki haberleri içine alır ve açılışta Supabase'den güncel haberleri çeker.
 
-Uygulamaya özel eklemeler (web sitesini etkilemez): haberler uygulama içi Safari görünümünde açılır, "linki kopyala" yerine iOS paylaş menüsü çıkar, açılış ekranı ve simge.
+Uygulamaya özel eklemeler (`app/` klasöründe; web sitesini etkilemez):
+- **Boya Hesapla** sekmesi (`app/app.js`): çok katlı sistemlerde (astar, ara kat, son kat) DFT, hacimce katı madde, kat sayısı, uygulama kaybı ve ambalajdan litre, kutu ve maliyet; toz boyada özgül ağırlık ve transfer veriminden kg. Hazır sistemler: dekoratif iç/dış cephe, Protective C3/C5, Marine, toz boya. Son girilen değerler cihazda saklanır, sonuç iOS paylaş menüsüyle gönderilir.
+- Arayüz (`app/app.css`): çentik/Dynamic Island boşluğu, yeni alt menü (Ana Sayfa, Sektörler, Projeler, Hesapla, Kayıtlı; Profil sağ üstte), işlevsiz zil ve ayar satırları kaldırıldı.
+- Haberler uygulama içi Safari görünümünde açılır, "linki kopyala" yerine iOS paylaş menüsü çıkar; açılış ekranı ve simge.
 
 ## Senin yapman gerekenler (bir kerelik)
 
