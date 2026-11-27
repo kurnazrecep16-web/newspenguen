@@ -474,3 +474,23 @@ img.scene{display:block;width:100%;height:100%;object-fit:cover}
 .intro-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(7,21,43,.75) 5%,rgba(7,21,43,0) 60%)}
 .intro-photo b{position:absolute;left:16px;bottom:14px;z-index:2;color:#fff;font-family:var(--font-display);font-size:20px;font-weight:800}
 .onb .dots i{background:#C9D4E3}.onb .dots i.on{background:var(--np-blue-500)}
+/* Ana sayfa segment seçici (aşağı açılır) */
+.segdd{position:relative;margin-top:10px}
+.ddbtn{display:flex;align-items:center;gap:12px;width:100%;min-height:52px;padding:8px 14px;border-radius:var(--r-md);background:#fff;border:1px solid rgba(11,31,59,.1);box-shadow:var(--sh-card);text-align:left}
+.ddbtn>.ic:first-child{color:var(--np-blue-500)}
+.ddl{flex:1;min-width:0}
+.ddl small{display:block;font-size:11px;color:var(--np-grey-500);font-weight:600}
+.ddl b{display:block;font-size:var(--fs-callout);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ddl .n,.ddopt .n{font-size:12.5px;font-weight:700;color:var(--np-grey-500);font-variant-numeric:tabular-nums}
+.ddchev{transform:rotate(90deg);transition:transform .2s;color:var(--np-grey-500)}
+.segdd.open .ddchev{transform:rotate(-90deg)}
+.segdd.open .ddbtn{border-color:var(--np-blue-500);box-shadow:0 0 0 3px rgba(0,102,255,.12)}
+.ddpanel{position:absolute;left:0;right:0;top:calc(100% + 6px);z-index:30;background:#fff;border:1px solid rgba(11,31,59,.08);border-radius:var(--r-lg);box-shadow:0 18px 40px rgba(11,31,59,.18);padding:6px;max-height:min(60vh,420px);overflow:auto;transform-origin:top;animation:ddDown .22s cubic-bezier(.2,.8,.2,1)}
+@keyframes ddDown{from{opacity:0;transform:translateY(-8px) scaleY(.96)}to{opacity:1;transform:none}}
+.ddopt{display:flex;align-items:center;gap:12px;width:100%;min-height:48px;padding:6px 10px;border-radius:12px;text-align:left;font-size:var(--fs-callout);font-weight:600}
+.ddopt[aria-selected="true"]{background:rgba(0,102,255,.07);color:var(--np-blue-500)}
+.ddopt.zero{opacity:.5}
+.ddi{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;flex:0 0 auto;background:color-mix(in srgb,var(--c) 14%,#fff);color:var(--c);font-size:15px}
+.ddt{flex:1;min-width:0}
+.ddck{color:var(--np-blue-500)}
+@media (prefers-reduced-motion:reduce){.ddpanel{animation:none}}
