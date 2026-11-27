@@ -434,7 +434,7 @@
       h += fin("m2t", "Ton başına yüzey (elle değiştirilebilir)", C.m2t, "m²/ton", 'data-cf="m2t"');
       h += '<div class="calcout"><span><small>Hesaplanan yüzey alanı</small><b id="carea">' + f(areaOf(), 0) + ' m²</b></span>' + ic("swap", "ic lg") + '</div>';
     } else h += fin("area", "Boyanacak yüzey alanı", C.area, "m²", 'data-cf="area"', "big");
-    h += '<div class="field"><span class="lbl">Fire oranı</span><span class="input"><input inputmode="decimal" data-cf="loss" value="' + esc(String(C.loss ?? "")) + '" placeholder="30"><span class="unit">%</span></span><div class="pills" style="margin-top:4px">' + [20, 30, 40, 50].map(v => '<button data-loss="' + v + '" aria-pressed="' + (num(C.loss) === v) + '">%' + v + '</button>').join("") + '</div><span class="hint">Püskürtme kaybı, yüzey pürüzlülüğü ve profil şekline göre değişir.</span></div>';
+    h += '<div class="field"><span class="lbl">Fire oranı (toplam kayıp)</span><span class="input"><input inputmode="decimal" data-cf="loss" value="' + esc(String(C.loss ?? "")) + '" placeholder="30"><span class="unit">%</span></span><div class="pills" style="margin-top:4px">' + [20, 30, 40, 50].map(v => '<button data-loss="' + v + '" aria-pressed="' + (num(C.loss) === v) + '">%' + v + '</button>').join("") + '</div><span class="hint">Toplam boya kaybı: yüzey pürüzlülüğü, profil şekli ve uygulama koşullarına göre değişir.</span></div>';
     h += '<button class="btn" style="margin-top:8px" data-go="calcSystem">Devam Et</button></div></main>';
     return h;
   };
