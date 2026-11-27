@@ -53,11 +53,14 @@ async function loadTerms(sb: SupabaseClient): Promise<Record<string, TermSet>> {
   return out;
 }
 
+const CORS = { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "authorization, apikey, content-type, x-bi-cron-secret", "Access-Control-Allow-Methods": "POST, OPTIONS" };
+
 Deno.serve(async (req) => {
+  if (req.method === "OPTIONS") return new Response(null, { headers: CORS });
   const t0 = Date.now();
   const sb = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!, { auth: { persistSession: false } });
   const trigger = await authorized(req, sb);
-  if (!trigger) return new Response(JSON.stringify({ error: "yetkisiz" }), { status: 401 });
+  if (!trigger) return new Response(JSON.stringify({ error: "yetkisiz" }), { status: 401, headers: CORS });
 
   const settings = Object.fromEntries(((await sb.from("bi_settings").select("key,value")).data ?? []).map((r) => [r.key, r.value]));
   const scan = { interval_minutes: 60, overlap_minutes: 30, time_budget_ms: 120000, queries_per_run: 18, ...(settings.scan ?? {}) };
@@ -246,5 +249,5 @@ Deno.serve(async (req) => {
   if (logs.length) await sb.from("bi_scan_logs").insert(logs.map((l) => ({ run_id: runId, ...l })));
   if (status === "ok" && logs.some((l) => l.level === "error")) status = "partial";
   await sb.from("bi_scan_runs").update({ status, finished_at: new Date().toISOString(), stats, error: status === "failed" ? logs.at(-1)?.message : null }).eq("id", runId);
-  return new Response(JSON.stringify({ run: runId, status, stats, ms: Date.now() - t0 }), { headers: { "Content-Type": "application/json" } });
+  return new Response(JSON.stringify({ run: runId, status, stats, ms: Date.now() - t0 }), { headers: { ...CORS, "Content-Type": "application/json" } });
 });

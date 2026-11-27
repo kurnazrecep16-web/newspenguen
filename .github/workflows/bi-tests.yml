@@ -31,4 +31,4 @@ jobs:
         with: { deno-version: v2.x }
       - name: Edge function tip kontrolü
         working-directory: supabase
-        run: echo '{"nodeModulesDir":"auto"}' > deno.json && deno check functions/brand-scan/index.ts
+        run: echo '{"nodeModulesDir":"auto"}' > deno.json && deno check functions/brand-scan/index.ts functions/bi-admin/index.ts

@@ -92,7 +92,7 @@ Sürdürülebilirlik, teknoloji, finans vb. `topics` (A–O) ve `tags` olarak tu
 
 1. **Migration** (canlı veritabanına): `supabase/migrations/20261127190000_brand_intelligence.sql`, sonra `supabase/seed/brands.sql`. Mevcut 7 migration repoda olmadığından `supabase db push` yerine Supabase MCP `apply_migration` veya SQL editörü kullanılmalı.
 2. **Yönetici**: `insert into bi_staff (user_id, role) values ('<auth.users id>', 'admin');`
-3. **Edge function**: `brand-scan` (klasör `_shared/bi` ile birlikte) yayımlanır.
+3. **Edge function**: `brand-scan` ve `bi-admin` (klasör `_shared/bi` ile birlikte) yayımlanır.
 4. **Gizli anahtarlar** (Supabase → Edge Functions → Secrets): `BI_CRON_SECRET` (rastgele uzun dize, zorunlu). İsteğe bağlı: `THENEWSAPI_TOKEN`, `NEWSAPI_KEY`. Anahtarlar istemciye, repoya veya veritabanına yazılmaz; `bi_providers.key_env` yalnızca değişken adını tutar.
 5. **Zamanlama** (saatlik, mevcut `collect-news` işinden farklı dakikada):
    ```sql
@@ -116,12 +116,30 @@ Sürdürülebilirlik, teknoloji, finans vb. `topics` (A–O) ve `tags` olarak tu
 - Hata yönetimi: 5xx/ağ hatasında üstel bekleme (1, 2, 4 sn), 429'da sağlayıcı `Retry-After` süresince durdurulur, sağlayıcı başına 3 hatada o tur kesilir, zaman bütçesi 120 sn.
 - Geri alma: `supabase/rollback/20261127190000_brand_intelligence.down.sql` (toplanan `bi_` verisini de siler).
 
+### Yönetim paneli (`admin/index.html`)
+
+Site yayında olduğunda adres: `https://kurnazrecep16-web.github.io/newspenguen/admin/`. Sayfa yalnızca arayüzdür; gizli anahtar içermez ve arama motorlarına kapalıdır (`noindex`). Giriş Supabase Auth ile yapılır, panel yalnızca `bi_staff` tablosundaki hesapları kabul eder. Asıl yetki veritabanında RLS ile uygulanır: editör, yöneticinin işlemlerini arayüzü atlatarak da yapamaz.
+
+| Bölüm | Editör | Yönetici |
+|---|---|---|
+| Genel durum: KPI'lar, sağlayıcı sağlığı, tarama geçmişi, son hatalar, “Şimdi tara” | ✓ | ✓ |
+| Editoryal kuyruk: durumlar, başlık düzeltmesi, kendi özetimiz, segment/konu/etiket/puan/ülke, marka rolleri, kaynak güvenilirliği, tekrar birleştirme, puan dökümü ve kanıt | ✓ | ✓ |
+| Markalar: ekle/düzenle/sil, ana şirket, alternatif adlar (belirsiz, büyük/küçük harf, aramada), birleştirme | yalnızca görür | ✓ |
+| Kaynaklar: API sağlayıcıları (aç/kapa, kota, aralık), RSS keşfi ve denemesi (`bi-admin`), yayıncı alan adı güvenilirliği | alan adları | ✓ |
+| Arama ve kurallar: eşikler, ağırlıklar (toplamı 1 olmalı), yayın politikası, tarama, diller, terimler, sorgu önizlemesi | yalnızca görür | ✓ |
+| Ekip: editör/yönetici ekleme, rol değiştirme | — | ✓ |
+
+RLS bir değişikliği engellediğinde PostgREST hata yerine 0 satır döner; panel bunu başarı saymaz, “yetki yok” hatası gösterir.
+
+`bi-admin` edge function (yalnızca ekip): `discover_feeds` (resmi sayfadaki RSS/Atom bağlantısını okur, adres tahmin etmez), `test_feed`, `preview_queries`. Yerel ağ adreslerine istek atmaz.
+
 ## 6. Testler
 
 ```bash
 npm run test:bi      # 48 motor testi (Node 22, ek bağımlılık yok)
 npm run test:bi-db   # yerel Postgres: migration + seed (2 kez) + RLS/bildirim/SoV testleri + geri alma + yeniden uygulama
 ```
+Panel ve uygulama ekranları ayrıca Playwright ile yerel Postgres'e karşı denendi (RLS rolleriyle; 30 panel, 25 uygulama denetimi). Bu deneme düzeni repoda değil, çünkü PostgREST yerine küçük bir test köprüsü kullanıyor.
 GitHub Actions: `.github/workflows/bi-tests.yml` (ikisi + edge function tip kontrolü).
 Test verileri `example.*` alan adlı fixture'lardır; canlı haber değildir.
 
@@ -134,9 +152,9 @@ Test verileri `example.*` alan adlı fixture'lardır; canlı haber değildir.
 | 3 | GDELT, TheNewsAPI, NewsAPI, RSS adaptörleri | Kod tamam; GDELT ve RSS anahtarsız, diğerleri anahtar bekliyor |
 | 4 | Çok dilli dinamik sorgular, alias çözümleme | Tamam |
 | 5 | Bağlam, segment, konu, puan, tekrar tespiti | Tamam (kural tabanlı; LLM katmanı isteğe bağlı, API anahtarı ve onay gerekir) |
-| 6 | Yönetici paneli (marka, alias, kaynak, sorgu, editoryal kuyruk, sistem izleme) | Sırada |
-| 7 | Uygulama: GBI bölümü, marka sayfaları, takip, bildirim tercihleri | Sırada (UI başka iş parçacığıyla eşgüdümlü) |
-| 8 | Analitik: marka aktivitesi, Share of Voice ekranları | SQL fonksiyonları hazır, ekranlar sırada |
+| 6 | Yönetici paneli (marka, alias, kaynak, sorgu, editoryal kuyruk, sistem izleme) | Tamam (`admin/`), yerelde denendi |
+| 7 | Uygulama: GBI bölümü, marka sayfaları, takip, bildirim tercihleri | Tamam (`app/gbi.js`); anlık bildirim (push) gönderimi yok, bildirimler uygulama içinde |
+| 8 | Analitik: marka aktivitesi, Share of Voice ekranları | Tamam |
 | 9 | Uçtan uca doğrulama (canlı ilk taramalar, kaynak URL kontrolü) | Migration onayından sonra |
 | 10 | Dokümantasyon | Bu dosya; fazlarla güncellenecek |
 
