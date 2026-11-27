@@ -3,7 +3,7 @@
 Uygulama, kökteki `index.html`'i Capacitor ile saran bir iOS uygulamasıdır. Zamanlanmış görev `index.html`'i güncellemeye devam eder; her yeni TestFlight derlemesi o anki haberleri içine alır ve açılışta Supabase'den güncel haberleri çeker.
 
 Uygulamaya özel eklemeler (`app/` klasöründe; web sitesini etkilemez):
-- **Protective Hesap** sekmesi (`app/app.js`): yalnızca protective boyalar için. Alan, elle girilen fire (%), para birimi (₺/€/$); her kat için DFT, hacimce katı madde, kat sayısı, kit hacmi, birim fiyat. Sonuç: kat bazında teorik/pratik yayılma, yaş film, litre, kit; toplam DFT, L/m², m² maliyeti. Alan yardımcısı: çelik tonaj × m²/ton, boru (π·D·L), tank (gövde + çatı/taban). Hazır sistemler: ISO 12944 C3, C4, C5, CX ve pasif yangın (intümesan).
+- **Protective Hesap** sekmesi (`app/app.js`): yalnızca protective boyalar, 3 adım. (1) ISO 12944 sistem kartları: C3, C4, C5, CX, pasif yangın, boş. (2) Alan ve elle fire (%), %20–50 kısayolları; alan yardımcısı: çelik tonaj × profil m²/ton, boru, tank. (3) Katlar: hacimce katı madde, kat sayısı, kuru film ⇄ yaş film (biri yazılınca diğeri hesaplanır), isteğe bağlı $/L fiyat. Sonuç: kat bazında litre, WFT, pratik yayılma, USD maliyet ve m² maliyeti.
 - **Konum filtresi**: Ana Sayfa, Sektörler ve Projeler'de bölge (Marmara, Ege…) veya il bazında seçim; ilçe ve kurum adlarından (Çorlu, Gebze, İBB…) ile eşleştirme, "Bölgem" ve "Yurt dışı" kısayolları.
 - Arayüz (`app/app.css`): ana sayfada Boya Hesapla kısayolu, çentik/Dynamic Island boşluğu, yeni alt menü (Ana Sayfa, Sektörler, Projeler, Hesapla, Kayıtlı; Profil sağ üstte), işlevsiz zil ve ayar satırları kaldırıldı.
 - Haberler uygulama içi Safari görünümünde açılır, "linki kopyala" yerine iOS paylaş menüsü çıkar; açılış ekranı ve simge.
