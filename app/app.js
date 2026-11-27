@@ -257,7 +257,7 @@
   V.onboarding = p => {
     const k = p.k || 0, o = ONB[k];
     return '<div class="onb"><div class="art">' + photoImg(o.photo) + '' + langPill("position:absolute;left:var(--gutter);top:calc(env(safe-area-inset-top) + 14px);z-index:3") + '<button class="skip" data-act="onbDone">Atla</button></div><div class="txt">' +
-      '<div class="dots">' + ONB.map((_, j) => '<i class="' + (j === k ? "on" : "") + '"></i>').join("") + '</div><h1>' + o.h + '</h1><p class="lead" style="margin:0">' + o.p + '</p><span style="flex:1"></span>' +
+      '<div class="dots">' + ONB.map((_, j) => '<i class="' + (j === k ? "on" : "") + '" data-act="onbGo" data-k="' + j + '"></i>').join("") + '</div><h1>' + o.h + '</h1><p class="lead" style="margin:0">' + o.p + '</p><span style="flex:1"></span>' +
       '<button class="btn" data-act="' + (k < ONB.length - 1 ? "onbNext" : "onbDone") + '">' + (k < ONB.length - 1 ? "Devam Et" : "Başlayalım") + '</button></div></div>';
   };
 
@@ -567,7 +567,38 @@
   /* =========================================================
      OLAYLAR
      ========================================================= */
+  /* Onboarding: parmakla sağa/sola kaydırma (sürükleme takip edilir, 50 px üstü sayfa değişir) */
+  (() => {
+    let x0 = null, y0 = 0, dx = 0, lock = null;
+    const el = () => document.querySelector(".onb");
+    const start = (x, y) => { if (cur().name !== "onboarding" || !el()) return; x0 = x; y0 = y; dx = 0; lock = null; };
+    const move = (x, y, ev) => {
+      if (x0 === null) return;
+      dx = x - x0; const dy = y - y0;
+      if (lock === null && (Math.abs(dx) > 8 || Math.abs(dy) > 8)) lock = Math.abs(dx) > Math.abs(dy) ? "x" : "y";
+      if (lock !== "x") return;
+      if (ev && ev.cancelable) ev.preventDefault();
+      const k = cur().p.k || 0, edge = (dx > 0 && k === 0) ? 0.25 : 1;
+      const o = el(); if (o) { o.style.transition = "none"; o.style.transform = "translateX(" + (dx * edge) + "px)"; o.style.opacity = String(1 - Math.min(Math.abs(dx) / 900, .25)); }
+    };
+    const end = () => {
+      if (x0 === null) return;
+      const k = cur().p.k || 0, o = el(), d = dx; x0 = null;
+      if (lock === "x" && d < -50) { if (k < ONB.length - 1) { cur().p.k = k + 1; return render("fwd"); } S.onboarded = true; store.set("onboarded", true); return go(S.user ? "home" : "login", {}, { root: true }); }
+      if (lock === "x" && d > 50 && k > 0) { cur().p.k = k - 1; return render("back"); }
+      if (o) { o.style.transition = "transform .2s ease, opacity .2s ease"; o.style.transform = ""; o.style.opacity = ""; }
+    };
+    document.addEventListener("touchstart", e => start(e.touches[0].clientX, e.touches[0].clientY), { passive: true });
+    document.addEventListener("touchmove", e => move(e.touches[0].clientX, e.touches[0].clientY, e), { passive: false });
+    document.addEventListener("touchend", end); document.addEventListener("touchcancel", end);
+    let md = false;
+    document.addEventListener("mousedown", e => { md = true; start(e.clientX, e.clientY); });
+    document.addEventListener("mousemove", e => { if (md) move(e.clientX, e.clientY); });
+    document.addEventListener("mouseup", () => { if (md) { md = false; if (lock === "x" && Math.abs(dx) > 8) suppressClick = true; end(); } });
+  })();
+  let suppressClick = false;
   document.addEventListener("click", async e => {
+    if (suppressClick) { suppressClick = false; e.preventDefault(); return; }
     if (S.segOpen && !e.target.closest(".segdd")) { S.segOpen = false; render(); if (!e.target.closest("[data-tab],[data-go],[data-open],[data-act],[data-save]")) return; }
     const t = e.target.closest("[data-tab],[data-go],[data-back],[data-open],[data-save],[data-share],[data-seg],[data-kind],[data-proj],[data-sector],[data-ptab],[data-stab],[data-act],[data-locc],[data-locr],[data-loco],[data-city],[data-cmode],[data-m2t],[data-loss],[data-cdel],[data-step]");
     if (!t) return;
@@ -600,6 +631,7 @@
     if (a === "locAll" || a === "locNone") { dr.sel.clear(); return render(); }
     if (a === "locMine") { const on = MINE.every(c => dr.sel.has(c)); MINE.forEach(c => on ? dr.sel.delete(c) : dr.sel.add(c)); return render(); }
     if (a === "locApply") { S.loc = new Set(dr.sel); store.set("loc", [...S.loc]); S.seg = "all"; toast(S.loc.size ? "Konum filtresi uygulandı" : "Tüm konumlar gösteriliyor"); return back(); }
+    if (a === "onbGo") { const j = +t.dataset.k, k0 = cur().p.k || 0; if (j === k0) return; cur().p.k = j; return render(j > k0 ? "fwd" : "back"); }
     if (a === "onbNext") { cur().p.k = (cur().p.k || 0) + 1; return render("fwd"); }
     if (a === "onbDone") { S.onboarded = true; store.set("onboarded", true); return go(S.user ? "home" : "login", {}, { root: true }); }
     if (a === "pwToggle") { const inp = t.parentElement.querySelector("input"); inp.type = inp.type === "password" ? "text" : "password"; t.innerHTML = ic(inp.type === "password" ? "eye" : "eyeoff", "ic sm"); return; }
