@@ -1,0 +1,68 @@
+/* COATNEWS · Global Brand Intelligence ekranları. Tokenlar app/app.css'ten gelir (açık tema dahil). */
+.gbi .seg{margin:0 0 14px}
+.gbi-quick{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 0 14px}
+.gbi-quick button{display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 8px;border-radius:var(--r-lg);background:var(--np-night-700);border:1px solid var(--np-line);box-shadow:var(--sh-card);color:var(--np-blue-500);font:600 var(--fs-sub)/1.2 var(--font-display)}
+.gbi-quick b{color:var(--np-white);font-weight:700}
+.gbi-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:10px;margin:0 0 12px}
+.gbi-stats.two{grid-template-columns:repeat(2,1fr)}
+.gbi-stat{padding:12px;border-radius:var(--r-md);background:var(--np-night-700);border:1px solid var(--np-line)}
+.gbi-stat b{display:block;font:800 var(--fs-title2)/1.1 var(--font-display);color:var(--np-white);font-variant-numeric:tabular-nums}
+.gbi-stat small{display:block;margin-top:4px;font-size:var(--fs-cap);color:var(--np-grey-500)}
+.gbi-cov{margin:0 0 6px;padding:10px 14px;border-radius:var(--r-md);background:color-mix(in srgb,var(--np-blue-500) 6%,transparent);border:1px solid color-mix(in srgb,var(--np-blue-500) 18%,transparent);font-size:var(--fs-foot);color:var(--np-grey-300)}
+.gbi-cov summary{cursor:pointer;display:flex;align-items:center;gap:6px;font-weight:600;color:var(--np-blue-500);list-style:none}
+.gbi-cov summary::-webkit-details-marker{display:none}
+.gbi-cov p{margin:8px 0 2px;line-height:1.5}
+.gbi-bars .row{min-height:54px}
+.gbi-bars .rt{display:flex;flex-direction:column;gap:6px;flex:1;min-width:0}
+.gbi-bar{display:block;height:6px;border-radius:99px;background:var(--np-line)}
+.gbi-bar i{display:block;height:100%;border-radius:99px;background:var(--np-blue-500)}
+.gbi .cnt{font-variant-numeric:tabular-nums;font-weight:700;color:var(--np-white)}
+.gbi-up{color:var(--np-green-400)!important}
+.gbi-biz{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:10px}
+.gbi-biz button{text-align:left;padding:12px;border-radius:var(--r-md);background:var(--np-night-700);border:1px solid var(--np-line)}
+.gbi-biz b{display:block;font:800 var(--fs-title3)/1 var(--font-display);color:var(--np-amber-400);font-variant-numeric:tabular-nums}
+.gbi-biz small{display:block;margin-top:6px;font-size:var(--fs-cap);color:var(--np-grey-300);line-height:1.3}
+.gbi-chart{display:block;width:100%;height:80px}
+.gbi-chart rect{fill:var(--np-blue-500)}
+.gbi-chart{height:72px}
+.gbi-line{display:block;width:100%;height:120px}
+.gbi-axis{display:flex;justify-content:space-between;margin-top:6px;font-size:var(--fs-cap2);color:var(--np-grey-500)}
+.gbi-list{display:flex;flex-direction:column;gap:10px}
+.gbi-card{display:flex;flex-direction:column;gap:6px;width:100%;text-align:left;padding:14px;border-radius:var(--r-lg);background:var(--np-night-700);border:1px solid var(--np-line);box-shadow:var(--sh-card)}
+.gbi-card h3{margin:0;font:700 16px/1.3 var(--font-serif);color:var(--np-white)}
+.gbi-meta{display:flex;flex-wrap:wrap;gap:4px 10px;font-size:var(--fs-cap);color:var(--np-grey-500);margin:0}
+.gbi-meta b{color:var(--np-blue-500);font-weight:700}
+.gbi-tags{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.gbi-src{display:inline-flex;align-items:center;gap:4px;font-size:var(--fs-cap2);color:var(--np-grey-500)}
+.gbi-empty{margin:4px 0 8px;padding:18px;border-radius:var(--r-md);border:1px dashed var(--np-line-2);text-align:center;color:var(--np-grey-500);font-size:var(--fs-sub)}
+.gbi-note{margin:8px 0}
+.gbi-note .btn{margin-top:10px}
+.gbi-skel{display:flex;flex-direction:column;gap:10px;margin:8px 0}
+.gbi-skel i{display:block;height:64px;border-radius:var(--r-md);background:linear-gradient(90deg,var(--np-night-600),var(--np-night-500),var(--np-night-600));background-size:200% 100%;animation:gbiSk 1.2s linear infinite}
+@keyframes gbiSk{to{background-position:-200% 0}}
+@media (prefers-reduced-motion:reduce){.gbi-skel i{animation:none}}
+.gbi-brand{display:flex;flex-direction:column;gap:12px;padding:16px;border-radius:var(--r-lg);background:var(--np-night-700);border:1px solid var(--np-line)}
+.gbi-brand>div{display:flex;flex-direction:column;gap:4px;font-size:var(--fs-sub);color:var(--np-grey-300)}
+.gbi-link{display:inline-flex;align-items:center;gap:6px;color:var(--np-blue-500);font-weight:600;text-align:left}
+.gbi-story h1{margin:10px 0 8px;font:700 24px/1.25 var(--font-serif);color:var(--np-white)}
+.gbi-story>.btn{margin:14px 0 4px;text-decoration:none}
+.gbi-sum{margin:14px 0 0;padding:14px;border-radius:var(--r-md);background:var(--np-night-700);border:1px solid var(--np-line)}
+.gbi-sum small{display:block;font-size:var(--fs-cap);font-weight:600;color:var(--np-grey-500);margin-bottom:6px}
+.gbi-sum p{margin:0;line-height:1.55;color:var(--np-white)}
+.gbi-story a.row{text-decoration:none;color:inherit}
+.gbi-pick{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 10px}
+.gbi-pick .chip[aria-pressed="true"]{color:#fff}
+.gbi-presets{display:flex;gap:8px;overflow-x:auto;margin:0 calc(-1 * var(--gutter)) 12px;padding:0 var(--gutter);scrollbar-width:none}
+.gbi-presets button{flex:0 0 auto;padding:8px 12px;border-radius:var(--r-pill);font-size:var(--fs-cap);font-weight:600;color:var(--np-blue-500);background:color-mix(in srgb,var(--np-blue-500) 8%,transparent)}
+.gbi-stack{display:flex;height:14px;border-radius:99px;overflow:hidden;margin:4px 0 12px;background:var(--np-line)}
+.gbi-stack i{display:block;height:100%}
+.gbi-dot{width:12px;height:12px;border-radius:50%;flex:0 0 auto}
+.gbi-table{border-radius:var(--r-md);border:1px solid var(--np-line);background:var(--np-night-700);overflow:hidden;font-size:var(--fs-sub)}
+.gbi-table>div{display:grid;grid-template-columns:minmax(0,1.6fr) repeat(auto-fit,minmax(0,1fr));gap:8px;padding:10px 14px;border-top:1px solid var(--np-line)}
+.gbi-table>div:first-child{border-top:0}
+.gbi-table .th{font-size:var(--fs-cap);font-weight:700}
+.gbi-table span:not(:first-child){text-align:right;font-variant-numeric:tabular-nums}
+.gbi-table span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gbi-mini{flex:0 0 auto;padding:3px}
+.gbi-mini button{height:30px;padding:0 10px;flex:0 0 auto}
+.gbi-entry .ri{background:color-mix(in srgb,var(--np-blue-500) 12%,transparent)}

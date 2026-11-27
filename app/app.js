@@ -691,7 +691,9 @@
   }
 
   /* ---------- Başlangıç ---------- */
-  window.NPApp = { go, tab, back, state: S, rerender: () => render() };
+  window.NPApp = { go, tab, back, state: S, rerender: () => render(), cur,
+    /* Eklenti modülleri (app/gbi.js) için: ekran kaydı ve ortak bileşenler */
+    views: V, tabOf: TAB_OF, noTab: NO_TAB, ui: { nav, tabNav, ic, esc, toast, sheet, closeSheet, MARK }, supa: { url: SUPA_URL, key: SUPA_KEY } };
   S.stack = [{ name: "splash", p: {} }];
   render();
   setTimeout(() => { if (cur().name === "splash") go(S.onboarded ? "home" : "onboarding", { k: 0 }, { root: true }); }, 1400);

@@ -500,4 +500,161 @@ returns jsonb language sql stable security invoker set search_path = public as $
   );
 $$;
 
+-- ---------------------------------------------------------------- uygulama ve panel API'leri (RPC)
+-- Hepsi security invoker: RLS geçerlidir, herkese açık çağrıda yalnızca yayımlanmış haberler sayılır.
+
+-- Tek haber: tüm kaynaklar (birincil + ek), markalar ve segmentler
+create or replace function bi_story(p_id uuid) returns jsonb
+language sql stable security invoker set search_path = public as $$
+  select jsonb_build_object(
+    'story', to_jsonb(s) - 'score_breakdown' - 'reviewed_by'
+              || case when bi_is_staff() then jsonb_build_object('score_breakdown', s.score_breakdown) else '{}'::jsonb end,
+    'sources', coalesce((select jsonb_agg(jsonb_build_object('id', a.id, 'url', a.url, 'title', a.title, 'publisher', a.publisher,
+                  'domain', a.source_domain, 'published_at', a.published_at, 'language', a.language, 'primary', a.id = s.primary_article_id,
+                  'description', case when a.storage_right = 'snippet' then a.description end)
+                  order by (a.id = s.primary_article_id) desc, a.published_at) from bi_articles a where a.story_id = s.id), '[]'),
+    'brands', coalesce((select jsonb_agg(jsonb_build_object('id', e.id, 'slug', e.slug, 'name', e.name, 'role', se.role,
+                  'in_headline', se.in_headline, 'evidence', se.evidence, 'editor_set', se.editor_set)
+                  order by se.role, e.name) from bi_story_entities se join bi_entities e on e.id = se.entity_id where se.story_id = s.id), '[]'),
+    'segments', coalesce((select jsonb_agg(jsonb_build_object('key', g.segment_key, 'score', g.score, 'evidence', g.evidence) order by g.score desc nulls last)
+                  from bi_story_segments g where g.story_id = s.id), '[]'))
+  from bi_stories s where s.id = p_id;
+$$;
+
+-- Haber listesi (kart verisi). p_entity / p_topic / p_segment / p_country isteğe bağlı süzgeç.
+create or replace function bi_stories_feed(p_limit int default 30, p_offset int default 0, p_entity uuid default null,
+  p_topic text default null, p_segment text default null, p_country text default null, p_status text default 'published')
+returns jsonb language sql stable security invoker set search_path = public as $$
+  select coalesce(jsonb_agg(x order by x->>'first_published_at' desc nulls last), '[]') from (
+    select jsonb_build_object('id', s.id, 'title', coalesce(s.headline_override, s.title), 'summary', s.summary, 'summary_is_ai', s.summary_is_ai,
+      'status', s.status, 'segments', s.segments, 'topics', s.topics, 'country', s.country_iso2, 'first_published_at', s.first_published_at,
+      'source_count', s.source_count, 'overall_score', s.overall_score, 'content_type', s.content_type, 'is_promotional', s.is_promotional,
+      'review_reason', s.review_reason,
+      'main', (select jsonb_build_object('slug', e.slug, 'name', e.name) from bi_entities e where e.id = s.main_entity_id),
+      'publisher', a.publisher, 'url', a.url, 'domain', a.source_domain) as x
+    from bi_stories s left join bi_articles a on a.id = s.primary_article_id
+    where s.status::text = p_status
+      and (p_entity is null or exists (select 1 from bi_story_entities se where se.story_id = s.id and se.entity_id = p_entity and se.role <> 'parent'))
+      and (p_topic is null or p_topic = any(s.topics::text[]))
+      and (p_segment is null or p_segment = any(s.segments))
+      and (p_country is null or s.country_iso2 = p_country)
+    order by s.first_published_at desc nulls last
+    limit least(p_limit, 100) offset p_offset
+  ) q;
+$$;
+
+-- Gösterge paneli: genel bakış, en çok anılan / en hızlı yükselen markalar, ülke, segment, iş konuları
+create or replace function bi_dashboard(p_days int default 30) returns jsonb
+language sql stable security invoker set search_path = public as $$
+  with win as (select now() - make_interval(days => p_days) as f, now() - make_interval(days => 2 * p_days) as pf),
+  pub as (select s.* from bi_stories s, win where s.status = 'published' and s.first_published_at >= win.pf),
+  cur as (select * from pub, win where pub.first_published_at >= win.f),
+  m as (
+    select se.entity_id,
+           count(distinct se.story_id) filter (where p.first_published_at >= (select f from win)) as n,
+           count(distinct se.story_id) filter (where p.first_published_at <  (select f from win)) as prev
+    from bi_story_entities se join pub p on p.id = se.story_id
+    where se.role <> 'parent' and 'O' <> all(p.topics)
+    group by se.entity_id)
+  select jsonb_build_object(
+    'days', p_days,
+    'overview', bi_overview((select f from win)),
+    'top_brands', coalesce((select jsonb_agg(jsonb_build_object('id', e.id, 'slug', e.slug, 'name', e.name, 'mentions', m.n, 'prev', m.prev)
+                    order by m.n desc, e.name) from (select * from m where n > 0 order by n desc limit 10) m join bi_entities e on e.id = m.entity_id), '[]'),
+    'rising', coalesce((select jsonb_agg(jsonb_build_object('id', e.id, 'slug', e.slug, 'name', e.name, 'mentions', m.n, 'prev', m.prev)
+                    order by (m.n - m.prev) desc) from (select * from m where n >= 2 and n > prev order by (n - prev) desc limit 5) m join bi_entities e on e.id = m.entity_id), '[]'),
+    'by_country', coalesce((select jsonb_agg(jsonb_build_object('country', country_iso2, 'n', n) order by n desc)
+                    from (select country_iso2, count(*) n from cur where country_iso2 is not null group by 1 order by 2 desc limit 12) c), '[]'),
+    'by_segment', coalesce((select jsonb_agg(jsonb_build_object('segment', g, 'n', n) order by n desc)
+                    from (select unnest(segments) g, count(*) n from cur group by 1) c), '[]'),
+    'by_topic', coalesce((select jsonb_object_agg(t, n) from (select unnest(topics)::text t, count(*) n from cur group by 1) c), '{}'),
+    'weekly', coalesce((select jsonb_agg(jsonb_build_object('week', w, 'n', n) order by w)
+                    from (select date_trunc('week', first_published_at)::date w, count(*) n from cur group by 1) c), '[]'));
+$$;
+
+-- Marka profili: kimlik, ana/alt şirketler, haftalık zaman çizelgesi, ülke/segment/konu kırılımı
+create or replace function bi_brand_profile(p_slug text, p_days int default 365) returns jsonb
+language sql stable security invoker set search_path = public as $$
+  with e as (select * from bi_entities where slug = p_slug),
+  st as (select s.* from bi_stories s join bi_story_entities se on se.story_id = s.id join e on e.id = se.entity_id
+         where s.status = 'published' and se.role <> 'parent' and s.first_published_at >= now() - make_interval(days => p_days))
+  select jsonb_build_object(
+    'entity', (select to_jsonb(e) - 'notes' - 'exclusion_keywords' - 'search_keywords' from e),
+    'parent', (select jsonb_build_object('slug', p.slug, 'name', p.name) from bi_entities p, e where p.id = e.parent_id),
+    'children', coalesce((select jsonb_agg(jsonb_build_object('slug', c.slug, 'name', c.name, 'type', c.entity_type) order by c.name)
+                  from bi_entities c, e where c.parent_id = e.id and c.is_active), '[]'),
+    'total', (select count(*) from st),
+    'weekly', coalesce((select jsonb_agg(jsonb_build_object('week', w, 'n', n) order by w)
+                  from (select date_trunc('week', first_published_at)::date w, count(*) n from st group by 1) c), '[]'),
+    'countries', coalesce((select jsonb_agg(jsonb_build_object('country', country_iso2, 'n', n) order by n desc)
+                  from (select country_iso2, count(*) n from st where country_iso2 is not null group by 1) c), '[]'),
+    'segments', coalesce((select jsonb_agg(jsonb_build_object('segment', g, 'n', n) order by n desc)
+                  from (select unnest(segments) g, count(*) n from st group by 1) c), '[]'),
+    'topics', coalesce((select jsonb_object_agg(t, n) from (select unnest(topics)::text t, count(*) n from st group by 1) c), '{}'))
+  from e;
+$$;
+
+-- Share of Voice (izlenen haber geçişleri). Tüm markalar aynı kaynak evreni ve aynı dahil etme kuralıyla sayılır.
+create or replace function bi_sov(p_entities uuid[], p_days int default 90) returns jsonb
+language sql stable security invoker set search_path = public as $$
+  with st as (
+    select s.id, s.first_published_at, s.country_iso2, s.segments, s.topics, se.entity_id
+    from bi_stories s join bi_story_entities se on se.story_id = s.id
+    where s.status = 'published' and se.role <> 'parent' and 'O' <> all(s.topics)
+      and se.entity_id = any(p_entities) and s.first_published_at >= now() - make_interval(days => p_days))
+  select jsonb_build_object(
+    'days', p_days,
+    'rule', 'Yayımlanmış COATNEWS GBI haberleri; dolaylı geçişler (O) hariç; ana şirket rolü sayılmaz.',
+    'brands', (select jsonb_agg(jsonb_build_object('id', x.entity_id, 'slug', e.slug, 'name', e.name, 'mentions', x.mentions, 'share', x.share) order by x.mentions desc)
+               from bi_share_of_voice(p_entities, now() - make_interval(days => p_days), now()) x join bi_entities e on e.id = x.entity_id),
+    'weekly', coalesce((select jsonb_agg(jsonb_build_object('week', w, 'id', entity_id, 'n', n) order by w)
+               from (select date_trunc('week', first_published_at)::date w, entity_id, count(distinct id) n from st group by 1, 2) c), '[]'),
+    'countries', coalesce((select jsonb_agg(jsonb_build_object('country', country_iso2, 'id', entity_id, 'n', n))
+               from (select country_iso2, entity_id, count(distinct id) n from st where country_iso2 is not null group by 1, 2) c), '[]'),
+    'segments', coalesce((select jsonb_agg(jsonb_build_object('segment', g, 'id', entity_id, 'n', n))
+               from (select unnest(segments) g, entity_id, count(distinct id) n from st group by 1, 2) c), '[]'),
+    'topics', coalesce((select jsonb_agg(jsonb_build_object('topic', t, 'id', entity_id, 'n', n))
+               from (select unnest(topics)::text t, entity_id, count(distinct id) n from st group by 1, 2) c), '[]'));
+$$;
+
+-- Editör: iki haberi birleştir (kaynaklar ve marka/segment ilişkileri hedefe taşınır, kaynak haber arşivlenir)
+create or replace function bi_merge_stories(p_from uuid, p_into uuid) returns void
+language plpgsql security invoker set search_path = public as $$
+begin
+  if not bi_is_staff() then raise exception 'yetkisiz' using errcode = '42501'; end if;
+  if p_from = p_into then raise exception 'aynı haber'; end if;
+  update bi_articles set story_id = p_into, is_syndicated = true where story_id = p_from;
+  insert into bi_story_entities (story_id, entity_id, role, mention_count, in_headline, evidence, confidence, editor_set)
+    select p_into, entity_id, role, mention_count, in_headline, evidence, confidence, editor_set from bi_story_entities where story_id = p_from
+    on conflict (story_id, entity_id) do nothing;
+  insert into bi_story_segments (story_id, segment_key, score, evidence, editor_set)
+    select p_into, segment_key, score, evidence, editor_set from bi_story_segments where story_id = p_from
+    on conflict (story_id, segment_key) do nothing;
+  update bi_stories t set source_count = (select count(*) from bi_articles where story_id = p_into),
+    first_published_at = least(t.first_published_at, (select first_published_at from bi_stories where id = p_from))
+    where t.id = p_into;
+  update bi_stories set status = 'archived', primary_article_id = null, source_count = 0,
+    review_reason = 'birleştirildi: ' || p_into, reviewed_by = auth.uid(), reviewed_at = now() where id = p_from;
+end $$;
+
+-- Yönetici: iki marka kaydını birleştir (alias'lar ve haber ilişkileri hedefe taşınır, kaynak pasifleşir)
+create or replace function bi_merge_entities(p_from uuid, p_into uuid) returns void
+language plpgsql security invoker set search_path = public as $$
+begin
+  if not bi_is_admin() then raise exception 'yetkisiz' using errcode = '42501'; end if;
+  if p_from = p_into then raise exception 'aynı marka'; end if;
+  insert into bi_entity_aliases (entity_id, alias, alias_norm, lang, is_ambiguous, case_sensitive, use_in_search)
+    select p_into, alias, alias_norm, lang, is_ambiguous, case_sensitive, use_in_search from bi_entity_aliases where entity_id = p_from
+    on conflict (entity_id, alias_norm) do nothing;
+  delete from bi_entity_aliases where entity_id = p_from;
+  insert into bi_story_entities (story_id, entity_id, role, mention_count, in_headline, evidence, confidence, editor_set)
+    select story_id, p_into, role, mention_count, in_headline, evidence, confidence, editor_set from bi_story_entities where entity_id = p_from
+    on conflict (story_id, entity_id) do nothing;
+  delete from bi_story_entities where entity_id = p_from;
+  update bi_stories set main_entity_id = p_into where main_entity_id = p_from;
+  update bi_entities set parent_id = p_into where parent_id = p_from;
+  update bi_entities set is_active = false, merged_into_id = p_into where id = p_from;
+  update bi_entities set article_count = (select count(distinct story_id) from bi_story_entities where entity_id = p_into and role <> 'parent') where id = p_into;
+end $$;
+
 commit;

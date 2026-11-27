@@ -77,6 +77,25 @@ do $$ declare o jsonb; begin
     raise exception 'FAIL: overview %', o; end if;
 end $$;
 
+
+-- 4b) Uygulama RPC'leri
+do $$ declare d jsonb; b jsonb; f jsonb; v jsonb; st jsonb; begin
+  d := bi_dashboard(30);
+  if jsonb_array_length(d->'top_brands') <> 2 or (d->'top_brands'->0->>'slug') <> 'jotun' or (d->'top_brands'->0->>'mentions')::int <> 2 then
+    raise exception 'FAIL: dashboard top_brands %', d->'top_brands'; end if;
+  if (d->'by_topic'->>'B')::int <> 1 then raise exception 'FAIL: dashboard by_topic %', d->'by_topic'; end if;
+  b := bi_brand_profile('jotun');
+  if (b->>'total')::int <> 2 or jsonb_array_length(b->'children') <> 1 then raise exception 'FAIL: brand profile %', b; end if;
+  f := bi_stories_feed(10, 0, (select id from bi_entities where slug = 'hempel'));
+  if jsonb_array_length(f) <> 2 then raise exception 'FAIL: feed hempel %', jsonb_array_length(f); end if;
+  f := bi_stories_feed(10, 0, null, 'B');
+  if jsonb_array_length(f) <> 1 or (f->0->'main'->>'slug') <> 'jotun' or (f->0->>'url') <> 'https://a.example/1' then raise exception 'FAIL: feed topic %', f; end if;
+  v := bi_sov(array[(select id from bi_entities where slug='jotun'), (select id from bi_entities where slug='hempel')], 90);
+  if (v->'brands'->0->>'slug') <> 'jotun' or (v->'brands'->0->>'share')::numeric <> 66.7 then raise exception 'FAIL: bi_sov %', v->'brands'; end if;
+  st := bi_story('10000000-0000-0000-0000-000000000002');
+  if jsonb_array_length(st->'sources') <> 1 or jsonb_array_length(st->'brands') <> 2 then raise exception 'FAIL: bi_story %', st; end if;
+end $$;
+
 -- 5) RLS: anonim yalnızca yayımlanmış haberi görür, yazamaz
 insert into bi_stories (id, status, title) values ('10000000-0000-0000-0000-000000000009', 'under_review', 'Test: draft');
 set local role anon;
@@ -93,6 +112,12 @@ do $$ begin
     raise exception 'FAIL: anonim marka ekledi';
   exception when insufficient_privilege then null;
   end;
+  begin
+    perform bi_merge_stories('10000000-0000-0000-0000-000000000001', '10000000-0000-0000-0000-000000000002');
+    raise exception 'FAIL: anonim haber birleştirdi';
+  exception when insufficient_privilege then null;
+  end;
+  if bi_story('10000000-0000-0000-0000-000000000009') is not null then raise exception 'FAIL: anonim taslak haberi bi_story ile gördü'; end if;
 end $$;
 
 -- 6) RLS: okuyucu kendi takibini yönetir, başkasınınkini göremez; editör marka ekleyemez, haber düzenleyebilir; admin marka ekler
@@ -117,6 +142,14 @@ do $$ begin
   if (select count(*) from bi_stories) <> 4 then raise exception 'FAIL: editör taslağı görmedi'; end if;
   update bi_stories set status = 'approved', headline_override = 'Düzeltilmiş' where id = '10000000-0000-0000-0000-000000000009';
   if not found then raise exception 'FAIL: editör haberi onaylayamadı'; end if;
+  perform bi_merge_stories('10000000-0000-0000-0000-000000000003', '10000000-0000-0000-0000-000000000002');
+  if (select source_count from bi_stories where id = '10000000-0000-0000-0000-000000000002') <> 2 then raise exception 'FAIL: birleştirme kaynak sayısı'; end if;
+  if (select status from bi_stories where id = '10000000-0000-0000-0000-000000000003') <> 'archived' then raise exception 'FAIL: birleşen haber arşivlenmedi'; end if;
+  begin
+    perform bi_merge_entities((select id from bi_entities where slug='sikkens'), (select id from bi_entities where slug='akzonobel'));
+    raise exception 'FAIL: editör marka birleştirdi';
+  exception when insufficient_privilege then null;
+  end;
   begin
     insert into bi_entities (slug, name, entity_type) values ('ed', 'Ed', 'manufacturer');
     raise exception 'FAIL: editör marka ekledi (yalnızca admin)';
@@ -129,6 +162,9 @@ do $$ begin
   insert into bi_entities (slug, name, entity_type) values ('test-brand', 'Test Brand', 'manufacturer');
   update bi_settings set value = '{"very_high": 92, "high": 80, "medium": 55}' where key = 'thresholds';
   if not found then raise exception 'FAIL: admin eşikleri değiştiremedi'; end if;
+  perform bi_merge_entities((select id from bi_entities where slug='hempel-turkiye'), (select id from bi_entities where slug='hempel'));
+  if (select merged_into_id from bi_entities where slug='hempel-turkiye') is null then raise exception 'FAIL: marka birleşmedi'; end if;
+  if not exists (select 1 from bi_entity_aliases a join bi_entities e on e.id = a.entity_id where e.slug='hempel' and a.alias='Hempel Türkiye') then raise exception 'FAIL: alias taşınmadı'; end if;
 end $$;
 
 reset role;

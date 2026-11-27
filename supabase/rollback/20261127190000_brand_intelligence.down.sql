@@ -1,6 +1,13 @@
 -- Geri alma: Global Brand Intelligence. Yalnızca bi_ nesnelerini siler; news_items / feed_runs etkilenmez.
 -- DİKKAT: toplanan bi_ verisi de silinir. Çalıştırmadan önce yedek alın.
 begin;
+drop function if exists bi_merge_entities(uuid, uuid);
+drop function if exists bi_merge_stories(uuid, uuid);
+drop function if exists bi_sov(uuid[], int);
+drop function if exists bi_brand_profile(text, int);
+drop function if exists bi_dashboard(int);
+drop function if exists bi_stories_feed(int, int, uuid, text, text, text, text);
+drop function if exists bi_story(uuid);
 drop function if exists bi_overview(timestamptz);
 drop function if exists bi_share_of_voice(uuid[], timestamptz, timestamptz, text);
 drop table if exists bi_notifications, bi_notification_prefs, bi_follows, bi_scan_logs, bi_scan_runs,
