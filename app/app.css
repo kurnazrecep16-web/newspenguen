@@ -381,3 +381,96 @@ input,textarea{font:inherit;color:inherit}
 /* Dar ekran (iPhone SE): ana sayfa başlığında logo yazısı ile dil düğmesi çakışmasın */
 .brand b{white-space:nowrap}
 @media (max-width:380px){.navrow{gap:6px}.navrow .langpill{padding:0 8px}.navrow .langpill .ic{display:none}.brand{gap:8px}.brand .mark{width:32px;height:32px}.brand b{font-size:16px}}
+
+/* =========================================================
+   Açık tema (COATNEWS 44 ekran tasarımı): Cloud zemin, beyaz kartlar, Deep Navy metin
+   Fotoğraf/görsel üzerindeki alanlar (hero, detay başlığı, onboarding, açılış) koyu kalır.
+   ========================================================= */
+:root{
+  --np-night-900:#F5F7FA; --np-night-800:#FFFFFF; --np-night-700:#FFFFFF; --np-night-600:#F0F3F8; --np-night-500:#E2E8F0;
+  --np-blue-300:#0066FF; --np-blue-400:#0066FF;
+  --np-green-400:#00A58C; --np-red-400:#E5484D;
+  --np-white:#0B1F3B; --np-grey-300:#4A5A73; --np-grey-500:#7C8AA0;
+  --np-line:rgba(11,31,59,.08); --np-line-2:rgba(11,31,59,.14);
+  --seg-marine:#0B84D8; --seg-prot:#00A58C; --seg-deco:#E08A00; --seg-powder:#7B61FF; --seg-energy:#3FA34D;
+  --sh-card:0 6px 20px rgba(11,31,59,.07);
+  --sh-blue:0 8px 20px rgba(0,102,255,.25);
+  --ink:#0B1F3B; --on-dark:#F5F7FA; --on-dark-2:#C9D4E3;
+  color-scheme:light;
+}
+html,body{background:#F5F7FA}
+body{background:#F5F7FA}
+.navbar{background:rgba(245,247,250,.94);box-shadow:0 1px 0 rgba(11,31,59,.06)}
+.tabbar{background:rgba(255,255,255,.96);border-top:1px solid rgba(11,31,59,.08)}
+.tab{color:#8A97AB}
+.tab[aria-current="page"]{background:none;box-shadow:none;color:var(--np-blue-500)}
+.tab[aria-current="page"] .ic{stroke-width:2.2}
+.iconbtn{color:var(--ink)}
+.iconbtn.fill{background:#fff;border:1px solid var(--np-line);box-shadow:var(--sh-card)}
+.iconbtn .dot{box-shadow:0 0 0 2px #fff}
+.card,.ncard,.pcard,.qa,.locbar,.rows,.rel,.layer,.ccalc,.opt,.mapbox{box-shadow:var(--sh-card)}
+.ncard,.pcard,.qa,.locbar,.rows,.rel,.layer,.ccalc,.card{border-color:rgba(11,31,59,.06)}
+.chip{background:#fff;border-color:rgba(11,31,59,.08);color:var(--np-grey-300)}
+.seg,.steps{background:#EBEFF5;border-color:transparent}
+.seg button[aria-pressed="true"]{box-shadow:0 3px 10px rgba(0,102,255,.25)}
+.btn.secondary{background:#fff;border-color:var(--np-line-2);color:var(--ink)}
+.btn.light{background:var(--ink);color:#fff}
+.input,.search{background:#fff;border-color:rgba(11,31,59,.12)}
+.input:focus-within{box-shadow:0 0 0 3px rgba(0,102,255,.14)}
+.check input{border-color:#9AA8BC}
+.switch{background:#D5DCE6}
+.row .ri,.fact .fi{background:rgba(0,102,255,.08);color:var(--np-blue-500)}
+.lnum{background:var(--np-blue-500);color:#fff}
+.pills button,.city{background:#fff;border-color:rgba(11,31,59,.1)}
+.addl{border-color:rgba(11,31,59,.18)}
+.film{background:rgba(0,102,255,.05);border-color:rgba(0,102,255,.18)}
+.calcout{background:rgba(0,102,255,.06);border-color:rgba(0,102,255,.2)}
+.opt[aria-pressed="true"]{background:rgba(0,102,255,.06)}
+.kpis div{background:rgba(255,255,255,.08)}
+.why{background:#FFF7EE;border-color:rgba(255,122,0,.28)}
+.why .h{color:#C25E00}
+.score{color:#E06A00}
+.tag.soft{background:color-mix(in srgb,var(--c,var(--np-blue-500)) 14%,#fff);color:color-mix(in srgb,var(--c,var(--np-blue-500)) 75%,#0B1F3B)}
+.feat span{background:rgba(0,165,140,.12)}
+.empty{border-color:rgba(11,31,59,.14)}
+.sheet .pn{background:#fff;border-top:0;box-shadow:0 -10px 40px rgba(11,31,59,.15)}
+.sheet .grab{background:#D5DCE6}
+.sheet .bg{background:rgba(11,31,59,.35)}
+.toast{background:var(--ink);color:#fff;border-color:transparent}
+.stickybar{background:linear-gradient(0deg,#F5F7FA 60%,rgba(245,247,250,0))}
+.langpill{background:#fff;border-color:rgba(11,31,59,.12);color:var(--ink);backdrop-filter:none;-webkit-backdrop-filter:none}
+.mapbox{background:linear-gradient(180deg,#EAF3FF,#DCEBFF);border-color:rgba(0,102,255,.12)}
+.mapsheet{background:rgba(255,255,255,.96)}
+.mapctl button{background:rgba(255,255,255,.9);color:var(--ink)}
+.bub text.lbl{fill:#4A5A73}
+@media (min-width:600px){body{box-shadow:0 0 0 1px rgba(11,31,59,.08)}}
+
+/* Görsel üzerindeki koyu alanlar */
+.hero,.slide,.dhero .cap,.dhero .navbar,.onb .art,.splash,.result{--np-white:#F5F7FA;--np-grey-300:#C9D4E3;--np-grey-500:#9AAAC2;color:#F5F7FA}
+.hero{background:#0B1F3B}
+.slide::after{background:linear-gradient(0deg,rgba(7,21,43,.92) 8%,rgba(7,21,43,.45) 50%,rgba(7,21,43,0) 75%)}
+.dhero{background:#0B1F3B}
+.dhero::after{background:linear-gradient(0deg,rgba(7,21,43,.9) 4%,rgba(7,21,43,.35) 55%,rgba(7,21,43,.2) 100%)}
+.dhero .iconbtn{background:rgba(7,21,43,.45);color:#fff}
+.onb .art::after{background:linear-gradient(0deg,#F5F7FA 2%,rgba(245,247,250,0) 45%)}
+.onb .skip{background:rgba(7,21,43,.45);color:#fff}
+.onb .art .langpill{background:rgba(7,21,43,.45);color:#fff;border-color:rgba(255,255,255,.25)}
+.splash{background:radial-gradient(80% 60% at 50% 40%,#163459 0%,#0B1F3B 60%,#07152B 100%)}
+.result{background:#0B1F3B;border:0}
+.result .kpis div{background:rgba(255,255,255,.08)}
+.card.glow{background:#0B1F3B;--np-white:#F5F7FA;--np-grey-300:#C9D4E3;color:#F5F7FA;border-color:transparent}
+.auth .logo b,.brand b{color:var(--ink)}
+
+/* Kart düzenli metin sayfaları (Yardım, Gizlilik) */
+.prose .qcard{background:#fff;border:1px solid rgba(11,31,59,.06);border-radius:var(--r-lg);padding:4px 16px 14px;margin:12px 0;box-shadow:var(--sh-card)}
+.prose .qcard h3{margin:12px 0 6px}
+.prose .qcard p{margin:6px 0 0}
+/* Sekme başlıkları tasarımdaki gibi ortalı */
+.navrow .ltitle{font-size:var(--fs-headline);font-weight:700;text-align:center;letter-spacing:0;margin:0}
+/* Fotoğraflar */
+img.scene{display:block;width:100%;height:100%;object-fit:cover}
+.onb .art img.scene{position:absolute;inset:0}
+.intro-photo{position:relative;height:200px;border-radius:var(--r-xl);overflow:hidden;margin:16px 0 4px;box-shadow:var(--sh-card);background:#0B1F3B}
+.intro-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(7,21,43,.75) 5%,rgba(7,21,43,0) 60%)}
+.intro-photo b{position:absolute;left:16px;bottom:14px;z-index:2;color:#fff;font-family:var(--font-display);font-size:20px;font-weight:800}
+.onb .dots i{background:#C9D4E3}.onb .dots i.on{background:var(--np-blue-500)}
