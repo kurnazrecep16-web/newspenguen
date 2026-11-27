@@ -147,7 +147,7 @@
     ["Doğu Anadolu", ["Erzurum", "Erzincan", "Kars", "Ardahan", "Iğdır", "Ağrı", "Van", "Muş", "Bitlis", "Bingöl", "Elazığ", "Malatya", "Tunceli", "Hakkari"]],
     ["Güneydoğu Anadolu", ["Gaziantep", "Kilis", "Adıyaman", "Şanlıurfa", "Diyarbakır", "Mardin", "Batman", "Siirt", "Şırnak"]]
   ];
-  const ABROAD = "Yurt dışı";
+  const ABROAD = "Global";
   // İl adı geçmeyen haberler için ilçe ve kurum anahtar kelimeleri
   const ALIAS = {
     "İstanbul": ["ibb", "iski", "i̇bb", "i̇ski", "çatalca", "silivri", "arnavutköy", "hadımköy", "beyoğlu", "başakşehir", "bayrampaşa", "esenyurt", "büyükçekmece", "küçükçekmece", "avcılar", "beylikdüzü", "eyüpsultan", "sarıyer", "kağıthane", "şişli", "fatih", "zeytinburnu", "bakırköy", "bağcılar", "güngören", "esenler", "sultangazi", "gaziosmanpaşa", "kadıköy", "üsküdar", "ataşehir", "ümraniye", "maltepe", "kartal", "pendik", "tuzla", "beykoz", "çekmeköy", "sancaktepe", "sultanbeyli", "şile", "avrupa yakası", "anadolu yakası", "kuzey demir", "inrail"],
@@ -191,7 +191,7 @@
     cityCache.set(i.id, out);
     return out;
   }
-  let LOC = new Set(store.get("loc", []));
+  let LOC = new Set(store.get("loc", []).map(c => c === "Yurt dışı" ? ABROAD : c));
   const saveLoc = () => store.set("loc", [...LOC]);
   const locMatch = i => !LOC.size || citiesOf(i).some(c => LOC.has(c));
   function locLabel() {
@@ -214,7 +214,7 @@
     const n = all.filter(i => !draft.sel.size || citiesOf(i).some(c => draft.sel.has(c))).length;
     let h = '<div class="sh-h"><b>Konum seç</b><button data-loc="close" aria-label="Kapat">×</button></div>';
     h += '<input class="sh-q" type="search" placeholder="İl ara (ör. Tekirdağ)" value="' + esc(draft.q || "") + '" data-locq="1">';
-    h += '<div class="sh-quick"><button class="chip" data-loc="mine" aria-pressed="' + ["İstanbul", "Tekirdağ", "Edirne", "Kırklareli"].every(c => draft.sel.has(c)) + '">★ Bölgem: İstanbul + Trakya</button><button class="chip" data-loc="abroad" aria-pressed="' + draft.sel.has(ABROAD) + '">🌍 Yurt dışı <span class="n">' + (cnt[ABROAD] || 0) + '</span></button></div>';
+    h += '<div class="sh-quick"><button class="chip" data-loc="mine" aria-pressed="' + ["İstanbul", "Tekirdağ", "Edirne", "Kırklareli"].every(c => draft.sel.has(c)) + '">★ Bölgem: İstanbul + Trakya</button><button class="chip" data-loc="abroad" aria-pressed="' + draft.sel.has(ABROAD) + '">🌍 Global <span class="n">' + (cnt[ABROAD] || 0) + '</span></button></div>';
     h += '<div class="sh-list">';
     for (const [r, cs] of REGIONS) {
       const list = q ? cs.filter(c => lc(c).includes(q)) : cs;

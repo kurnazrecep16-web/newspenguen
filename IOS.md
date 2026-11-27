@@ -4,7 +4,7 @@ Uygulama, kökteki `index.html`'i Capacitor ile saran bir iOS uygulamasıdır. Z
 
 Uygulamaya özel eklemeler (`app/` klasöründe; web sitesini etkilemez):
 - **Protective Hesap** sekmesi (`app/app.js`): yalnızca protective boyalar. (1) Yüzey alanı: çelik tonajından (ton × profil tipine göre m²/ton, elle değiştirilebilir) veya doğrudan m². (2) Elle fire (%), %20–50 kısayolları. (3) Katlar: hacimce katı madde, kat sayısı, kuru film ⇄ yaş film, isteğe bağlı $/L fiyat. (4) Sonuç: kat bazında litre, WFT, pratik yayılma, USD maliyet ve m² maliyeti.
-- **Konum filtresi**: Ana Sayfa, Sektörler ve Projeler'de bölge (Marmara, Ege…) veya il bazında seçim; ilçe ve kurum adlarından (Çorlu, Gebze, İBB…) ile eşleştirme, "Bölgem" ve "Yurt dışı" kısayolları.
+- **Konum filtresi**: Ana Sayfa, Sektörler ve Projeler'de bölge (Marmara, Ege…) veya il bazında seçim; ilçe ve kurum adlarından (Çorlu, Gebze, İBB…) ile eşleştirme, "Bölgem" ve "Global" kısayolları.
 - Arayüz (`app/app.css`): ana sayfada Boya Hesapla kısayolu, çentik/Dynamic Island boşluğu, yeni alt menü (Ana Sayfa, Sektörler, Projeler, Hesapla, Kayıtlı; Profil sağ üstte), işlevsiz zil ve ayar satırları kaldırıldı.
 - Haberler uygulama içi Safari görünümünde açılır, "linki kopyala" yerine iOS paylaş menüsü çıkar; açılış ekranı ve simge.
 
