@@ -68,7 +68,11 @@ input,textarea{font:inherit;color:inherit}
 .iconbtn .dot{position:absolute;top:10px;right:11px;width:8px;height:8px;border-radius:50%;background:var(--np-red-400);box-shadow:0 0 0 2px var(--np-night-900)}
 .ltitle{font-size:var(--fs-large);font-weight:800;letter-spacing:-.5px;margin:4px 0 0;line-height:1.1}
 .ntitle{font-size:var(--fs-headline);font-weight:700;flex:1;text-align:center;margin:0}
-.brand{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
+.brand{display:flex;align-items:center;gap:10px;flex:1;min-width:0;text-align:left}
+.brand>span{min-width:0}
+.brand small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.homemark{width:40px;height:40px;display:grid;place-items:center;flex:0 0 auto;margin-right:4px}
+.homemark .mark{width:32px;height:32px}
 .brand .mark{width:36px;height:36px;flex:0 0 auto}
 .brand b{display:block;font-size:17px;font-weight:800;letter-spacing:.6px;line-height:1}
 .brand b sup{font-size:8px;margin-left:1px;font-weight:700}
@@ -374,3 +378,6 @@ input,textarea{font:inherit;color:inherit}
 /* COATNEWS tipografi: Montserrat başlık ve gezinme, Inter arayüz, Source Serif 4 editoryal başlık */
 .ltitle,.ntitle,.brand b,.splash h1,.auth h1,.onb h1,.h-sec h2,.tab,.btn,.chip,.seg button,.steps button,.phead b,.logo b,.kpi b{font-family:var(--font-display)}
 .dtitle,.slide h3{font-family:var(--font-serif);letter-spacing:0}
+/* Dar ekran (iPhone SE): ana sayfa başlığında logo yazısı ile dil düğmesi çakışmasın */
+.brand b{white-space:nowrap}
+@media (max-width:380px){.navrow{gap:6px}.navrow .langpill{padding:0 8px}.navrow .langpill .ic{display:none}.brand{gap:8px}.brand .mark{width:32px;height:32px}.brand b{font-size:16px}}
