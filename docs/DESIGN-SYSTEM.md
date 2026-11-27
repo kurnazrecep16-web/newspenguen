@@ -1,4 +1,4 @@
-# COATNEWS · Design System v3
+# COATNEWS · Design System v4 (açık tema)
 
 Kaynak: COATNEWS Brand Guideline & UI Concept v1.2. Kod: `app/app.css` (tokenlar `:root` içinde). Logo ve ikon dosyaları: `docs/brand/`.
 
@@ -65,3 +65,9 @@ Ana Sayfa · Haberler (segmentler) · Projeler · Hesapla · Daha Fazla (Kayıtl
 ## Görseller
 
 Haber görselleri fotoğraf değil, konuya göre çizilmiş vektör sahnelerdir (`app/scenes.js`): demiryolu, havalimanı, offshore, rüzgar, güneş, rafineri, boru hattı, iletim hattı, santral, liman, gemi, köprü, tünel, su/arıtma, yol, bina, çelik yapı, fabrika, tank. Konu haber başlığı, şirket ve özetinden bulunur; böylece lisans sorunu olmaz ve görsel içerikle uyumlu kalır.
+
+## v4 · Açık tema ve fotoğraflar (COATNEWS 44 ekran tasarımı)
+
+- Zemin Cloud `#F5F7FA`, kartlar beyaz, metin Deep Navy `#0B1F3B`. Açık tema tokenları `app/app.css` sonundaki "Açık tema" bloğunda.
+- Fotoğraf üzerindeki alanlar (öne çıkan, haber/proje detay başlığı, onboarding, açılış, hesap sonucu) koyu kalır.
+- Fotoğraflar `app/photos/` (tasarım dosyasından). Haber kartında yalnızca konu eşleşirse kullanılır (gemi, liman, rüzgar, köprü, rafineri, boru hattı, bina, santral, tank, toz boya tesisi); eşleşmezse `scenes.js` çizimi.
