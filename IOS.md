@@ -4,7 +4,8 @@ Uygulama, kökteki `index.html`'i Capacitor ile saran bir iOS uygulamasıdır. Z
 
 Uygulamaya özel eklemeler (`app/` klasöründe; web sitesini etkilemez):
 - **Boya Hesapla** sekmesi (`app/app.js`): çok katlı sistemlerde (astar, ara kat, son kat) DFT, hacimce katı madde, kat sayısı, uygulama kaybı ve ambalajdan litre, kutu ve maliyet; toz boyada özgül ağırlık ve transfer veriminden kg. Hazır sistemler: dekoratif iç/dış cephe, Protective C3/C5, Marine, toz boya. Son girilen değerler cihazda saklanır, sonuç iOS paylaş menüsüyle gönderilir.
-- Arayüz (`app/app.css`): çentik/Dynamic Island boşluğu, yeni alt menü (Ana Sayfa, Sektörler, Projeler, Hesapla, Kayıtlı; Profil sağ üstte), işlevsiz zil ve ayar satırları kaldırıldı.
+- **Konum filtresi**: Ana Sayfa, Sektörler ve Projeler'de bölge (Marmara, Ege…) veya il bazında seçim; ilçe ve kurum adlarından (Çorlu, Gebze, İBB…) ile eşleştirme, "Bölgem" ve "Yurt dışı" kısayolları.
+- Arayüz (`app/app.css`): ana sayfada Boya Hesapla kısayolu, çentik/Dynamic Island boşluğu, yeni alt menü (Ana Sayfa, Sektörler, Projeler, Hesapla, Kayıtlı; Profil sağ üstte), işlevsiz zil ve ayar satırları kaldırıldı.
 - Haberler uygulama içi Safari görünümünde açılır, "linki kopyala" yerine iOS paylaş menüsü çıkar; açılış ekranı ve simge.
 
 ## Senin yapman gerekenler (bir kerelik)

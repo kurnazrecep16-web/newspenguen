@@ -43,3 +43,56 @@ html,body{-webkit-tap-highlight-color:transparent;overscroll-behavior-y:none}
 .csum b{flex:1;text-align:right;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .csum svg{width:18px;height:18px;transform:rotate(90deg)}
 .csum.hide{opacity:0;transform:translateY(12px);pointer-events:none}
+
+/* Konum çubuğu ve seçim paneli */
+.locbar{display:flex;align-items:center;gap:10px;width:100%;margin:10px 0 0;padding:8px 12px;border-radius:14px;background:rgba(255,255,255,.05);border:1px solid var(--line);text-align:left;min-height:50px}
+.locbar>svg:first-child{color:var(--gold)}
+.locbar span:not(.locx){flex:1;min-width:0}
+.locbar small{display:block;font-size:11px;color:var(--muted);font-weight:600}
+.locbar b{display:block;font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.locbar.on{background:rgba(30,107,255,.16);border-color:rgba(59,130,246,.55)}
+.locx{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.12);font-size:18px;line-height:1}
+main>.locbar{margin:0 0 12px}
+.sheet{position:fixed;inset:0;z-index:100;pointer-events:none}
+.sheet.show{pointer-events:auto}
+.sh-bg{position:absolute;inset:0;background:rgba(0,0,0,.55);opacity:0;transition:opacity .2s}
+.sheet.show .sh-bg{opacity:1}
+.sh-p{position:absolute;left:0;right:0;bottom:0;max-height:88vh;display:flex;flex-direction:column;background:#0C1F47;border-radius:22px 22px 0 0;border-top:1px solid var(--line);padding:10px 16px calc(12px + env(safe-area-inset-bottom));transform:translateY(100%);transition:transform .22s ease-out;max-width:640px;margin:0 auto}
+.sheet.show .sh-p{transform:none}
+.sh-h{display:flex;align-items:center;justify-content:space-between;padding:6px 0 10px}
+.sh-h b{font-size:18px}
+.sh-h button{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.08);font-size:22px;line-height:1}
+.sh-q{width:100%;height:44px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--text);padding:0 14px;font:inherit;font-size:16px;outline:0}
+.sh-quick{display:flex;gap:8px;overflow-x:auto;padding:10px 0 4px;scrollbar-width:none}
+.sh-quick .chip{height:36px;font-size:13px}
+.sh-list{overflow-y:auto;flex:1;margin:6px -4px 0;padding:0 4px;-webkit-overflow-scrolling:touch}
+.rg{border-bottom:1px solid var(--line)}
+.rg-h{display:flex;align-items:center;gap:10px;min-height:56px}
+.ck{width:26px;height:26px;border-radius:8px;border:2px solid var(--muted);flex:0 0 auto;position:relative}
+.ck.on{background:var(--blue);border-color:var(--blue)}
+.ck.on::after{content:"";position:absolute;left:7px;top:3px;width:6px;height:11px;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(45deg)}
+.ck.part{border-color:var(--blue)}
+.ck.part::after{content:"";position:absolute;left:5px;right:5px;top:10px;height:2.5px;background:var(--blue2);border-radius:2px}
+.rg-t{flex:1;display:flex;align-items:center;gap:8px;text-align:left;min-height:56px}
+.rg-t b{font-size:15.5px}
+.rg-t small{flex:1;color:var(--muted);font-size:12px;text-align:right}
+.rg-t svg{color:var(--muted);transition:transform .15s}
+.rg.open .rg-t svg{transform:rotate(90deg)}
+.rg-c{display:flex;flex-wrap:wrap;gap:8px;padding:0 0 14px 36px}
+.city{height:36px;padding:0 12px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.05);font-size:13.5px;font-weight:600;color:var(--text)}
+.city span{font-size:11.5px;color:var(--text2);margin-left:2px}
+.city.zero{color:var(--muted)}
+.city.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.city.on span{color:#fff}
+.sh-f{display:flex;gap:10px;padding-top:12px}
+.sh-clear{height:50px;padding:0 18px;border-radius:14px;border:1px solid var(--line);font-weight:700;color:var(--text2)}
+.sh-go{flex:1;border:0;color:#fff}
+
+/* Ana sayfadaki Boya Hesapla kısayolu */
+.calcpromo{display:flex;align-items:center;gap:14px;width:100%;margin-top:16px;padding:14px 16px;border-radius:18px;text-align:left;background:linear-gradient(135deg,rgba(245,166,35,.22),rgba(245,166,35,.06));border:1px solid rgba(245,166,35,.45)}
+.calcpromo .cp-i{width:44px;height:44px;border-radius:12px;background:var(--gold);color:#3B2300;display:grid;place-items:center;flex:0 0 auto}
+.calcpromo span:not(.cp-i){flex:1}
+.calcpromo b{display:block;font-size:16px}
+.calcpromo small{display:block;color:var(--text2);font-size:12.5px;margin-top:2px}
+.calcpromo>svg{color:var(--gold)}
+.sh-h,.sh-q,.sh-quick,.sh-f{flex:0 0 auto}

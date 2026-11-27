@@ -163,9 +163,150 @@
     save(); render();
   });
 
+  /* ---------- konum filtresi: bölge ve il ---------- */
+  const REGIONS = [
+    ["Marmara", ["İstanbul", "Edirne", "Kırklareli", "Tekirdağ", "Çanakkale", "Kocaeli", "Yalova", "Sakarya", "Bilecik", "Bursa", "Balıkesir"]],
+    ["Ege", ["İzmir", "Manisa", "Aydın", "Denizli", "Muğla", "Afyonkarahisar", "Kütahya", "Uşak"]],
+    ["Akdeniz", ["Antalya", "Isparta", "Burdur", "Mersin", "Adana", "Hatay", "Osmaniye", "Kahramanmaraş"]],
+    ["İç Anadolu", ["Ankara", "Konya", "Karaman", "Aksaray", "Niğde", "Nevşehir", "Kırşehir", "Kırıkkale", "Kayseri", "Sivas", "Yozgat", "Çankırı", "Eskişehir"]],
+    ["Karadeniz", ["Zonguldak", "Karabük", "Bartın", "Kastamonu", "Sinop", "Samsun", "Ordu", "Giresun", "Trabzon", "Rize", "Artvin", "Gümüşhane", "Bayburt", "Tokat", "Amasya", "Çorum", "Bolu", "Düzce"]],
+    ["Doğu Anadolu", ["Erzurum", "Erzincan", "Kars", "Ardahan", "Iğdır", "Ağrı", "Van", "Muş", "Bitlis", "Bingöl", "Elazığ", "Malatya", "Tunceli", "Hakkari"]],
+    ["Güneydoğu Anadolu", ["Gaziantep", "Kilis", "Adıyaman", "Şanlıurfa", "Diyarbakır", "Mardin", "Batman", "Siirt", "Şırnak"]]
+  ];
+  const ABROAD = "Yurt dışı";
+  // İl adı geçmeyen haberler için ilçe ve kurum anahtar kelimeleri
+  const ALIAS = {
+    "İstanbul": ["ibb", "iski", "i̇bb", "i̇ski", "çatalca", "silivri", "arnavutköy", "hadımköy", "beyoğlu", "başakşehir", "bayrampaşa", "esenyurt", "büyükçekmece", "küçükçekmece", "avcılar", "beylikdüzü", "eyüpsultan", "sarıyer", "kağıthane", "şişli", "fatih", "zeytinburnu", "bakırköy", "bağcılar", "güngören", "esenler", "sultangazi", "gaziosmanpaşa", "kadıköy", "üsküdar", "ataşehir", "ümraniye", "maltepe", "kartal", "pendik", "tuzla", "beykoz", "çekmeköy", "sancaktepe", "sultanbeyli", "şile", "avrupa yakası", "anadolu yakası", "kuzey demir", "inrail"],
+    "Tekirdağ": ["çorlu", "çerkezköy", "kapaklı", "ergene", "velimeşe", "hayrabolu", "malkara", "süleymanpaşa", "marmaraereğlisi", "şarköy", "muratlı", "saray"],
+    "Edirne": ["keşan", "uzunköprü", "ipsala", "enez", "havsa", "yenimuhacir"],
+    "Kırklareli": ["lüleburgaz", "babaeski", "vize", "pınarhisar", "demirköy"],
+    "Kocaeli": ["gebze", "dilovası", "izmit", "i̇zmit", "körfez", "derince", "gölcük", "kartepe", "darıca", "çayırova", "uzmar"],
+    "Bursa": ["gemlik", "inegöl", "mudanya", "mustafakemalpaşa", "nilüfer", "osmangazi", "orhangazi"],
+    "Balıkesir": ["bandırma", "edremit", "ayvalık", "gönen"],
+    "Çanakkale": ["biga", "lapseki", "gelibolu", "çan"],
+    "Sakarya": ["adapazarı", "hendek", "karasu"],
+    "İzmir": ["aliağa", "bergama", "torbalı", "kemalpaşa", "menemen", "çiğli", "star rafineri"],
+    "Aydın": ["söke", "kuşadası", "nazilli", "didim"],
+    "Muğla": ["bodrum", "fethiye", "marmaris", "milas", "dalaman"],
+    "Mersin": ["tarsus", "silifke", "erdemli", "akkuyu"],
+    "Hatay": ["iskenderun", "antakya", "dörtyol"],
+    "Adana": ["ceyhan", "yumurtalık", "kozan"],
+    "Şanlıurfa": ["birecik", "siverek", "viranşehir"],
+    "Antalya": ["alanya", "manavgat", "kemer"],
+    "Zonguldak": ["ereğli", "çaycuma"],
+    "Kayseri": ["incesu"],
+    "Konya": ["ereğli"]
+  };
+  const CITY_REGION = {};
+  REGIONS.forEach(([r, cs]) => cs.forEach(c => (CITY_REGION[c] = r)));
+  const L = "a-zçğıöşüâîû";
+  const lc = t => String(t || "").toLocaleLowerCase("tr");
+  const wordRx = w => new RegExp("(^|[^" + L + "])" + w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "(?![" + L + "])");
+  const MATCHERS = Object.keys(CITY_REGION).map(c => [c, [lc(c)].concat(ALIAS[c] || []).map(wordRx)]);
+  const cityCache = new Map();
+  function citiesOf(i) {
+    if (cityCache.has(i.id)) return cityCache.get(i.id);
+    let out = [];
+    if (i.reg && i.reg !== "tr") out = [ABROAD];
+    else {
+      const t = lc((i.company || "") + " " + i.title + " " + (i.summary || ""));
+      for (const [c, rxs] of MATCHERS) if (rxs.some(rx => rx.test(t))) out.push(c);
+      // "Ereğli" iki ilde var: hangisi olduğu belli değilse ikisini birden sayma
+      if (out.includes("Zonguldak") && out.includes("Konya")) out = out.filter(c => c !== "Zonguldak" && c !== "Konya");
+    }
+    cityCache.set(i.id, out);
+    return out;
+  }
+  let LOC = new Set(store.get("loc", []));
+  const saveLoc = () => store.set("loc", [...LOC]);
+  const locMatch = i => !LOC.size || citiesOf(i).some(c => LOC.has(c));
+  function locLabel() {
+    if (!LOC.size) return "Tüm konumlar";
+    const sel = [...LOC];
+    const fullRegions = REGIONS.filter(([, cs]) => cs.every(c => LOC.has(c))).map(([r]) => r);
+    const rest = sel.filter(c => !fullRegions.includes(CITY_REGION[c]));
+    const parts = fullRegions.concat(rest);
+    return parts.length <= 2 ? parts.join(", ") : parts.slice(0, 2).join(", ") + " +" + (parts.length - 2);
+  }
+  const locBar = () => '<button class="locbar' + (LOC.size ? " on" : "") + '" data-loc="open">' + ic("pin") + '<span><small>Konum</small><b>' + esc(locLabel()) + '</b></span>' + (LOC.size ? '<span class="locx" data-loc="clear" role="button" aria-label="Konum filtresini temizle">×</span>' : ic("chev")) + '</button>';
+
+  let sheetOpen = null; // açık bölge adı
+  let draft = null;
+  function sheetHTML() {
+    const all = ITEMS.filter(i => !S.hidden.includes(i.seg));
+    const cnt = {};
+    all.forEach(i => citiesOf(i).forEach(c => (cnt[c] = (cnt[c] || 0) + 1)));
+    const q = lc(draft.q || "");
+    const n = all.filter(i => !draft.sel.size || citiesOf(i).some(c => draft.sel.has(c))).length;
+    let h = '<div class="sh-h"><b>Konum seç</b><button data-loc="close" aria-label="Kapat">×</button></div>';
+    h += '<input class="sh-q" type="search" placeholder="İl ara (ör. Tekirdağ)" value="' + esc(draft.q || "") + '" data-locq="1">';
+    h += '<div class="sh-quick"><button class="chip" data-loc="mine" aria-pressed="' + ["İstanbul", "Tekirdağ", "Edirne", "Kırklareli"].every(c => draft.sel.has(c)) + '">★ Bölgem: İstanbul + Trakya</button><button class="chip" data-loc="abroad" aria-pressed="' + draft.sel.has(ABROAD) + '">🌍 Yurt dışı <span class="n">' + (cnt[ABROAD] || 0) + '</span></button></div>';
+    h += '<div class="sh-list">';
+    for (const [r, cs] of REGIONS) {
+      const list = q ? cs.filter(c => lc(c).includes(q)) : cs;
+      if (!list.length) continue;
+      const rc = cs.reduce((s, c) => s + (cnt[c] || 0), 0);
+      const selN = cs.filter(c => draft.sel.has(c)).length;
+      const open = q || sheetOpen === r;
+      h += '<div class="rg' + (open ? " open" : "") + '"><div class="rg-h"><button class="ck' + (selN === cs.length ? " on" : selN ? " part" : "") + '" data-locr="' + r + '" aria-label="' + r + ' bölgesinin tümünü seç"></button><button class="rg-t" data-loco="' + r + '"><b>' + r + '</b><small>' + rc + ' haber' + (selN ? ' · ' + selN + ' il seçili' : '') + '</small>' + ic("chev") + '</button></div>';
+      if (open) h += '<div class="rg-c">' + list.slice().sort((a, b) => (cnt[b] || 0) - (cnt[a] || 0) || a.localeCompare(b, "tr")).map(c => '<button class="city' + (draft.sel.has(c) ? " on" : "") + (cnt[c] ? "" : " zero") + '" data-locc="' + c + '">' + c + (cnt[c] ? ' <span>' + cnt[c] + '</span>' : '') + '</button>').join("") + '</div>';
+      h += '</div>';
+    }
+    h += '</div><div class="sh-f"><button class="sh-clear" data-loc="none">Temizle</button><button class="btn sh-go" data-loc="apply">' + n + ' haberi göster</button></div>';
+    return h;
+  }
+  function openSheet() {
+    draft = { sel: new Set(LOC), q: "" };
+    sheetOpen = REGIONS.find(([, cs]) => cs.some(c => LOC.has(c)))?.[0] || "Marmara";
+    let el = document.getElementById("locsheet");
+    if (!el) { el = document.createElement("div"); el.id = "locsheet"; el.className = "sheet"; document.body.appendChild(el); }
+    el.innerHTML = '<div class="sh-bg" data-loc="close"></div><div class="sh-p" role="dialog" aria-modal="true" aria-label="Konum seç">' + sheetHTML() + '</div>';
+    requestAnimationFrame(() => el.classList.add("show"));
+    document.body.style.overflow = "hidden";
+  }
+  function redrawSheet(keepFocus) {
+    const p = document.querySelector("#locsheet .sh-p"); if (!p) return;
+    const sc = p.querySelector(".sh-list")?.scrollTop || 0;
+    p.innerHTML = sheetHTML();
+    const l = p.querySelector(".sh-list"); if (l) l.scrollTop = sc;
+    if (keepFocus) { const q = p.querySelector(".sh-q"); q.focus(); q.setSelectionRange(q.value.length, q.value.length); }
+  }
+  function closeSheet() {
+    const el = document.getElementById("locsheet"); if (!el) return;
+    el.classList.remove("show"); document.body.style.overflow = "";
+    setTimeout(() => el.remove(), 220);
+  }
+  document.addEventListener("input", e => { if (e.target.dataset && e.target.dataset.locq) { draft.q = e.target.value; redrawSheet(true); } });
+  document.addEventListener("click", e => {
+    const b = e.target.closest("[data-loc],[data-locr],[data-loco],[data-locc]");
+    if (!b) return;
+    e.stopPropagation();
+    const d = b.dataset;
+    if (d.loc === "open") { openSheet(); return; }
+    if (d.loc === "clear") { e.preventDefault(); LOC.clear(); saveLoc(); render(); return; }
+    if (d.loc === "close") { closeSheet(); return; }
+    if (d.loc === "apply") { LOC = new Set(draft.sel); saveLoc(); closeSheet(); S.slide = 0; render(); return; }
+    if (d.loc === "none") draft.sel.clear();
+    else if (d.loc === "mine") { const m = ["İstanbul", "Tekirdağ", "Edirne", "Kırklareli"]; const on = m.every(c => draft.sel.has(c)); m.forEach(c => on ? draft.sel.delete(c) : draft.sel.add(c)); }
+    else if (d.loc === "abroad") draft.sel.has(ABROAD) ? draft.sel.delete(ABROAD) : draft.sel.add(ABROAD);
+    else if (d.locr) { const cs = REGIONS.find(([r]) => r === d.locr)[1]; const all = cs.every(c => draft.sel.has(c)); cs.forEach(c => all ? draft.sel.delete(c) : draft.sel.add(c)); }
+    else if (d.loco) sheetOpen = sheetOpen === d.loco ? null : d.loco;
+    else if (d.locc) draft.sel.has(d.locc) ? draft.sel.delete(d.locc) : draft.sel.add(d.locc);
+    redrawSheet(false);
+  }, true);
+
   /* ---------- arayüz: sekmeler, başlık, profil ---------- */
   const TABS = [["home", "Ana Sayfa", "home"], ["sectors", "Sektörler", "layers"], ["projects", "Projeler", "brief"], ["calc", "Hesapla", "calc"], ["saved", "Kayıtlı", "bm"]];
+  const LOC_VIEWS = ["home", "sectors", "projects"];
   const origRender = render;
+  function renderFiltered() {
+    // Konum filtresi: ITEMS'ı yalnızca çizim süresince süzer, sonra geri koyar
+    if (!LOC.size || !LOC_VIEWS.includes(S.view)) return origRender();
+    const all = ITEMS.slice();
+    const keep = all.filter(locMatch);
+    ITEMS.length = 0; ITEMS.push(...keep);
+    try { origRender(); } finally { ITEMS.length = 0; ITEMS.push(...all); }
+  }
   render = function () {
     const v = S.view;
     if (v !== "calc" && io) { io.disconnect(); io = null; }
@@ -174,11 +315,27 @@
       $("main").innerHTML = viewCalc();
       refresh(); watch();
     } else {
-      origRender();
+      renderFiltered();
       // İşlevsiz zil düğmesini kaldır
       document.querySelectorAll('#top .rb[aria-label="Bildirimler"]').forEach(x => x.remove());
+      if (LOC_VIEWS.includes(v)) {
+        if (v === "home") {
+          const chips = document.querySelector("#top .chips");
+          if (chips) chips.insertAdjacentHTML("beforebegin", locBar());
+          // Ana sayfadan Boya Hesapla kısayolu
+          const sec = document.querySelector("#main .sec");
+          if (sec) sec.insertAdjacentHTML("beforebegin", '<button class="calcpromo" data-view="calc"><span class="cp-i">' + ic("calc") + '</span><span><b>Boya Hesapla</b><small>Sarfiyat, kutu sayısı ve maliyet</small></span>' + ic("chev") + '</button>');
+        } else {
+          $("main").insertAdjacentHTML("afterbegin", locBar());
+        }
+        if (LOC.size && !$("main").textContent.trim()) $("main").insertAdjacentHTML("beforeend", '<div class="empty">Seçtiğin konumda haber yok.</div>');
+      }
       if (v === "profile") {
-        document.querySelectorAll("#main .row").forEach(r => { const t = r.querySelector("b"); if (t && /Bildirim Tercihleri|Bölge Ayarları/.test(t.textContent)) r.remove(); });
+        document.querySelectorAll("#main .row").forEach(r => {
+          const t = r.querySelector("b"); if (!t) return;
+          if (/Bildirim Tercihleri/.test(t.textContent)) r.remove();
+          else if (/Bölge Ayarları/.test(t.textContent)) { r.dataset.loc = "open"; t.textContent = "Konum filtresi"; r.querySelector("small").textContent = locLabel(); }
+        });
         const about = [...document.querySelectorAll("#main .row")].find(r => /Uygulama Hakkında/.test(r.textContent));
         if (about) about.insertAdjacentHTML("afterend", '<p class="foot" style="margin-top:8px">NEWSPENGUEN iOS · sürüm 1.0<br>Haberler 6 saatte bir güncellenir. Kişisel veri toplanmaz; kayıtlar yalnızca bu cihazda tutulur.</p>');
       }
