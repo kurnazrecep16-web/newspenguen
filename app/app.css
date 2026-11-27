@@ -363,3 +363,6 @@ input,textarea{font:inherit;color:inherit}
 .foot{color:var(--np-grey-500);font-size:var(--fs-cap);text-align:center;margin:24px 0 8px;line-height:1.5}
 .prose{font-size:var(--fs-callout);line-height:1.6;color:var(--np-grey-300)}
 .prose h3{color:var(--np-white);font-size:var(--fs-headline);margin:18px 0 6px}
+
+/* Geniş ekran (web sitesi, iPad): telefon genişliğinde ortala */
+@media (min-width:600px){body{max-width:480px;margin:0 auto;box-shadow:0 0 0 1px var(--np-line)}.tabbar,.stickybar{max-width:480px;width:100%;left:50%!important;right:auto!important;transform:translateX(-50%)}}
