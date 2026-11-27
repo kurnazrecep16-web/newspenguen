@@ -92,17 +92,16 @@ Sürdürülebilirlik, teknoloji, finans vb. `topics` (A–O) ve `tags` olarak tu
 
 1. **Migration** (canlı veritabanına): `supabase/migrations/20261127190000_brand_intelligence.sql`, sonra `supabase/seed/brands.sql`. Mevcut 7 migration repoda olmadığından `supabase db push` yerine Supabase MCP `apply_migration` veya SQL editörü kullanılmalı.
 2. **Yönetici**: `insert into bi_staff (user_id, role) values ('<auth.users id>', 'admin');`
-3. **Edge function**: `brand-scan` ve `bi-admin` (klasör `_shared/bi` ile birlikte) yayımlanır.
-4. **Gizli anahtarlar** (Supabase → Edge Functions → Secrets): `BI_CRON_SECRET` (rastgele uzun dize, zorunlu). İsteğe bağlı: `THENEWSAPI_TOKEN`, `NEWSAPI_KEY`. Anahtarlar istemciye, repoya veya veritabanına yazılmaz; `bi_providers.key_env` yalnızca değişken adını tutar.
+3. **Edge function**: `brand-scan` ve `bi-admin` yayımlanır (`verify_jwt` kapalı; ikisi de kimliği kendi içinde doğrular). Canlıdaki giriş dosyası, bu repodaki kaynağı belirli bir commit'e sabitlenmiş adresten içe aktaran tek satırlık bir sarmalayıcıdır. Kod değişince yeni commit adresiyle yeniden yayımlanır.
+4. **Gizli anahtarlar**: cron gizli dizesi Vault'ta `bi_cron_secret` adıyla rastgele üretilir ve veritabanından çıkmaz; `brand-scan` bunu `bi_cron_secret_ok()` ile (yalnızca service_role) karşılaştırır. İsteğe bağlı Edge Function secret'ları: `THENEWSAPI_TOKEN`, `NEWSAPI_KEY` (ücretli plan seçilirse). Anahtarlar istemciye ya da repoya yazılmaz; `bi_providers.key_env` yalnızca değişken adını tutar.
 5. **Zamanlama** (saatlik, mevcut `collect-news` işinden farklı dakikada):
    ```sql
    select cron.schedule('bi-brand-scan', '37 * * * *', $$
      select net.http_post(
        url := 'https://<proje>.supabase.co/functions/v1/brand-scan',
        headers := jsonb_build_object('Content-Type', 'application/json',
-                  'Authorization', 'Bearer ' || (select decrypted_secret from vault.decrypted_secrets where name = 'anon_key'),
                   'x-bi-cron-secret', (select decrypted_secret from vault.decrypted_secrets where name = 'bi_cron_secret')),
-       timeout_milliseconds := 150000);
+       body := '{}'::jsonb, timeout_milliseconds := 150000);
    $$);
    ```
    Tarama aralığı `bi_settings.scan.interval_minutes` ile belgelenir; cron ifadesi de buna göre değiştirilir.
