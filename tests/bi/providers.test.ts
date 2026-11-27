@@ -103,7 +103,6 @@ test("Bing News RSS: asıl bağlantı, yayıncı ve tarih çıkarılır; bing.co
   assert.equal(a[0].provider, "bingnews");
 });
 
-test("Bing sorgusu: markalar OR, terimler OR, iki blok AND", () => {
-  assert.equal(bingQuery({ id: "x", lang: "en", family: "context", aliases: ["Jotun", "Hempel"], terms: ["coatings", "paint plant"], entity_slugs: [] }),
-    '("Jotun" OR "Hempel") (coatings OR "paint plant")');
+test("Bing sorgusu: tek marka adı tırnak içinde", () => {
+  assert.equal(bingQuery('Jotun "Türkiye"'), '"Jotun Türkiye"');
 });

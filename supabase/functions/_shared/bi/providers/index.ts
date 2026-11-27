@@ -180,13 +180,22 @@ export function parseBingNews(xml: string, query: string, lang: string | null): 
 export const bingNews: SearchProvider = {
   key: "bingnews",
   langParam: (l) => (BING_MKT[l] ? BING_MKT[l][1] : null),
+  // Bing News RSS'te OR / parantez güvenilir çalışmıyor (canlı denemede 0 sonuç). Bu yüzden her marka adı ayrı,
+  // yalnızca tırnaklı adla aranır; boya/kaplama bağlamı motorda (coatingsContext) denetlenir.
+  // "business" ailesi aynı adları tekrar arayacağından atlanır.
   async search(spec, w, ctx) {
-    const q = bingQuery(spec);
+    if (spec.family !== "context") return [];
     const [setlang, mkt] = BING_MKT[spec.lang];
-    const url = "https://www.bing.com/news/search?" + new URLSearchParams({ q, format: "rss", count: String(ctx.config?.count ?? 50), setlang, mkt, cc: mkt.split("-")[1] });
-    const r = await fetchWithRetry(url, { headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36", Accept: "application/rss+xml, application/xml" } }, ctx.retry);
     const from = w.from.getTime() - 24 * 3600_000;   // Bing tarih filtresi sunmaz; pencereden eski olanlar elenir (1 gün pay)
-    return parseBingNews(await r.text(), q, spec.lang).filter((a) => !a.published_at || Date.parse(a.published_at) >= from);
+    const out: RawArticle[] = [];
+    for (const [i, alias] of spec.aliases.entries()) {
+      if (i) await new Promise((r) => setTimeout(r, Number(ctx.config?.gap_ms ?? 300)));
+      const q = bingQuery(alias);
+      const url = "https://www.bing.com/news/search?" + new URLSearchParams({ q, format: "rss", count: String(ctx.config?.count ?? 50), setlang, mkt, cc: mkt.split("-")[1] });
+      const r = await fetchWithRetry(url, { headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36", Accept: "application/rss+xml, application/xml" } }, ctx.retry);
+      out.push(...parseBingNews(await r.text(), q, spec.lang).filter((a) => !a.published_at || Date.parse(a.published_at) >= from));
+    }
+    return out;
   },
 };
 
