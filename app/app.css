@@ -21,6 +21,7 @@
   --np-line:rgba(148,170,220,.14);
   --np-line-2:rgba(148,170,220,.24);
   /* Sektör renkleri */
+  --seg-marine:#4C8DFF; --seg-prot:#2BD48A; --seg-deco:#FFB547; --seg-powder:#B28DFF; --seg-energy:#FF6B81;
   --sec-industry:#4C8DFF; --sec-infra:#2BB7D4; --sec-energy:#2BD48A; --sec-marine:#5A7CFF; --sec-petro:#FF8A4C; --sec-building:#B28DFF;
   /* Tipografi (SF Pro, iOS sistem fontu) */
   --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Inter","Segoe UI",Roboto,sans-serif;

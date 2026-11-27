@@ -61,6 +61,8 @@
     edit: '<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="m13.5 6.5 4 4"/>',
     shield: '<path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/>',
     apple: '<path fill="currentColor" stroke="none" d="M16.4 12.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9-1.7 0-3.3 1-4.2 2.6-1.8 3.1-.5 7.7 1.3 10.2.9 1.2 1.9 2.6 3.2 2.6 1.3-.1 1.8-.8 3.3-.8 1.6 0 2 .8 3.4.8 1.4 0 2.3-1.3 3.1-2.5 1-1.4 1.4-2.8 1.4-2.9-.1 0-2.7-1-2.7-4.1zM13.9 5c.7-.9 1.2-2 1-3.2-1 0-2.3.7-3 1.6-.7.8-1.2 2-1.1 3.1 1.2.1 2.3-.6 3.1-1.5z"/>',
+    drop: '<path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/>',
+    box: '<path d="m12 3 8 4.5v9L12 21l-8-4.5v-9z"/><path d="m4 7.5 8 4.5 8-4.5M12 12v9"/>',
     filter: '<path d="M3 5h18l-7 8v6l-4 2v-8z"/>',
     target: '<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/>'
   };
@@ -68,13 +70,13 @@
   const MARK = (cls = "mark") => '<svg class="' + cls + '" viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="mkB" x1="10" y1="8" x2="50" y2="58" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#4C8DFF"/><stop offset=".55" stop-color="#1E5BFF"/><stop offset="1" stop-color="#0B2E9E"/></linearGradient><linearGradient id="mkW" x1="6" y1="56" x2="60" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#1E5BFF" stop-opacity="0"/><stop offset=".5" stop-color="#5AA2FF"/><stop offset="1" stop-color="#9CD0FF"/></linearGradient><linearGradient id="mkA" x1="40" y1="20" x2="60" y2="26" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#FFB547"/><stop offset="1" stop-color="#FF8A1F"/></linearGradient></defs><path d="M15 51C8.5 39 10.5 21 25 12.5 36 6 50.5 8.5 57 18.5L45.5 22.5C39 25 34.5 31.5 34.8 40.5 35 45 36.6 48.6 38.4 51Z" fill="url(#mkB)"/><path d="M27.5 51C26 39.5 30 29.5 40.5 24.8 35.6 31 33.6 39.8 35.4 51Z" fill="#fff"/><path d="M44.5 21.3 61 20.4 46.5 27.6C45 26 44.3 23.6 44.5 21.3Z" fill="url(#mkA)"/><circle cx="44.2" cy="16.6" r="2.3" fill="#fff"/><path d="M5 57.5C22 49.5 42 49 59.5 41" stroke="url(#mkW)" stroke-width="3.2" stroke-linecap="round" fill="none"/></svg>';
 
   /* ---------- Sektörler (konuya göre) ---------- */
+  /* Jotun segmentleri (haberin seg alanı) */
   const SECTORS = {
-    industry: { n: "Endüstri", d: "Fabrika, OSB, proses tesisleri", i: "factory", c: "var(--sec-industry)" },
-    infra: { n: "Altyapı", d: "Yol, köprü, demiryolu, tünel, su", i: "road", c: "var(--sec-infra)" },
-    energy: { n: "Enerji", d: "GES, RES, santral, iletim", i: "bolt", c: "var(--sec-energy)" },
-    marine: { n: "Denizcilik", d: "Gemi, tersane, liman, offshore", i: "ship", c: "var(--sec-marine)" },
-    petro: { n: "Petrokimya", d: "Rafineri, depolama, boru hattı", i: "flask", c: "var(--sec-petro)" },
-    building: { n: "Yapı", d: "Konut, otel, hastane, kamu binaları", i: "building", c: "var(--sec-building)" }
+    marine: { n: "Marine", d: "Tersane, gemi inşa ve denizcilik yatırımları", i: "ship", c: "var(--seg-marine)" },
+    prot: { n: "Protective", d: "Endüstriyel, altyapı ve ağır sanayi projeleri", i: "factory", c: "var(--seg-prot)" },
+    deco: { n: "Decorative", d: "Mimari, iç ve dış cephe boya projeleri", i: "drop", c: "var(--seg-deco)" },
+    powder: { n: "Toz Boya", d: "Otomotiv, beyaz eşya, alüminyum ve metal üretim", i: "box", c: "var(--seg-powder)" },
+    energy: { n: "Enerji", d: "GES, RES, santral, iletim ve depolama projeleri", i: "bolt", c: "var(--seg-energy)" }
   };
   const SEC_KEYS = Object.keys(SECTORS);
   const TOPIC_SECTOR = { rail: "infra", bridge: "infra", tunnel: "infra", road: "infra", water: "infra", airport: "infra", wind: "energy", solar: "energy", grid: "energy", plant: "energy", offshore: "energy", port: "marine", ship: "marine", refinery: "petro", pipeline: "petro", tank: "petro", factory: "industry", steel: "industry", building: "building" };
@@ -122,7 +124,7 @@
   /* ---------- Veri ---------- */
   const planned = i => /çed|planlan|mutabakat|hedef|kurulacak|planned|plans|ihale|tender|teklif|halkın görüş/i.test((i.title || "") + " " + (i.summary || "") + " " + (i.company || ""));
   function enrich(i) {
-    i._t = NS.topicOf(i); i._s = TOPIC_SECTOR[i._t] || "industry"; i._c = citiesOf(i); i._p = planned(i);
+    i._t = NS.topicOf(i); i._s = SECTORS[i.seg] ? i.seg : (TOPIC_SECTOR[i._t] === "energy" ? "energy" : TOPIC_SECTOR[i._t] === "marine" ? "marine" : "prot"); i._c = citiesOf(i); i._p = planned(i);
     i._isProject = i.project === true || i.kind === "investment" || /proje|inşaat|yapım|tesis/i.test(i.company || "");
     return i;
   }
@@ -280,7 +282,7 @@
   // 7 · Sektörler
   V.sectors = () => {
     const pool = visible();
-    return tabNav("Sektörler", '<button class="iconbtn fill" data-go="search" aria-label="Ara">' + ic("search") + '</button>') + '<main class="wrap"><p class="lead" style="margin:0 0 14px">Haberler konusuna göre altı sektörde toplanır.</p><div class="rows">' +
+    return tabNav("Segmentler", '<button class="iconbtn fill" data-go="search" aria-label="Ara">' + ic("search") + '</button>') + '<main class="wrap"><p class="lead" style="margin:0 0 14px">Haberler Jotun’un beş segmentinde toplanır.</p><div class="rows">' +
       SEC_KEYS.map(k => { const s = SECTORS[k], n = pool.filter(i => i._s === k); const top = n.slice().sort(byScore)[0]; return '<button class="row" data-sector="' + k + '"><span class="ri" style="background:color-mix(in srgb,' + s.c + ' 18%,transparent);color:' + s.c + '">' + ic(s.i) + '</span><span class="rt"><b>' + s.n + '</b><small>' + s.d + (top ? ' · en yüksek ★' + top.score : '') + '</small></span><span class="cnt">' + n.length + '</span>' + ic("chev", "ic sm chev") + '</button>'; }).join("") +
       '</div></main>';
   };
@@ -322,7 +324,7 @@
     let h = '<div class="dhero">' + scene(i, "h") + heroNav + '<div class="cap"><span>' + tag(i) + (i.kind ? ' <span class="tag soft" style="--c:#8DB8FF">' + KIND[i.kind] + '</span>' : '') + '</span><h1 class="dtitle">' + esc(i.title) + '</h1><span class="meta">' + ic("calendar", "ic xs") + '<span>' + fdate(i.date) + '</span><span class="sep"></span>' + ic("clock", "ic xs") + '<span>' + readMin(i) + ' dk okuma</span><span class="sep"></span><span>' + esc(i.source) + '</span></span></div></div><main class="wrap">';
     h += '<p class="body">' + esc(i.summary) + '</p>';
     if (i.why) h += '<div class="why" style="margin-top:18px"><div class="h"><span>Neden fırsat</span><span>★ ' + i.score + '/100</span></div>' + (i.company ? '<p style="font-weight:700;margin-bottom:6px">' + esc(i.company) + '</p>' : '') + '<p>' + esc(i.why) + '</p></div>';
-    h += '<div class="card facts" style="margin-top:14px">' + [["pin", "Konum", place(i)], ["layers", "Sektör", SECTORS[i._s].n + " · " + (NS.TOPIC_LABEL[i._t] || "")], ["calendar", i.deadline ? "Son teklif tarihi" : "Yayın tarihi", i.deadline || fdate(i.date)]].map(([ii, l, v]) => '<div class="fact"><span class="fi">' + ic(ii) + '</span><span><small>' + l + '</small><b>' + esc(v) + '</b></span></div>').join("") + '</div>';
+    h += '<div class="card facts" style="margin-top:14px">' + [["pin", "Konum", place(i)], ["layers", "Segment", SECTORS[i._s].n + " · " + (NS.TOPIC_LABEL[i._t] || "")], ["calendar", i.deadline ? "Son teklif tarihi" : "Yayın tarihi", i.deadline || fdate(i.date)]].map(([ii, l, v]) => '<div class="fact"><span class="fi">' + ic(ii) + '</span><span><small>' + l + '</small><b>' + esc(v) + '</b></span></div>').join("") + '</div>';
     if (rel2.length) h += '<div class="h-sec"><h2 style="font-size:var(--fs-title3)">İlgili haberler</h2></div><div class="related">' + rel2.map(x => '<button class="rel" data-open="' + esc(x.id) + '"><div class="thumb">' + scene(x) + '</div><b>' + esc(x.company || x.title) + '</b></button>').join("") + '</div>';
     h += '<a class="btn" style="margin-top:18px" href="' + esc(i.url) + '" target="_blank" rel="noopener">Orijinal haberi oku ' + ic("ext", "ic sm") + '</a></main>';
     return h;
@@ -517,7 +519,7 @@
     if (NO_TAB.includes(name)) tb.hidden = true;
     else {
       tb.hidden = false; const t = TAB_OF[name] || "home";
-      tb.innerHTML = '<div class="in">' + [["home", "Ana Sayfa", "home"], ["sectors", "Sektörler", "layers"], ["projects", "Projeler", "brief"], ["calc", "Hesapla", "calc"], ["saved", "Kayıtlı", "bm"]].map(([k, l, i]) => '<button class="tab" data-tab="' + k + '"' + (t === k ? ' aria-current="page"' : '') + '>' + ic(i) + l + '</button>').join("") + '</div>';
+      tb.innerHTML = '<div class="in">' + [["home", "Ana Sayfa", "home"], ["sectors", "Segmentler", "layers"], ["projects", "Projeler", "brief"], ["calc", "Hesapla", "calc"], ["saved", "Kayıtlı", "bm"]].map(([k, l, i]) => '<button class="tab" data-tab="' + k + '"' + (t === k ? ' aria-current="page"' : '') + '>' + ic(i) + l + '</button>').join("") + '</div>';
     }
     if (name === "search") { doSearch(); const q = $("q"); if (q && !q.value) setTimeout(() => q.focus(), 50); }
     if (name === "home") heroDots();
