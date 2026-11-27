@@ -1,0 +1,5 @@
+{
+  "private": true,
+  "type": "module",
+  "description": "Supabase edge function ve paylaşılan BI kodu (Deno). Bu dosya yalnızca Node testlerinin ES modül olarak çalışması için."
+}

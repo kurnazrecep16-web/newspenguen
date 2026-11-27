@@ -5,7 +5,10 @@
   "description": "COATNEWS iOS uygulaması (Capacitor)",
   "scripts": {
     "build:www": "node scripts/build-www.mjs",
-    "sync": "npm run build:www && npx cap sync ios"
+    "sync": "npm run build:www && npx cap sync ios",
+    "test:bi": "node --test tests/bi/*.test.ts",
+    "test:bi-db": "bash scripts/bi-db-test.sh",
+    "bi:seed": "node scripts/bi-seed-sql.mjs"
   },
   "dependencies": {
     "@capacitor/browser": "8.0.5",
