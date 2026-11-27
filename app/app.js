@@ -204,7 +204,7 @@
   }
   const empty = (t, s, icon = "search") => '<div class="empty">' + ic(icon) + '<b>' + t + '</b>' + (s || "") + '</div>';
   const nav = (title, right = "", opt = {}) => '<header class="navbar"><div class="navrow">' + (opt.noBack ? "" : '<button class="iconbtn" data-back="1" aria-label="Geri">' + ic("left") + '</button>') + (opt.large ? '<span class="sp"></span>' : '<h1 class="ntitle">' + esc(title) + '</h1>') + (right || (opt.noBack ? "" : '<span style="width:44px"></span>')) + '</div>' + (opt.large ? '<h1 class="ltitle">' + esc(title) + '</h1>' : '') + (opt.extra || "") + '</header>';
-  const tabNav = (title, right = "", extra = "") => '<header class="navbar"><div class="navrow">' + (S.stack.length > 1 ? '<button class="iconbtn" data-back="1" aria-label="Geri">' + ic("left") + '</button>' : '') + '<h1 class="ltitle" style="flex:1;margin:0">' + esc(title) + '</h1>' + right + '</div>' + extra + '</header>';
+  const tabNav = (title, right = "", extra = "") => '<header class="navbar"><div class="navrow">' + (S.stack.length > 1 ? '<button class="iconbtn" data-back="1" aria-label="Geri">' + ic("left") + '</button>' : '<button class="homemark" data-act="goHome" aria-label="Ana Sayfa">' + MARK() + '</button>') + '<h1 class="ltitle" style="flex:1;margin:0">' + esc(title) + '</h1>' + right + '</div>' + extra + '</header>';
   function locLabel() {
     if (!S.loc.size) return "Tüm Türkiye ve Global";
     const full = REGIONS.filter(([, cs]) => cs.every(c => S.loc.has(c))).map(([r]) => r);
@@ -261,7 +261,7 @@
     const pool = visible(), list = S.seg === "all" ? pool : S.seg === "star" ? pool.filter(i => i.star) : pool.filter(i => i._s === S.seg);
     const hero = list.slice().sort(byScore).slice(0, 4), rest = list.filter(i => !hero.includes(i)).sort(byDate);
     const anyNew = pool.some(i => i.isNew);
-    let h = '<header class="navbar"><div class="navrow"><div class="brand">' + MARK() + '<div><b>COAT<span style="color:var(--np-amber-400)">NEWS</span></b><small>Global Coatings Media</small></div></div>' +
+    let h = '<header class="navbar"><div class="navrow"><button class="brand" data-act="goHome" aria-label="Ana Sayfa">' + MARK() + '<span><b>COAT<span style="color:var(--np-amber-400)">NEWS</span></b><small>Global Coatings Media</small></span></button>' + langPill() +
       '<button class="iconbtn fill" data-go="notifs" aria-label="Yeni haberler">' + ic("bell") + (anyNew ? '<span class="dot"></span>' : '') + '</button><button class="avatar" data-go="profile" aria-label="Profil">' + initials() + '</button></div>' + locBar() +
       '<div class="chips" role="group" aria-label="Filtre" style="margin-top:10px"><button class="chip" data-seg="all" aria-pressed="' + (S.seg === "all") + '">Tümü <span class="n">' + pool.length + '</span></button><button class="chip" data-seg="star" aria-pressed="' + (S.seg === "star") + '">★ Bölgem <span class="n">' + pool.filter(i => i.star).length + '</span></button>' +
       SEC_KEYS.map(k => { const n = pool.filter(i => i._s === k).length; return n ? '<button class="chip" data-seg="' + k + '" aria-pressed="' + (S.seg === k) + '">' + SECTORS[k].n + ' <span class="n">' + n + '</span></button>' : ""; }).join("") + '</div></header><main class="wrap">';
@@ -583,6 +583,7 @@
     if (a === "forgot") { const em = document.querySelector('[name="email"]').value.trim(); if (!/\S+@\S+\.\S+/.test(em)) { $("ferr").textContent = "Şifre sıfırlama için önce e-postanı yaz."; return; } try { await auth("recover", { email: em }); toast("Sıfırlama bağlantısı e-postana gönderildi"); } catch (er) { $("ferr").textContent = AUTH_ERR(er.message); } return; }
     if (a === "lang") { const cl = window.NPLang ? NPLang.get() : "tr"; return sheet('<h2>Dil · Language</h2><div class="rows" style="margin-top:12px">' + [["tr", "Türkçe"], ["en", "English"]].map(([k, l]) => '<button class="row" data-act="setLang" data-l="' + k + '"><span class="rt"><b>' + l + '</b></span><span class="cbox' + (cl === k ? " on" : "") + '"></span></button>').join("") + '</div><p class="hint" style="margin-top:10px">Haber başlık ve özetleri kaynağın dilinde gösterilir. · Story titles and summaries are shown in the source language.</p>'); }
     if (a === "setLang") { closeSheet(); if (window.NPLang) NPLang.set(d.l); return; }
+    if (a === "goHome") { if (cur().name === "home") { window.scrollTo({ top: 0, behavior: "smooth" }); return; } return tab("home"); }
     if (a === "goSaved") return go("saved");
     if (a === "goMap") return go("map");
     if (a === "goLogin") return go("login");
