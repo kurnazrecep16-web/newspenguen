@@ -14,25 +14,18 @@
      Pratik yayılma = teorik × (1 − fire %)       Yaş film (WFT, µm) = DFT × 100 ÷ katı madde
      Maliyet/m² = fiyat ($/L) ÷ pratik yayılma     (Hempel, Wattyl ve ISO 12944 pratiğine göre) */
   const L3 = (n, dft, vs, coats = 1) => ({ n, dft, vs, coats, price: "" });
-  const PRESETS = {
-    c3: { name: "C3", sub: "Orta korozif · iç/şehir", layers: [L3("Epoksi astar / ara kat", 140, 75), L3("Poliüretan son kat", 60, 55)] },
-    c4: { name: "C4", sub: "Yüksek · sanayi, kıyı", layers: [L3("Çinkolu epoksi astar", 60, 58), L3("Epoksi ara kat", 120, 75), L3("Poliüretan son kat", 60, 55)] },
-    c5: { name: "C5", sub: "Çok yüksek · ağır sanayi, deniz", layers: [L3("Çinkolu epoksi astar", 60, 58), L3("Epoksi ara kat", 200, 80), L3("Poliüretan son kat", 60, 55)] },
-    cx: { name: "CX", sub: "Ekstrem · offshore", layers: [L3("Çinkolu epoksi astar", 60, 58), L3("Epoksi ara kat", 150, 80, 2), L3("Poliüretan son kat", 60, 55)] },
-    fire: { name: "Yangın", sub: "Pasif yangın · intümesan", layers: [L3("Epoksi astar", 75, 55), L3("İntümesan boya", 1500, 72), L3("Son kat", 50, 55)] },
-    empty: { name: "Boş", sub: "Kendi sistemini kur", layers: [L3("Kat 1", "", "")] }
-  };
+  const DEFAULT_LAYERS = [L3("Astar", 60, 58), L3("Ara kat", 120, 75), L3("Son kat", 60, 55)];
   const clone = o => JSON.parse(JSON.stringify(o));
-  let C = store.get("calc3", null);
-  if (!C || !Array.isArray(C.layers)) C = { preset: "c4", area: 1000, loss: 30, layers: clone(PRESETS.c4.layers) };
-  const save = () => store.set("calc3", C);
+  let C = store.get("calc4", null);
+  if (!C || !Array.isArray(C.layers)) C = { mode: "ton", ton: 100, m2t: 20, area: 1000, loss: 30, layers: clone(DEFAULT_LAYERS) };
+  const save = () => store.set("calc4", C);
   const num = v => { const n = parseFloat(String(v ?? "").replace(",", ".")); return isFinite(n) ? n : 0; };
   const f = (n, d = 1) => (isFinite(n) ? n : 0).toLocaleString("tr-TR", { minimumFractionDigits: d, maximumFractionDigits: d });
   const usd = (n, d = 0) => "$" + f(n, d);
   const wftOf = l => { const d = num(l.dft), v = num(l.vs); return d > 0 && v > 0 ? Math.round(d * 100 / v) : ""; };
 
   function calc() {
-    const A = num(C.area), L = Math.min(Math.max(num(C.loss), 0), 90) / 100;
+    const A = areaOf(), L = Math.min(Math.max(num(C.loss), 0), 90) / 100;
     const rows = C.layers.map(l => {
       const dft = num(l.dft), vs = num(l.vs), coats = Math.max(1, Math.round(num(l.coats)) || 1), price = num(l.price);
       const theo = vs > 0 && dft > 0 ? (vs * 10) / dft : 0, prac = theo * (1 - L);
@@ -43,41 +36,31 @@
     return { A, L, rows, liters: sum("liters"), cost: sum("cost"), cpm: sum("cpm"), dft: sum("tot") };
   }
 
-  /* ---------- alan yardımcısı ---------- */
+  /* ---------- alan: tonajdan veya doğrudan m² ---------- */
   const STEEL = [["Ağır profil", "HEB, HEM, kalın sac", 12], ["Orta profil", "IPE, HEA", 20], ["Hafif profil", "köşebent, U, boru", 35], ["İnce sac", "kafes, ince levha", 50]];
-  const hin = (k, label, val, unit) => '<label class="cf"><span>' + label + '</span><span class="ciw"><input inputmode="decimal" data-hf="' + k + '" value="' + esc(String(val ?? "")) + '" placeholder="0"><em>' + unit + '</em></span></label>';
-  function helperArea() {
-    const H = C.helper || {};
-    if (H.type === "pipe") return Math.PI * (num(H.d) / 1000) * num(H.len);
-    if (H.type === "tank") { const d = num(H.d); return Math.PI * d * num(H.h) + (H.roof ? Math.PI * d * d / 2 : 0); }
-    return num(H.ton) * num(H.m2t);
-  }
-  function areaHelper() {
-    const H = C.helper || (C.helper = { type: "steel", ton: "", m2t: 20, d: "", len: "", h: "", roof: true });
-    const t = H.type;
-    let h = '<div class="seg3 hseg" role="group" aria-label="Alan hesabı"><button data-ht="steel" aria-pressed="' + (t === "steel") + '">Çelik tonaj</button><button data-ht="pipe" aria-pressed="' + (t === "pipe") + '">Boru</button><button data-ht="tank" aria-pressed="' + (t === "tank") + '">Tank</button></div>';
-    if (t === "steel") h += '<div class="cgrid">' + hin("ton", "Çelik miktarı", H.ton, "ton") + '</div><div class="flab">Profil tipi</div><div class="opts">' + STEEL.map(([l, s, v]) => '<button class="opt" data-hm="' + v + '" aria-pressed="' + (num(H.m2t) === v) + '"><b>' + l + '</b><small>' + s + ' · ' + v + ' m²/t</small></button>').join("") + '</div>';
-    else if (t === "pipe") h += '<div class="cgrid">' + hin("d", "Dış çap", H.d, "mm") + hin("len", "Toplam uzunluk", H.len, "m") + '</div>';
-    else h += '<div class="cgrid">' + hin("d", "Tank çapı", H.d, "m") + hin("h", "Gövde yüksekliği", H.h, "m") + '</div><label class="hchk"><input type="checkbox" data-hf="roof"' + (H.roof ? " checked" : "") + '><span>Çatı ve taban dahil</span></label>';
-    h += '<div class="hres"><span><small>Hesaplanan alan</small><b id="harea">' + f(helperArea(), 1) + ' m²</b></span><button class="hbtn" data-huse="1">Alana aktar</button></div>';
-    return h;
-  }
+  const areaOf = () => C.mode === "ton" ? num(C.ton) * num(C.m2t) : num(C.area);
 
   /* ---------- görünüm ---------- */
   const step = (n, t, s) => '<div class="step"><span class="stn">' + n + '</span><div><b>' + t + '</b>' + (s ? '<small>' + s + '</small>' : '') + '</div></div>';
   const lin = (i, k, label, val, unit, hint) => '<label class="cf"><span>' + label + '</span><span class="ciw"><input inputmode="decimal" data-cl="' + i + '.' + k + '" value="' + esc(String(val ?? "")) + '" placeholder="0"><em>' + unit + '</em></span>' + (hint ? '<i class="hint">' + hint + '</i>' : '') + '</label>';
 
   function viewCalc() {
-    let h = '<p class="clead">Protective boya sisteminin sarfiyatını ve maliyetini 3 adımda hesapla. Değerleri ürünün teknik föyünden al.</p>';
-    h += step(1, "Sistemi seç", "ISO 12944 korozyon sınıfına göre tipik sistemler");
-    h += '<div class="sysgrid">' + Object.entries(PRESETS).map(([k, p]) => '<button class="sys" data-cpre="' + k + '" aria-pressed="' + (C.preset === k) + '"><b>' + p.name + '</b><small>' + p.sub + '</small></button>').join("") + '</div>';
-    h += step(2, "Alan ve fire", "Fire: püskürtme kaybı, yüzey pürüzlülüğü, profil şekli");
-    h += '<section class="ccard"><div class="cgrid">' +
-      '<label class="cf"><span>Boyanacak alan</span><span class="ciw big"><input inputmode="decimal" data-cf="area" value="' + esc(String(C.area ?? "")) + '" placeholder="0"><em>m²</em></span></label>' +
-      '<label class="cf"><span>Fire</span><span class="ciw big"><input inputmode="decimal" data-cf="loss" value="' + esc(String(C.loss ?? "")) + '" placeholder="30"><em>%</em></span></label></div>' +
-      '<div class="quick">' + [20, 30, 40, 50].map(v => '<button data-lq="' + v + '" aria-pressed="' + (num(C.loss) === v) + '">%' + v + '</button>').join("") + '</div>' +
-      '<button class="htoggle" data-hopen="1" aria-expanded="' + !!C.hOpen + '">' + ic("calc") + '<span>' + (C.hOpen ? "Alan yardımcısını kapat" : "Alanı bilmiyor musun? Tonaj, boru veya tanktan hesapla") + '</span>' + ic("chev") + '</button>' +
-      (C.hOpen ? '<div class="helper">' + areaHelper() + '</div>' : '') + '</section>';
+    let h = '<p class="clead">Çelik tonajından veya yüzey alanından protective boya sarfiyatını ve maliyetini hesapla. Değerleri ürünün teknik föyünden al.</p>';
+    const ton = C.mode === "ton";
+    h += step(1, "Yüzey alanı", ton ? "Çelik tonajından otomatik hesaplanır" : "Boyanacak alanı doğrudan gir");
+    h += '<section class="ccard"><div class="seg3 hseg" role="group" aria-label="Alan girişi"><button data-cmode="ton" aria-pressed="' + ton + '">Tonajdan hesapla</button><button data-cmode="area" aria-pressed="' + !ton + '">Yüzey alanı gir</button></div>';
+    if (ton) {
+      h += '<label class="cf"><span>Çelik miktarı</span><span class="ciw big"><input inputmode="decimal" data-cf="ton" value="' + esc(String(C.ton ?? "")) + '" placeholder="0"><em>ton</em></span></label>' +
+        '<div class="flab">Profil tipi (ton başına yüzey)</div><div class="opts">' + STEEL.map(([l, sub, v]) => '<button class="opt" data-hm="' + v + '" aria-pressed="' + (num(C.m2t) === v) + '"><b>' + l + ' · ' + v + ' m²/t</b><small>' + sub + '</small></button>').join("") + '</div>' +
+        '<label class="cf" style="margin-top:10px"><span>Ton başına yüzey (elle değiştirilebilir)</span><span class="ciw"><input inputmode="decimal" data-cf="m2t" value="' + esc(String(C.m2t ?? "")) + '" placeholder="20"><em>m²/ton</em></span></label>' +
+        '<div class="hres"><span><small>Hesaplanan yüzey alanı</small><b id="harea">' + f(areaOf(), 0) + ' m²</b></span></div>';
+    } else {
+      h += '<label class="cf"><span>Boyanacak alan</span><span class="ciw big"><input inputmode="decimal" data-cf="area" value="' + esc(String(C.area ?? "")) + '" placeholder="0"><em>m²</em></span></label>';
+    }
+    h += '</section>';
+    h += step(2, "Fire", "Püskürtme kaybı, yüzey pürüzlülüğü, profil şekli");
+    h += '<section class="ccard"><label class="cf"><span>Fire oranı</span><span class="ciw big"><input inputmode="decimal" data-cf="loss" value="' + esc(String(C.loss ?? "")) + '" placeholder="30"><em>%</em></span></label>' +
+      '<div class="quick">' + [20, 30, 40, 50].map(v => '<button data-lq="' + v + '" aria-pressed="' + (num(C.loss) === v) + '">%' + v + '</button>').join("") + '</div></section>';
     h += step(3, "Katları gir", "Kuru filmi ya da yaş filmi yaz, diğeri otomatik hesaplanır");
     h += C.layers.map((l, i) => '<section class="ccard layer"><div class="chead"><span class="cnum">' + (i + 1) + '</span><input class="cname" data-cl="' + i + '.n" value="' + esc(l.n) + '" aria-label="Kat adı"><button class="cdel" data-cdel="' + i + '" aria-label="Katı sil">' + ic("trash") + '</button></div>' +
       '<div class="cgrid">' + lin(i, "vs", "Hacimce katı madde", l.vs, "%") + lin(i, "coats", "Kat sayısı", l.coats, "kat") + '</div>' +
@@ -87,20 +70,20 @@
     h += step(4, "Sonuç", "");
     h += '<section class="cres" id="cres" aria-live="polite"></section>';
     h += '<button class="csum" id="csum" data-cgo="1" aria-label="Sonuca git"></button>';
-    h += '<p class="foot">Teorik yayılma = katı madde × 10 ÷ DFT · Pratik yayılma = teorik × (1 − fire) · WFT = DFT × 100 ÷ katı madde. Hazır sistemler tipiktir; proje spesifikasyonunu esas al.</p>';
+    h += '<p class="foot">Teorik yayılma = katı madde × 10 ÷ DFT · Pratik yayılma = teorik × (1 − fire) · WFT = DFT × 100 ÷ katı madde. Ton başına yüzey profil boyutuna göre değişir; kesin alan için proje metrajını esas al.</p>';
     return h;
   }
 
   function resultsHTML() {
     const r = calc();
     return '<div class="ctot"><div><small>Toplam boya</small><b>' + f(r.liters, 0) + ' L</b></div><div><small>Toplam DFT</small><b>' + f(r.dft, 0) + ' µm</b></div><div><small>Maliyet</small><b>' + (r.cost ? usd(r.cost) : "–") + '</b></div></div>' +
-      '<div class="ctot2"><span>Alan <b>' + f(r.A, 0) + ' m²</b></span><span>Fire <b>%' + f(r.L * 100, 0) + '</b></span>' + (r.cpm ? '<span>m² maliyeti <b>' + usd(r.cpm, 2) + '</b></span>' : '') + '</div>' +
+      '<div class="ctot2">' + (C.mode === "ton" ? '<span>Çelik <b>' + f(num(C.ton), 0) + ' t</b></span>' : '') + '<span>Alan <b>' + f(r.A, 0) + ' m²</b></span><span>Fire <b>%' + f(r.L * 100, 0) + '</b></span>' + (r.cpm ? '<span>m² maliyeti <b>' + usd(r.cpm, 2) + '</b></span>' : '') + '</div>' +
       r.rows.map((x, i) => '<div class="rrow"><div class="rh"><b>' + (i + 1) + '. ' + esc(x.n || "Kat") + '</b><b class="rl">' + f(x.liters, 0) + ' L</b></div><div class="rd"><span>' + x.coats + ' × ' + f(x.dft, 0) + ' µm DFT</span><span>WFT ' + (x.wft || "–") + ' µm</span><span>Pratik ' + f(x.prac, 2) + ' m²/L</span>' + (x.cost ? '<span>' + usd(x.cost) + '</span>' : '') + '</div></div>').join("") +
       '<button class="btn cshare" data-cshare="1">' + ic("share") + 'Sonucu paylaş</button>';
   }
   function shareText() {
     const r = calc();
-    return "NEWSPENGUEN · Protective boya hesabı\nAlan: " + f(r.A, 0) + " m² · Fire: %" + f(r.L * 100, 0) + "\n" +
+    return "NEWSPENGUEN · Protective boya hesabı\n" + (C.mode === "ton" ? "Çelik: " + f(num(C.ton), 0) + " ton × " + f(num(C.m2t), 0) + " m²/t = " : "Alan: ") + f(r.A, 0) + " m² · Fire: %" + f(r.L * 100, 0) + "\n" +
       r.rows.map((x, i) => (i + 1) + ". " + (x.n || "Kat") + ": " + x.coats + " × " + f(x.dft, 0) + " µm DFT (WFT " + (x.wft || "–") + " µm, KM %" + f(x.vs, 0) + ") → " + f(x.liters, 0) + " L" + (x.cost ? ", " + usd(x.cost) : "")).join("\n") +
       "\nToplam: " + f(r.liters, 0) + " L · toplam DFT " + f(r.dft, 0) + " µm" + (r.cost ? "\nMaliyet: " + usd(r.cost) + " (" + usd(r.cpm, 2) + "/m²)" : "");
   }
@@ -108,7 +91,7 @@
   const refresh = () => {
     const el = document.getElementById("cres"); if (el) el.innerHTML = resultsHTML();
     const sm = document.getElementById("csum"); if (sm) sm.innerHTML = sumHTML();
-    const ha = document.getElementById("harea"); if (ha) ha.textContent = f(helperArea(), 1) + " m²";
+    const ha = document.getElementById("harea"); if (ha) ha.textContent = f(areaOf(), 0) + " m²";
   };
   const setField = (sel, v) => { const e = document.querySelector(sel); if (e && e !== document.activeElement) e.value = v; };
   let io = null;
@@ -125,28 +108,25 @@
     const t = e.target, d = t.dataset || {};
     if (d.cf) {
       C[d.cf] = t.value; save(); refresh();
+      if (d.cf === "m2t") document.querySelectorAll("[data-hm]").forEach(b => b.setAttribute("aria-pressed", String(num(b.dataset.hm) === num(t.value))));
       if (d.cf === "loss") document.querySelectorAll("[data-lq]").forEach(b => b.setAttribute("aria-pressed", String(num(b.dataset.lq) === num(t.value))));
     } else if (d.cl) {
       const [i, k] = d.cl.split("."), l = C.layers[+i];
       if (k === "wft") { const w = num(t.value), v = num(l.vs); l.dft = w > 0 && v > 0 ? Math.round(w * v / 100) : ""; setField('[data-cl="' + i + '.dft"]', l.dft); }
       else { l[k] = t.value; if (k === "dft" || k === "vs") setField('[data-cl="' + i + '.wft"]', wftOf(l)); }
-      C.preset = k === "n" || k === "price" || k === "coats" ? C.preset : null;
       save(); refresh();
-    } else if (d.hf) { C.helper[d.hf] = t.type === "checkbox" ? t.checked : t.value; save(); refresh(); }
+    }
   });
   document.addEventListener("click", e => {
-    const b = e.target.closest("[data-cpre],[data-cadd],[data-cdel],[data-cshare],[data-cgo],[data-hopen],[data-ht],[data-hm],[data-huse],[data-lq]");
+    const b = e.target.closest("[data-cmode],[data-cadd],[data-cdel],[data-cshare],[data-cgo],[data-hm],[data-lq]");
     if (!b) return;
     const d = b.dataset;
     if (d.cgo) { document.getElementById("cres").scrollIntoView({ behavior: "smooth", block: "start" }); return; }
-    if (d.cpre) { C.layers = clone(PRESETS[d.cpre].layers); C.preset = d.cpre; }
+    if (d.cmode) { if (d.cmode === "area" && C.mode === "ton" && areaOf() > 0) C.area = Math.round(areaOf()); C.mode = d.cmode; }
     else if (d.lq) C.loss = num(d.lq);
-    else if (d.cadd) { C.layers.push(L3("Kat " + (C.layers.length + 1), "", "")); C.preset = null; }
-    else if (d.cdel) { if (C.layers.length > 1) C.layers.splice(+d.cdel, 1); C.preset = null; }
-    else if (d.hopen) { C.hOpen = !C.hOpen; areaHelper(); }
-    else if (d.ht) C.helper.type = d.ht;
-    else if (d.hm) C.helper.m2t = num(d.hm);
-    else if (d.huse) { const a = helperArea(); if (a > 0) C.area = Math.round(a * 10) / 10; }
+    else if (d.cadd) C.layers.push(L3("Kat " + (C.layers.length + 1), "", ""));
+    else if (d.cdel) { if (C.layers.length > 1) C.layers.splice(+d.cdel, 1); }
+    else if (d.hm) C.m2t = num(d.hm);
     else if (d.cshare) {
       const txt = shareText(), Pl = window.Capacitor && window.Capacitor.Plugins;
       if (Pl && Pl.Share && window.Capacitor.isNativePlatform()) Pl.Share.share({ title: "Boya hesabı", text: txt }).catch(() => {});
