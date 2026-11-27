@@ -10,6 +10,6 @@ if (!/const ITEMS\s*=/.test(m[1])) throw new Error("Veri bloğunda ITEMS yok");
 
 mkdirSync("www/brand", { recursive: true });
 writeFileSync("www/data.js", "/* index.html'den otomatik çıkarıldı */\n" + m[1].trim() + "\n");
-for (const f of ["index.html", "app.css", "app.js", "scenes.js", "native-bridge.js"]) copyFileSync("app/" + f, "www/" + f);
+for (const f of ["index.html", "app.css", "app.js", "scenes.js", "i18n.js", "native-bridge.js"]) copyFileSync("app/" + f, "www/" + f);
 for (const f of readdirSync("app/brand")) copyFileSync("app/brand/" + f, "www/brand/" + f);
 console.log("www/ hazır");

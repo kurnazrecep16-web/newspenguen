@@ -212,6 +212,8 @@
   }
   const locBar = () => '<button class="locbar' + (S.loc.size ? " on" : "") + '" data-go="location">' + ic("pin") + '<span><small>Konum</small><b>' + esc(locLabel()) + '</b></span>' + ic("chev", "ic sm") + '</button>';
 
+  const langPill = (st = "") => '<button class="langpill" data-act="lang" aria-label="Dil · Language" style="' + st + '">' + ic("globe", "ic xs") + (window.NPLang && NPLang.get() === "en" ? "EN" : "TR") + '</button>';
+
   /* =========================================================
      EKRANLAR
      ========================================================= */
@@ -229,13 +231,13 @@
   ];
   V.onboarding = p => {
     const k = p.k || 0, o = ONB[k];
-    return '<div class="onb"><div class="art">' + NS.sceneSVG(o.t, "onb" + k) + '<button class="skip" data-act="onbDone">Atla</button></div><div class="txt">' +
+    return '<div class="onb"><div class="art">' + NS.sceneSVG(o.t, "onb" + k) + '' + langPill("position:absolute;left:var(--gutter);top:calc(env(safe-area-inset-top) + 14px);z-index:3") + '<button class="skip" data-act="onbDone">Atla</button></div><div class="txt">' +
       '<div class="dots">' + ONB.map((_, j) => '<i class="' + (j === k ? "on" : "") + '"></i>').join("") + '</div><h1>' + o.h + '</h1><p class="lead" style="margin:0">' + o.p + '</p><span style="flex:1"></span>' +
       '<button class="btn" data-act="' + (k < ONB.length - 1 ? "onbNext" : "onbDone") + '">' + (k < ONB.length - 1 ? "Devam Et" : "Başlayalım") + '</button></div></div>';
   };
 
   // 3 · Giriş
-  V.login = p => '<div class="auth">' + (S.stack.length > 1 ? '<button class="iconbtn" data-back="1" aria-label="Geri">' + ic("left") + '</button>' : '') +
+  V.login = p => '<div class="auth"><div style="display:flex;align-items:center">' + (S.stack.length > 1 ? '<button class="iconbtn" data-back="1" aria-label="Geri">' + ic("left") + '</button>' : '') + '<span style="flex:1"></span>' + langPill() + '</div>' +
     '<div class="logo">' + MARK() + '<b>NEWSPENGUEN</b><small>Industry &amp; Project Insights</small></div><h1>Hesabına giriş yap</h1>' +
     '<form class="stack" data-form="login" novalidate><label class="field"><span class="sr">E-posta</span><span class="input">' + ic("mail") + '<input type="email" name="email" placeholder="E-posta" autocomplete="email" inputmode="email" required></span></label>' +
     '<label class="field"><span class="sr">Şifre</span><span class="input">' + ic("lock") + '<input type="password" name="password" placeholder="Şifre" autocomplete="current-password" required><button type="button" class="iconbtn" style="width:36px;height:36px" data-act="pwToggle" aria-label="Şifreyi göster">' + ic("eye", "ic sm") + '</button></span></label>' +
@@ -480,7 +482,7 @@
   V.profile = () => {
     const signed = !!S.user;
     return nav("Profil") + '<main class="wrap"><div class="phead"><span class="avatar">' + initials() + '</span><b>' + esc(displayName()) + '</b><small>' + esc(signed ? S.user.email || "" : "Hesabınla giriş yaparak kayıtlarını sakla") + '</small></div>' +
-      '<div class="rows">' + [["user", "Profil bilgileri", signed ? "Ad ve e-posta" : "Giriş yap veya kayıt ol", signed ? "editProfile" : "goLogin"], ["bell", "Bildirim tercihleri", "Bölge fırsatları, ihaleler", "notifPrefs"], ["gear", "Uygulama ayarları", "İlgi alanları ve konum", "goSettings"], ["help", "Yardım ve destek", "Sık sorulanlar, iletişim", "goHelp"], ["info", "Hakkında", "Sürüm " + VERSION + ", gizlilik", "goAbout"]].map(([i, t, s, a]) => '<button class="row" data-act="' + a + '"><span class="ri">' + ic(i) + '</span><span class="rt"><b>' + t + '</b><small>' + s + '</small></span>' + ic("chev", "ic sm chev") + '</button>').join("") + '</div>' +
+      '<div class="rows">' + [["user", "Profil bilgileri", signed ? "Ad ve e-posta" : "Giriş yap veya kayıt ol", signed ? "editProfile" : "goLogin"], ["bell", "Bildirim tercihleri", "Bölge fırsatları, ihaleler", "notifPrefs"], ["gear", "Uygulama ayarları", "İlgi alanları ve konum", "goSettings"], ["help", "Yardım ve destek", "Sık sorulanlar, iletişim", "goHelp"], ["globe", "Dil · Language", window.NPLang && NPLang.get() === "en" ? "English" : "Türkçe", "lang"], ["info", "Hakkında", "Sürüm " + VERSION + ", gizlilik", "goAbout"]].map(([i, t, s, a]) => '<button class="row" data-act="' + a + '"><span class="ri">' + ic(i) + '</span><span class="rt"><b>' + t + '</b><small>' + s + '</small></span>' + ic("chev", "ic sm chev") + '</button>').join("") + '</div>' +
       '<button class="btn ' + (signed ? "danger" : "") + '" style="margin-top:20px" data-act="' + (signed ? "logout" : "goLogin") + '">' + ic(signed ? "logout" : "user", "ic sm") + (signed ? "Çıkış yap" : "Giriş yap") + '</button></main>';
   };
   V.settings = () => nav("Uygulama Ayarları") + '<main class="wrap"><div class="h-sec" style="margin-top:4px"><h2 style="font-size:var(--fs-headline)">İlgi alanların</h2></div><p class="lead" style="margin:-6px 0 12px">Kapattığın sektörler akışta görünmez.</p><div class="rows">' +
@@ -573,6 +575,8 @@
     if (a === "guest") { return go("home", {}, { root: true }); }
     if (a === "apple") return toast("Apple ile giriş, App Store sürümünde açılacak");
     if (a === "forgot") { const em = document.querySelector('[name="email"]').value.trim(); if (!/\S+@\S+\.\S+/.test(em)) { $("ferr").textContent = "Şifre sıfırlama için önce e-postanı yaz."; return; } try { await auth("recover", { email: em }); toast("Sıfırlama bağlantısı e-postana gönderildi"); } catch (er) { $("ferr").textContent = AUTH_ERR(er.message); } return; }
+    if (a === "lang") { const cl = window.NPLang ? NPLang.get() : "tr"; return sheet('<h2>Dil · Language</h2><div class="rows" style="margin-top:12px">' + [["tr", "Türkçe"], ["en", "English"]].map(([k, l]) => '<button class="row" data-act="setLang" data-l="' + k + '"><span class="rt"><b>' + l + '</b></span><span class="cbox' + (cl === k ? " on" : "") + '"></span></button>').join("") + '</div><p class="hint" style="margin-top:10px">Haber başlık ve özetleri kaynağın dilinde gösterilir. · Story titles and summaries are shown in the source language.</p>'); }
+    if (a === "setLang") { closeSheet(); if (window.NPLang) NPLang.set(d.l); return; }
     if (a === "goLogin") return go("login");
     if (a === "goSettings") return go("settings");
     if (a === "goHelp") return go("help");
@@ -652,7 +656,7 @@
   }
 
   /* ---------- Başlangıç ---------- */
-  window.NPApp = { go, tab, back, state: S };
+  window.NPApp = { go, tab, back, state: S, rerender: () => render() };
   S.stack = [{ name: "splash", p: {} }];
   render();
   setTimeout(() => { if (cur().name === "splash") go(S.onboarded ? "home" : "onboarding", { k: 0 }, { root: true }); }, 1400);

@@ -367,3 +367,6 @@ input,textarea{font:inherit;color:inherit}
 
 /* Geniş ekran (web sitesi, iPad): telefon genişliğinde ortala */
 @media (min-width:600px){body{max-width:480px;margin:0 auto;box-shadow:0 0 0 1px var(--np-line)}.tabbar,.stickybar{max-width:480px;width:100%;left:50%!important;right:auto!important;transform:translateX(-50%)}}
+
+/* Dil seçici */
+.langpill{display:inline-flex;align-items:center;gap:5px;height:32px;padding:0 12px;border-radius:999px;background:rgba(5,11,31,.55);border:1px solid var(--np-line-2);font-size:13px;font-weight:700;color:var(--np-white);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
