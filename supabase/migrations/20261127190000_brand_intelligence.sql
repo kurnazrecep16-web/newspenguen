@@ -657,4 +657,15 @@ begin
   update bi_entities set article_count = (select count(distinct story_id) from bi_story_entities where entity_id = p_into and role <> 'parent') where id = p_into;
 end $$;
 
+-- pg_cron tetiklemesi için paylaşılan gizli dize. Değer yalnızca Vault'ta durur (ad: bi_cron_secret):
+-- cron işi oradan okur, brand-scan bu fonksiyonla karşılaştırır. Yalnızca service_role çalıştırabilir.
+create or replace function bi_cron_secret_ok(p_secret text) returns boolean
+language plpgsql stable security definer set search_path = '' as $$
+begin
+  if p_secret is null or length(p_secret) < 32 then return false; end if;
+  return exists (select 1 from vault.decrypted_secrets where name = 'bi_cron_secret' and decrypted_secret = p_secret);
+end $$;
+revoke all on function bi_cron_secret_ok(text) from public, anon, authenticated;
+grant execute on function bi_cron_secret_ok(text) to service_role;
+
 commit;

@@ -17,6 +17,7 @@ drop table if exists bi_articles, bi_stories, bi_settings, bi_query_terms, bi_fe
   bi_entity_aliases, bi_entities, bi_languages, bi_topics, bi_segments, bi_staff cascade;
 drop function if exists bi_is_staff();
 drop function if exists bi_is_admin();
+drop function if exists bi_cron_secret_ok(text);
 drop function if exists bi_touch();
 drop function if exists bi_enqueue_notifications();
 drop type if exists bi_staff_role, bi_follow_kind, bi_storage_right, bi_content_type, bi_reliability,

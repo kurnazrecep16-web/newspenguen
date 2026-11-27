@@ -168,5 +168,11 @@ do $$ begin
 end $$;
 
 reset role;
+insert into vault.secrets_stub values ('bi_cron_secret', repeat('k', 40));
+do $$ begin
+  if not bi_cron_secret_ok(repeat('k', 40)) then raise exception 'FAIL: doğru cron gizli dizesi reddedildi'; end if;
+  if bi_cron_secret_ok(repeat('x', 40)) or bi_cron_secret_ok('kısa') or bi_cron_secret_ok(null) then raise exception 'FAIL: yanlış cron gizli dizesi kabul edildi'; end if;
+  if has_function_privilege('anon', 'bi_cron_secret_ok(text)', 'execute') or has_function_privilege('authenticated', 'bi_cron_secret_ok(text)', 'execute') then raise exception 'FAIL: cron kontrolü herkese açık'; end if;
+end $$;
 rollback;
 select 'bi_db tests: OK' as result;

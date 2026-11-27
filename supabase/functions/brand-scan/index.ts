@@ -21,7 +21,9 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 async function authorized(req: Request, sb: SupabaseClient): Promise<string | null> {
   const secret = Deno.env.get("BI_CRON_SECRET");
-  if (secret && req.headers.get("x-bi-cron-secret") === secret) return "cron";
+  const given = req.headers.get("x-bi-cron-secret");
+  if (secret && given === secret) return "cron";
+  if (given) { const { data: ok } = await sb.rpc("bi_cron_secret_ok", { p_secret: given }); if (ok === true) return "cron"; }
   const jwt = (req.headers.get("authorization") ?? "").replace(/^Bearer\s+/i, "");
   if (!jwt) return null;
   const { data } = await sb.auth.getUser(jwt);
