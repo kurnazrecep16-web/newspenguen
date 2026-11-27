@@ -134,7 +134,7 @@ do $$ begin
   end;
   update bi_stories set status = 'published' where id = '10000000-0000-0000-0000-000000000009';
   if found then raise exception 'FAIL: okuyucu haber yayımladı'; end if;
-  if (select count(*) from bi_providers) <> 4 then raise exception 'FAIL: sağlayıcı durumu okunamadı'; end if;
+  if (select count(*) from bi_providers) <> 5 then raise exception 'FAIL: sağlayıcı durumu okunamadı'; end if;
 end $$;
 
 select set_config('request.jwt.claim.sub', '00000000-0000-0000-0000-00000000000e', true);

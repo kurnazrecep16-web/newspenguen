@@ -83,3 +83,8 @@ export function newsApiQuery(s: QuerySpec): string {
   if (out.length > 500) throw new Error(`NewsAPI sorgusu 500 karakteri aşıyor (${out.length})`);
   return out;
 }
+
+/** Bing News: OR ve parantez desteklenir; iki blok boşlukla (AND) birleşir. */
+export function bingQuery(s: QuerySpec): string {
+  return `(${s.aliases.map(q).join(" OR ")}) (${s.terms.map((x) => (/\s/.test(x) ? q(x) : x)).join(" OR ")})`;
+}

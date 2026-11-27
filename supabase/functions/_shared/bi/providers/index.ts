@@ -2,7 +2,7 @@
 // parse* fonksiyonları saftır ve testlerde gerçek yanıt biçimindeki fixture'larla sınanır.
 import type { RawArticle } from "../types.ts";
 import type { QuerySpec } from "../queries.ts";
-import { gdeltQuery, newsApiQuery, theNewsApiQuery } from "../queries.ts";
+import { bingQuery, gdeltQuery, newsApiQuery, theNewsApiQuery } from "../queries.ts";
 import { fetchWithRetry, ProviderError, RateLimitError, type RetryOptions } from "../http.ts";
 import { decodeEntities, stripHtml } from "../text.ts";
 
@@ -149,7 +149,48 @@ export const newsApi: SearchProvider = {
   },
 };
 
-export const SEARCH_PROVIDERS: Record<string, SearchProvider> = { gdelt, thenewsapi: theNewsApi, newsapi: newsApi };
+// ------------------------------------------------------------------ Bing News RSS
+// Resmi bir API değildir (mevcut collect-news akışı da kullanır). Yalnızca başlık, kısa açıklama ve bağlantı alınır.
+const BING_MKT: Record<string, [string, string]> = {
+  en: ["en", "en-US"], tr: ["tr", "tr-TR"], de: ["de", "de-DE"], fr: ["fr", "fr-FR"], it: ["it", "it-IT"], es: ["es", "es-ES"],
+  nl: ["nl", "nl-NL"], pt: ["pt", "pt-BR"], pl: ["pl", "pl-PL"], zh: ["zh-hans", "zh-CN"],
+};
+
+/** Bing News RSS: bağlantılar bing.com/news/apiclick üzerinden gelir; asıl adres `url` parametresindedir. */
+export function parseBingNews(xml: string, query: string, lang: string | null): RawArticle[] {
+  const blocks = xml.match(/<item[\s>][\s\S]*?<\/item>/gi) || [];
+  const out: RawArticle[] = [];
+  for (const b of blocks) {
+    let link = decodeEntities(stripHtml(tag(b, "link")));
+    try { const u = new URL(link); if (u.hostname.endsWith("bing.com") && u.searchParams.get("url")) link = u.searchParams.get("url")!; } catch { continue; }
+    const title = stripHtml(tag(b, "title"));
+    if (!link || !title || /(^|\.)bing\.com$/i.test(new URL(link).hostname)) continue;
+    const t = Date.parse(stripHtml(tag(b, "pubDate")));
+    let desc = stripHtml(tag(b, "description"));
+    if (desc.length > 300) desc = desc.slice(0, 297).replace(/\s+\S*$/, "") + "…";
+    out.push({
+      provider: "bingnews", external_id: null, url: link, title, description: desc || null, storage_right: "snippet",
+      publisher: stripHtml(tag(b, "News:Source")) || null, language: lang, source_country: null,
+      published_at: isNaN(t) ? null : new Date(t).toISOString(), query,
+    });
+  }
+  return out;
+}
+
+export const bingNews: SearchProvider = {
+  key: "bingnews",
+  langParam: (l) => (BING_MKT[l] ? BING_MKT[l][1] : null),
+  async search(spec, w, ctx) {
+    const q = bingQuery(spec);
+    const [setlang, mkt] = BING_MKT[spec.lang];
+    const url = "https://www.bing.com/news/search?" + new URLSearchParams({ q, format: "rss", count: String(ctx.config?.count ?? 50), setlang, mkt, cc: mkt.split("-")[1] });
+    const r = await fetchWithRetry(url, { headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36", Accept: "application/rss+xml, application/xml" } }, ctx.retry);
+    const from = w.from.getTime() - 24 * 3600_000;   // Bing tarih filtresi sunmaz; pencereden eski olanlar elenir (1 gün pay)
+    return parseBingNews(await r.text(), q, spec.lang).filter((a) => !a.published_at || Date.parse(a.published_at) >= from);
+  },
+};
+
+export const SEARCH_PROVIDERS: Record<string, SearchProvider> = { gdelt, thenewsapi: theNewsApi, newsapi: newsApi, bingnews: bingNews };
 
 // ------------------------------------------------------------------ RSS / Atom (resmi haber odaları, sektör yayınları)
 const tag = (x: string, t: string) => { const m = x.match(new RegExp(`<${t}[^>]*>([\\s\\S]*?)</${t}>`, "i")); return m ? m[1] : ""; };

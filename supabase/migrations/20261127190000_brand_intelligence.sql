@@ -168,6 +168,8 @@ insert into bi_providers (key, name, kind, is_enabled, requires_key, key_env, da
   ('newsapi', 'NewsAPI.org', 'api', false, true, 'NEWSAPI_KEY', 100, 1000,
    '{"pageSize": 100}',
    'Ücretsiz Developer planı canlı/üretim ortamında YASAK (dahili kullanım dahil). Üretim için Business $449/ay. İçerik 200 karakterle kesilir; yeniden yayın yasak.'),
+  ('bingnews', 'Bing News RSS', 'api', true, false, null, null, 1500, '{"count": 50}',
+   'Ücretsiz, anahtar gerektirmez; resmi bir API değildir ve Microsoft beslemeyi değiştirebilir. Yalnızca başlık, kısa açıklama ve bağlantı alınır.'),
   ('rss', 'RSS / resmi haber odaları', 'rss', true, false, null, null, 0, '{}',
    'Yayıncının kendi beslemesi. Yalnızca başlık, kısa açıklama ve bağlantı saklanır.');
 

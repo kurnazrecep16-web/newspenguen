@@ -2,7 +2,8 @@
 // Yanıt fixture'ları sağlayıcı belgelerindeki alan adlarına göre elle yazılmıştır (TEST VERİSİ).
 import test from "node:test";
 import assert from "node:assert/strict";
-import { discoverFeeds, gdeltSeenDate, parseGdelt, parseNewsApi, parseRss, parseTheNewsApi } from "../../supabase/functions/_shared/bi/providers/index.ts";
+import { discoverFeeds, gdeltSeenDate, parseBingNews, parseGdelt, parseNewsApi, parseRss, parseTheNewsApi } from "../../supabase/functions/_shared/bi/providers/index.ts";
+import { bingQuery } from "../../supabase/functions/_shared/bi/queries.ts";
 import { fetchWithRetry, ProviderError, RateLimitError } from "../../supabase/functions/_shared/bi/http.ts";
 
 test("GDELT: ArtList JSON ayrıştırılır, tam metin saklanmaz", () => {
@@ -87,4 +88,22 @@ test("4xx: yeniden denenmez", async () => {
   let n = 0;
   await assert.rejects(fetchWithRetry("https://x.example", {}, { sleep: async () => {}, fetch: async () => { n++; return res(401, "bad key"); } }), ProviderError);
   assert.equal(n, 1);
+});
+
+test("Bing News RSS: asıl bağlantı, yayıncı ve tarih çıkarılır; bing.com bağlantıları atlanır", () => {
+  const xml = `<?xml version="1.0"?><rss xmlns:News="https://www.bing.com/news/search?q=x&amp;format=rss"><channel>
+<item><title>Jotun opens &amp;amp; expands plant</title><link>http://www.bing.com/news/apiclick.aspx?ref=FexRss&amp;aid=&amp;tid=1&amp;url=https%3a%2f%2fnews.example.com%2fjotun-plant%3futm_source%3dbing&amp;c=1</link><description>Jotun said on Monday it will expand coatings capacity.</description><pubDate>Thu, 26 Nov 2026 08:00:00 GMT</pubDate><News:Source>Example News</News:Source></item>
+<item><title>Bing kendi sayfası</title><link>https://www.bing.com/news/search?q=jotun</link><pubDate>Thu, 26 Nov 2026 08:00:00 GMT</pubDate></item>
+</channel></rss>`;
+  const a = parseBingNews(xml, "q", "en");
+  assert.equal(a.length, 1);
+  assert.equal(a[0].url, "https://news.example.com/jotun-plant?utm_source=bing");
+  assert.equal(a[0].publisher, "Example News");
+  assert.equal(a[0].published_at, "2026-11-26T08:00:00.000Z");
+  assert.equal(a[0].provider, "bingnews");
+});
+
+test("Bing sorgusu: markalar OR, terimler OR, iki blok AND", () => {
+  assert.equal(bingQuery({ id: "x", lang: "en", family: "context", aliases: ["Jotun", "Hempel"], terms: ["coatings", "paint plant"], entity_slugs: [] }),
+    '("Jotun" OR "Hempel") (coatings OR "paint plant")');
 });
