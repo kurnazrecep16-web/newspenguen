@@ -494,3 +494,4 @@ img.scene{display:block;width:100%;height:100%;object-fit:cover}
 .ddt{flex:1;min-width:0}
 .ddck{color:var(--np-blue-500)}
 @media (prefers-reduced-motion:reduce){.ddpanel{animation:none}}
+.onb .dots{pointer-events:auto}.onb .dots i{cursor:pointer}.onb{touch-action:pan-y;will-change:transform}
